@@ -24,7 +24,7 @@ async def approve(_, m : Message):
     try:
         add_group(m.chat.id)
         await app.approve_chat_join_request(op.id, kk.id)
-        await app.send_photo(kk.id, "https://telegra.ph/file/5f182eca7f4211c27c666-ed310e6397ea686d95.jpg", caption="**🍁 Hᴇʏ {}!\n\nʏᴏᴜʀ ʀᴇǫᴜᴇsᴛ ʜᴀs ʙᴇᴇɴ ᴀᴘᴘʀᴏᴠᴇᴅ!.. ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ  {}\n\n__ ʙʏ: <a href="https://t.me/EmitingStars_Botz">Eᴍɪᴛɪɴɢ Sᴛᴀʀs</a> __**".format(m.from_user.mention, m.chat.title))
+        await app.send_photo(kk.id, "", caption="**🍁 Hᴇʏ {} !\n\nʏᴏᴜʀ ʀᴇǫᴜᴇsᴛ ʜᴀs ʙᴇᴇɴ ᴀᴘᴘʀᴏᴠᴇᴅ!.. ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ  {}\n\n__<blockquote>ʙʏ: <a href="https://t.me/EmitingStars_Botz">Eᴍɪᴛɪɴɢ Sᴛᴀʀs</blockquote></a> __**".format(m.from_user.mention, m.chat.title))
         add_user(kk.id)
     except errors.PeerIdInvalid as e:
         print("user isn't start bot(means group)")
@@ -49,7 +49,7 @@ async def op(_, m :Message):
                 InlineKeyboardButton("ᴛʀʏ ᴀɢᴀɪɴ!", url="https://t.me/Private_Auto_Approval_Bot?start=start")
             ]]
         ) 
-        await m.reply_text("**⚠️ Aᴄᴄᴇss ᴅᴇɴɪᴇᴅ! ⚠️\n\n Hᴇʏ,Yᴏᴜ ʜᴀᴠᴇɴ'ᴛ ᴊᴏɪɴᴇᴅ ᴏᴜʀ ᴄʜᴀɴɴᴇʟ ʏᴇᴛ. Pʟᴇᴀsᴇ ʙᴇ sᴜʀᴇ ᴛᴏ ᴊᴏɪɴ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ᴘʀᴏᴠɪᴅᴇᴅ ʙᴇʟᴏᴡ, ᴛʜᴇɴ ᴛʀʏ ᴀɢᴀɪɴ.. !**", reply_markup=key)
+        await m.reply_text("**<blockquote>⚠️ Aᴄᴄᴇss ᴅᴇɴɪᴇᴅ! ⚠️\n\n Hᴇʏ,Yᴏᴜ ʜᴀᴠᴇɴ'ᴛ ᴊᴏɪɴᴇᴅ ᴏᴜʀ ᴄʜᴀɴɴᴇʟ ʏᴇᴛ. Pʟᴇᴀsᴇ ʙᴇ sᴜʀᴇ ᴛᴏ ᴊᴏɪɴ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ᴘʀᴏᴠɪᴅᴇᴅ ʙᴇʟᴏᴡ, ᴛʜᴇɴ ᴛʀʏ ᴀɢᴀɪɴ.. !</blockquote>**", reply_markup=key)
         return 
     keyboard = InlineKeyboardMarkup(
         [[
@@ -60,7 +60,7 @@ async def op(_, m :Message):
         ]]
     )
     add_user(m.from_user.id)
-    await m.reply_photo("https://i.ibb.co/v6J0JM80/photo-2025-03-13-18-50-40-7481368571868610580.jpg", caption="**🍁 ʜᴇʟʟᴏ {}!\n\nɪ'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ.ɪ ᴄᴀɴ ᴀᴘᴘʀᴏᴠᴇ ᴜsᴇʀs ɪɴ ɢʀᴏᴜᴘs & ᴄʜᴀɴɴᴇʟs.ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ᴄʜᴀᴛ ᴀɴᴅ ᴘʀᴏᴍᴏᴛᴇ ᴍᴇ ᴛᴏ ᴀᴅᴍɪɴ ᴡɪᴛʜ ᴀᴅᴅ ᴍᴇᴍʙᴇʀs ᴘᴇʀᴍɪssɪᴏɴ.\n\n__Mᴀɪɴᴛᴀɪɴᴇᴅ ʙʏ: <a href="https://t.me/EmitingStars_Botz">Eᴍɪᴛɪɴɢ Sᴛᴀʀs</a> __**".format(m.from_user.mention, "https://t.me/telegram/153"), reply_markup=keyboard)
+    await m.reply_photo("https://i.ibb.co/v6J0JM80/photo-2025-03-13-18-50-40-7481368571868610580.jpg", caption="**<blockquote>🍁 ʜᴇʟʟᴏ {} !</blockquote>\n<blockquote expandable>ɪ'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ.ɪ ᴄᴀɴ ᴀᴘᴘʀᴏᴠᴇ ᴜsᴇʀs ɪɴ ɢʀᴏᴜᴘs & ᴄʜᴀɴɴᴇʟs.ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ᴄʜᴀᴛ ᴀɴᴅ ᴘʀᴏᴍᴏᴛᴇ ᴍᴇ ᴛᴏ ᴀᴅᴍɪɴ ᴡɪᴛʜ ᴀᴅᴅ ᴍᴇᴍʙᴇʀs ᴘᴇʀᴍɪssɪᴏɴ.</blockquote>\n\n__<blockquote>Mᴀɪɴᴛᴀɪɴᴇᴅ ʙʏ: <a href="https://t.me/EmitingStars_Botz">Eᴍɪᴛɪɴɢ Sᴛᴀʀs<\blockquote></a> __**".format(m.from_user.mention, "https://t.me/telegram/153"), reply_markup=keyboard)
     
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ callback ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -81,7 +81,7 @@ async def chk(_, cb : CallbackQuery):
         ]]
     )
     add_user(m.from_user.id)
-    await cb.edit_text(text="**🍁 ʜᴇʟʟᴏ {}!\n\nɪ'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ.ɪ ᴄᴀɴ ᴀᴘᴘʀᴏᴠᴇ ᴜsᴇʀs ɪɴ ɢʀᴏᴜᴘs & ᴄʜᴀɴɴᴇʟs.ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ᴄʜᴀᴛ ᴀɴᴅ ᴘʀᴏᴍᴏᴛᴇ ᴍᴇ ᴛᴏ ᴀᴅᴍɪɴ ᴡɪᴛʜ ᴀᴅᴅ ᴍᴇᴍʙᴇʀs ᴘᴇʀᴍɪssɪᴏɴ.\n\n__Mᴀɪɴᴛᴀɪɴᴇᴅ ʙʏ: <a href="https://t.me/EmitingStars_Botz">Eᴍɪᴛɪɴɢ Sᴛᴀʀs</a> __**".format(cb.from_user.mention, "https://t.me/telegram/153"), reply_markup=keyboard)
+    await cb.edit_text(text="**<blockquote>🍁 ʜᴇʟʟᴏ {} !</blockquote>\n<blockquote expandable>ɪ'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ.ɪ ᴄᴀɴ ᴀᴘᴘʀᴏᴠᴇ ᴜsᴇʀs ɪɴ ɢʀᴏᴜᴘs & ᴄʜᴀɴɴᴇʟs.ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ᴄʜᴀᴛ ᴀɴᴅ ᴘʀᴏᴍᴏᴛᴇ ᴍᴇ ᴛᴏ ᴀᴅᴍɪɴ ᴡɪᴛʜ ᴀᴅᴅ ᴍᴇᴍʙᴇʀs ᴘᴇʀᴍɪssɪᴏɴ.</blockquote>\n\n__<blockquote>Mᴀɪɴᴛᴀɪɴᴇᴅ ʙʏ: <a href="https://t.me/EmitingStars_Botz">Eᴍɪᴛɪɴɢ Sᴛᴀʀs</blockquote></a> __**".format(cb.from_user.mention, "https://t.me/telegram/153"), reply_markup=keyboard)
     
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ info ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
