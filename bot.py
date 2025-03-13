@@ -26,12 +26,12 @@ async def approve(_, m : Message):
     try:
         add_group(m.chat.id)
         await app.approve_chat_join_request(op.id, kk.id)
-        await app.send_message(kk.id, "**Hello {}!\nWelcome To {}\n\n__Powerd By : @VJ_Botz __**".format(m.from_user.mention, m.chat.title))
+        await app.send_photo(kk.id, "https://telegra.ph/file/5f182eca7f4211c27c666-ed310e6397ea686d95.jpg", caption="🍁 Hᴇʏ {}!\n\nʏᴏᴜʀ ʀᴇǫᴜᴇsᴛ ʜᴀs ʙᴇᴇɴ ᴀᴘᴘʀᴏᴠᴇᴅ!.. ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ  {}\n\n ʙʏ: <a href=https://t.me/XANIME_UNIVERSE>ᴀɴɪᴍᴇ x ᴜɴɪᴠᴇʀsᴇ</a> ".format(m.from_user.mention, m.chat.title))
         add_user(kk.id)
     except errors.PeerIdInvalid as e:
         print("user isn't start bot(means group)")
     except Exception as err:
-        print(str(err))    
+        print(str(err))
  
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Start ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
