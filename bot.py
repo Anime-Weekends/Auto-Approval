@@ -24,7 +24,7 @@ async def approve(_, m : Message):
     try:
         add_group(m.chat.id)
         await app.approve_chat_join_request(op.id, kk.id)
-        await app.send_photo(kk.id, "", caption="**🍁 Hᴇʏ {} !\n\nʏᴏᴜʀ ʀᴇǫᴜᴇsᴛ ʜᴀs ʙᴇᴇɴ ᴀᴘᴘʀᴏᴠᴇᴅ!.. ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ  {}\n\n__<blockquote>ʙʏ: <a href="https://t.me/EmitingStars_Botz">Eᴍɪᴛɪɴɢ Sᴛᴀʀs</blockquote></a> __**".format(m.from_user.mention, m.chat.title))
+        await app.send_photo(kk.id, "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg", caption="**🍁 Hᴇʏ {} !\n\nʏᴏᴜʀ ʀᴇǫᴜᴇsᴛ ʜᴀs ʙᴇᴇɴ ᴀᴘᴘʀᴏᴠᴇᴅ!.. ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ  {}\n\n__<blockquote>ʙʏ: <a href="https://t.me/EmitingStars_Botz">Eᴍɪᴛɪɴɢ Sᴛᴀʀs</blockquote></a> __**".format(m.from_user.mention, m.chat.title))
         add_user(kk.id)
     except errors.PeerIdInvalid as e:
         print("user isn't start bot(means group)")
