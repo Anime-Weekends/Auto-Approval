@@ -24,7 +24,7 @@ async def approve(_, m : Message):
     try:
         add_group(m.chat.id)
         await app.approve_chat_join_request(op.id, kk.id)
-        await app.send_photo(kk.id, "https://telegra.ph/file/5f182eca7f4211c27c666-ed310e6397ea686d95.jpg", caption="**🍁 Hᴇʏ {}!\n\nʏᴏᴜʀ ʀᴇǫᴜᴇsᴛ ʜᴀs ʙᴇᴇɴ ᴀᴘᴘʀᴏᴠᴇᴅ!.. ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ  {}\n\n__ ʙʏ: <a href=https://t.me/XANIME_UNIVERSE>ᴀɴɪᴍᴇ x ᴜɴɪᴠᴇʀsᴇ</a> __**".format(m.from_user.mention, m.chat.title))
+        await app.send_photo(kk.id, "https://telegra.ph/file/5f182eca7f4211c27c666-ed310e6397ea686d95.jpg", caption="**🍁 Hᴇʏ {}!\n\nʏᴏᴜʀ ʀᴇǫᴜᴇsᴛ ʜᴀs ʙᴇᴇɴ ᴀᴘᴘʀᴏᴠᴇᴅ!.. ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ  {}\n\n__ ʙʏ: <a href="https://t.me/EmitingStars_Botz">Eᴍɪᴛɪɴɢ Sᴛᴀʀs</a> __**".format(m.from_user.mention, m.chat.title))
         add_user(kk.id)
     except errors.PeerIdInvalid as e:
         print("user isn't start bot(means group)")
@@ -45,22 +45,22 @@ async def op(_, m :Message):
             return 
         key = InlineKeyboardMarkup(
             [[
-                InlineKeyboardButton("ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ", url=invite_link.invite_link),
-                InlineKeyboardButton("ᴛʀʏ ᴀɢᴀɪɴ!", url="https://t.me/Wargods_approvel_bot?start=start")
+                InlineKeyboardButton("Jᴏɪɴ ᴄʜᴀɴɴᴇʟ", url=invite_link.invite_link),
+                InlineKeyboardButton("ᴛʀʏ ᴀɢᴀɪɴ!", url="https://t.me/Private_Auto_Approval_Bot?start=start")
             ]]
         ) 
-        await m.reply_text("**⚠️ ᴀᴄᴄᴇss ᴅᴇɴɪᴇᴅ! ⚠️\n\n Hᴇʏ,Yᴏᴜ ʜᴀᴠᴇɴ'ᴛ ᴊᴏɪɴᴇᴅ ᴏᴜʀ ᴄʜᴀɴɴᴇʟ ʏᴇᴛ. Pʟᴇᴀsᴇ ʙᴇ sᴜʀᴇ ᴛᴏ ᴊᴏɪɴ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ᴘʀᴏᴠɪᴅᴇᴅ ʙᴇʟᴏᴡ, ᴛʜᴇɴ ᴛʀʏ ᴀɢᴀɪɴ.. !**", reply_markup=key)
+        await m.reply_text("**⚠️ Aᴄᴄᴇss ᴅᴇɴɪᴇᴅ! ⚠️\n\n Hᴇʏ,Yᴏᴜ ʜᴀᴠᴇɴ'ᴛ ᴊᴏɪɴᴇᴅ ᴏᴜʀ ᴄʜᴀɴɴᴇʟ ʏᴇᴛ. Pʟᴇᴀsᴇ ʙᴇ sᴜʀᴇ ᴛᴏ ᴊᴏɪɴ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ᴘʀᴏᴠɪᴅᴇᴅ ʙᴇʟᴏᴡ, ᴛʜᴇɴ ᴛʀʏ ᴀɢᴀɪɴ.. !**", reply_markup=key)
         return 
     keyboard = InlineKeyboardMarkup(
         [[
-            InlineKeyboardButton("ᴀɴɪᴍᴇ ᴄʜᴀɴɴᴇʟ", url="https://t.me/XANIME_UNIVERSE"),
-            InlineKeyboardButton("ɴᴇᴛᴡᴏʀᴋ", url="https://t.me/team_wargods")
+            InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),
+            InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
         ],[
-            InlineKeyboardButton("⤬ Aᴅᴅ Mᴇ Tᴏ Yᴏᴜʀ ᴄʜᴀɴɴᴇʟ ⤬", url="http://t.me/Wargods_approvel_bot?startchannel=true")
+            InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ Mᴇ Tᴏ Yᴏᴜʀ Cʜᴀɴɴᴇʟ Bᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
         ]]
     )
     add_user(m.from_user.id)
-    await m.reply_photo("https://telegra.ph/file/81a58baf16622ef57100c-0958bf3f7dc145b5b8.jpg", caption="**🍁 ʜᴇʟʟᴏ {}!\n\nɪ'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ.ɪ ᴄᴀɴ ᴀᴘᴘʀᴏᴠᴇ ᴜsᴇʀs ɪɴ ɢʀᴏᴜᴘs & ᴄʜᴀɴɴᴇʟs.ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ᴄʜᴀᴛ ᴀɴᴅ ᴘʀᴏᴍᴏᴛᴇ ᴍᴇ ᴛᴏ ᴀᴅᴍɪɴ ᴡɪᴛʜ ᴀᴅᴅ ᴍᴇᴍʙᴇʀs ᴘᴇʀᴍɪssɪᴏɴ.\n\n__ᴍᴀɪɴᴛᴀɪɴᴇᴅ ʙʏ: <a href=https://t.me/XANIME_UNIVERSE>ᴀɴɪᴍᴇ x ᴜɴɪᴠᴇʀsᴇ</a> __**".format(m.from_user.mention, "https://t.me/telegram/153"), reply_markup=keyboard)
+    await m.reply_photo("https://i.ibb.co/v6J0JM80/photo-2025-03-13-18-50-40-7481368571868610580.jpg", caption="**🍁 ʜᴇʟʟᴏ {}!\n\nɪ'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ.ɪ ᴄᴀɴ ᴀᴘᴘʀᴏᴠᴇ ᴜsᴇʀs ɪɴ ɢʀᴏᴜᴘs & ᴄʜᴀɴɴᴇʟs.ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ᴄʜᴀᴛ ᴀɴᴅ ᴘʀᴏᴍᴏᴛᴇ ᴍᴇ ᴛᴏ ᴀᴅᴍɪɴ ᴡɪᴛʜ ᴀᴅᴅ ᴍᴇᴍʙᴇʀs ᴘᴇʀᴍɪssɪᴏɴ.\n\n__Mᴀɪɴᴛᴀɪɴᴇᴅ ʙʏ: <a href="https://t.me/EmitingStars_Botz">Eᴍɪᴛɪɴɢ Sᴛᴀʀs</a> __**".format(m.from_user.mention, "https://t.me/telegram/153"), reply_markup=keyboard)
     
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ callback ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -74,14 +74,14 @@ async def chk(_, cb : CallbackQuery):
         return 
     keyboard = InlineKeyboardMarkup(
         [[
-            InlineKeyboardButton("ᴀɴɪᴍᴇ ᴄʜᴀɴɴᴇʟ", url="https://t.me/XANIME_UNIVERSE"),
-            InlineKeyboardButton("ɴᴇᴛᴡᴏʀᴋ", url="https://t.me/team_wargods")
+            InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),
+            InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
         ],[
-            InlineKeyboardButton("⤬ Aᴅᴅ Mᴇ Tᴏ Yᴏᴜʀ ᴄʜᴀɴɴᴇʟ ⤬", url="http://t.me/Wargods_approvel_bot?startchannel=true")
+            InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ Mᴇ Tᴏ Yᴏᴜʀ Cʜᴀɴɴᴇʟ Bᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
         ]]
     )
     add_user(m.from_user.id)
-    await cb.edit_text(text="**🍁 ʜᴇʟʟᴏ {}!\n\nɪ'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ.ɪ ᴄᴀɴ ᴀᴘᴘʀᴏᴠᴇ ᴜsᴇʀs ɪɴ ɢʀᴏᴜᴘs & ᴄʜᴀɴɴᴇʟs.ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ᴄʜᴀᴛ ᴀɴᴅ ᴘʀᴏᴍᴏᴛᴇ ᴍᴇ ᴛᴏ ᴀᴅᴍɪɴ ᴡɪᴛʜ ᴀᴅᴅ ᴍᴇᴍʙᴇʀs ᴘᴇʀᴍɪssɪᴏɴ.\n\n__ᴍᴀɪɴᴛᴀɪɴᴇᴅ ʙʏ: <a href=https://t.me/XANIME_UNIVERSE>ᴀɴɪᴍᴇ x ᴜɴɪᴠᴇʀsᴇ</a> __**".format(cb.from_user.mention, "https://t.me/telegram/153"), reply_markup=keyboard)
+    await cb.edit_text(text="**🍁 ʜᴇʟʟᴏ {}!\n\nɪ'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ.ɪ ᴄᴀɴ ᴀᴘᴘʀᴏᴠᴇ ᴜsᴇʀs ɪɴ ɢʀᴏᴜᴘs & ᴄʜᴀɴɴᴇʟs.ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ᴄʜᴀᴛ ᴀɴᴅ ᴘʀᴏᴍᴏᴛᴇ ᴍᴇ ᴛᴏ ᴀᴅᴍɪɴ ᴡɪᴛʜ ᴀᴅᴅ ᴍᴇᴍʙᴇʀs ᴘᴇʀᴍɪssɪᴏɴ.\n\n__Mᴀɪɴᴛᴀɪɴᴇᴅ ʙʏ: <a href="https://t.me/EmitingStars_Botz">Eᴍɪᴛɪɴɢ Sᴛᴀʀs</a> __**".format(cb.from_user.mention, "https://t.me/telegram/153"), reply_markup=keyboard)
     
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ info ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
