@@ -8,11 +8,11 @@ from os import path, getenv
 class Config:
     API_ID = int(getenv("API_ID", ""))
     API_HASH = getenv("API_HASH", "")
-    BOT_TOKEN = getenv("BOT_TOKEN", "")
+    BOT_TOKEN = getenv("BOT_TOKEN", "7953776996:AAHKLreBz3nDUCEScfK3lNB8EMoSfvq4QxA")
     # Your Force Subscribe Channel Id Below 
-    CHID = int(getenv("CHID", "")) # Make Bot Admin In This Channel
+    CHID = int(getenv("CHID", "-1002410513772")) # Make Bot Admin In This Channel
     # Admin Or Owner Id Below
-    SUDO = list(map(int, getenv("SUDO", "").split()))
+    SUDO = list(map(int, getenv("SUDO", "5548954124 6429532957 6266529037").split()))
     MONGO_URI = getenv("MONGO_URI", "")
     
 cfg = Config()
