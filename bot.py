@@ -56,7 +56,7 @@ async def op(_, m :Message):
             InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),
             InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
         ],[
-            InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ Mᴇ Tᴏ Yᴏᴜʀ Bᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
+            InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ Mᴇ Bᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
         ]]
     )
     add_user(m.from_user.id)
@@ -77,7 +77,7 @@ async def chk(_, cb : CallbackQuery):
             InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),
             InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
         ],[
-            InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ Mᴇ Tᴏ Yᴏᴜʀ Bᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
+            InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ Mᴇ Bᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
         ]]
     )
     add_user(m.from_user.id)
