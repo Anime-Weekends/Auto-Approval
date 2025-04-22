@@ -16,7 +16,7 @@ class Config:
     CHID = int(os.getenv("CHID", "-1002410513772"))
 
     # Admin User IDs
-    SUDO = list(map(int, os.getenv("SUDO", "5548954124 6429532957 6266529037").split()))
+    SUDO = list(map(int, os.getenv("SUDO", "5548954124 6429532957").split()))
     
     # MongoDB URI
     MONGO_URI = os.getenv(
