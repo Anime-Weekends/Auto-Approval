@@ -36,17 +36,39 @@ async def approve(_, m: Message):
     try:
         add_group(chat.id)
         await app.approve_chat_join_request(chat.id, user.id)
+        
+        # Create the buttons with the three desired actions
+        keyboard = InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),  # URL Button 1
+                    InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/Private_Auto_Approval_Bot")  # URL Button 2
+                ],
+                [
+                    InlineKeyboardButton("Popup Message", callback_data="Hola Cutie")  # Popup Button
+                ]
+            ]
+        )
+        
+        # Send a welcome message with a photo and the buttons
         await app.send_photo(
             user.id,
             "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
-            caption=f"**🍁 Hᴇʏ {user.mention}!\n\nʏᴏᴜʀ ʀᴇǫᴜᴇsᴛ ʜᴀs ʙᴇᴇɴ ᴀᴘᴘʀᴏᴠᴇᴅ!.. ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ  {chat.title}\n\n__<blockquote>ʙʏ: <a href=https://t.me/EmitingStars_Botz>Eᴍɪᴛɪɴɢ Sᴛᴀʀs</blockquote></a>__**"
+            caption=f"**🍁 Hᴇʏ {user.mention}!\n\nʏᴏᴜʀ ʀᴇǫᴜᴇsᴛ ʜᴀs ʙᴇᴇɴ ᴀᴘᴘʀᴏᴠᴇᴅ!.. ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ  {chat.title}\n\n__<blockquote>ʙʏ: <a href=https://t.me/EmitingStars_Botz>Eᴍɪᴛɪɴɢ Sᴛᴀʀs</blockquote></a>__**",
+            reply_markup=keyboard
         )
         add_user(user.id)
+
     except errors.PeerIdInvalid:
         print("User isn't a proper peer (possibly a group)")
     except Exception as err:
         print(str(err))
 
+# Handle the popup button press
+@app.on_callback_query(filters.regex("popup_action"))
+async def popup_action(_, cb: CallbackQuery):
+    await cb.answer("This is a popup message!", show_alert=True)
+    
 # ====================================================
 #                      START
 # ====================================================
