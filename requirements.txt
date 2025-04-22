@@ -1,9 +1,34 @@
+# ============================================
+#           PYTHON PROJECT DEPENDENCIES
+# --------------------------------------------
+# Required packages for Telegram Bot:
+# API interaction, async tasks, web server,
+# templating, database, and security.
+# ============================================
+
 pyrofork
+# Telegram API client (fork of Pyrogram)
+
 TgCrypto
+# Optional speed booster for Pyrogram (encryption)
+
 pymongo[srv]
+# MongoDB driver with SRV connection support
+
 aiohttp
+# Asynchronous HTTP client/server for web tasks
+
 Flask==1.1.2
+# Lightweight web framework for creating webhooks or admin UI
+
 gunicorn==20.1.0
+# WSGI HTTP server for running Flask in production
+
 Jinja2==3.0.3
+# Templating engine for rendering dynamic HTML in Flask
+
 werkzeug==2.0.2
+# WSGI toolkit with routing and request handling (used by Flask)
+
 itsdangerous==2.0.1
+# Provides secure signing for data (used in sessions/tokens)
