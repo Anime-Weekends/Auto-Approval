@@ -180,13 +180,15 @@ async def close_stats(_, cb: CallbackQuery):
 
 @app.on_message(filters.command("bcast") & filters.user(cfg.SUDO))
 async def bcast(_, m: Message):
-    # Send the initial message with cancel and close buttons
+    global canceled  # Declare 'canceled' as global to ensure we can modify it in other handlers
+    canceled = False  # Reset the flag
+
     lel = await m.reply_photo(
         "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",  # Replace with your image URL
         caption="`⚡️ Processing...`",
         reply_markup=InlineKeyboardMarkup(
             [
-                [InlineKeyboardButton("Cancel", callback_data="cancel_bcast")], # Cancel button
+                [InlineKeyboardButton("Cancel", callback_data="cancel_bcast")],  # Cancel button
                 [InlineKeyboardButton("Close", callback_data="close_bcast")]  # Close button
             ]
         )
@@ -194,8 +196,7 @@ async def bcast(_, m: Message):
 
     total_users = users.count_documents({})
     stats = {"success": 0, "failed": 0, "deactivated": 0, "blocked": 0}
-    canceled = False  # Flag to track if the process is canceled
-
+    
     # Loop through each user in the database
     for idx, u in enumerate(users.find(), 1):
         # Check if the process was canceled
@@ -214,10 +215,20 @@ async def bcast(_, m: Message):
         )
 
         try:
+            # Attempt to send the message
             await m.reply_to_message.copy(int(u["user_id"]))
             stats["success"] += 1
         except Exception as e:
-            stats["failed"] += 1
+            # Handle specific exceptions
+            if isinstance(e, UserDeactivated):
+                stats["deactivated"] += 1
+            elif isinstance(e, UserBlocked):
+                stats["blocked"] += 1
+            else:
+                stats["failed"] += 1
+
+        # Optional: Add a small delay to avoid hitting rate limits
+        await asyncio.sleep(0.1)
 
     # Once the loop finishes, update the message with the stats
     if not canceled:
@@ -228,19 +239,19 @@ async def bcast(_, m: Message):
             f"👻 Deactivated: `{stats['deactivated']}`"
         )
 
+
 @app.on_callback_query(filters.regex("cancel_bcast"))
 async def cancel_bcast(_, cb: CallbackQuery):
     global canceled
-    canceled = True
-    # Acknowledge the callback
+    canceled = True  # Set the flag to True when cancel is pressed
+    # Acknowledge the callback and inform the user
     await cb.answer("Broadcast process has been canceled.", show_alert=True)
+
 
 @app.on_callback_query(filters.regex("close_bcast"))
 async def close_bcast(_, cb: CallbackQuery):
-    # Close the broadcast by deleting the message or editing it
-    await cb.message.delete()  # Deletes the message completely
-    # Or you can edit it to show a closed status
-    # await cb.message.edit("The broadcast process is now closed.")
+    # Delete the message or edit it to indicate that the process has been closed
+    await cb.message.delete()
     # Acknowledge the callback
     await cb.answer("Broadcast process has been closed.", show_alert=True)
 
