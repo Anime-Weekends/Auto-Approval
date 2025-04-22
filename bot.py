@@ -41,11 +41,11 @@ async def approve(_, m: Message):
         keyboard = InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),  # URL Button 1
-                    InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/Private_Auto_Approval_Bot")  # URL Button 2
+                    InlineKeyboardButton("⚡", callback_data="popup_action")  # Popup Button
                 ],
                 [
-                    InlineKeyboardButton("Popup Message", callback_data="Hola Cutie")  # Popup Button
+                    InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),  # URL Button 1
+                    InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/Private_Auto_Approval_Bot")  # URL Button 2
                 ]
             ]
         )
