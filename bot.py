@@ -201,31 +201,42 @@ async def bcast(_, m: Message):
     for idx, u in enumerate(users.find(), 1):
         # Check if the process was canceled
         if canceled:
-            await lel.edit("The broadcast process has been canceled.")
+            await lel.edit(
+                "The broadcast process has been canceled.",
+                reply_markup=InlineKeyboardMarkup(
+                    [
+                        [InlineKeyboardButton("Close", callback_data="close_bcast")]
+                    ]
+                )
+            )
             break
 
         progress = int((idx / total_users) * 100)  # Calculate percentage of progress
         progress_bar = f"[{'█' * (progress // 5)}{' ' * (20 - (progress // 5))}] {progress}%"
 
-        # Update the progress bar
+        # Update the progress bar and keep the buttons visible
         await lel.edit(
             f"Processing...\n\n"
             f"Progress: {progress_bar}\n"
-            f"Success: `{stats['success']}` | Failed: `{stats['failed']}` | Deactivated: `{stats['deactivated']}` | Blocked: `{stats['blocked']}`"
+            f"Success: `{stats['success']}` | Failed: `{stats['failed']}` | Deactivated: `{stats['deactivated']}` | Blocked: `{stats['blocked']}`",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [InlineKeyboardButton("Cancel", callback_data="cancel_bcast")],
+                    [InlineKeyboardButton("Close", callback_data="close_bcast")]
+                ]
+            )
         )
 
         try:
             # Attempt to send the message
             await m.reply_to_message.copy(int(u["user_id"]))
             stats["success"] += 1
+        except UserDeactivated:
+            stats["deactivated"] += 1
+        except UserBlocked:
+            stats["blocked"] += 1
         except Exception as e:
-            # Handle specific exceptions
-            if isinstance(e, UserDeactivated):
-                stats["deactivated"] += 1
-            elif isinstance(e, UserBlocked):
-                stats["blocked"] += 1
-            else:
-                stats["failed"] += 1
+            stats["failed"] += 1
 
         # Optional: Add a small delay to avoid hitting rate limits
         await asyncio.sleep(0.1)
@@ -236,7 +247,12 @@ async def bcast(_, m: Message):
             f"✅ Successful: `{stats['success']}`\n"
             f"❌ Failed: `{stats['failed']}`\n"
             f"👾 Blocked: `{stats['blocked']}`\n"
-            f"👻 Deactivated: `{stats['deactivated']}`"
+            f"👻 Deactivated: `{stats['deactivated']}`",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [InlineKeyboardButton("Close", callback_data="close_bcast")]
+                ]
+            )
         )
 
 
