@@ -180,17 +180,17 @@ async def close_stats(_, cb: CallbackQuery):
 
 @app.on_message(filters.command("bcast") & filters.user(cfg.SUDO))
 async def bcast(_, m: Message):
-    global canceled  # Declare 'canceled' as global to ensure we can modify it in other handlers
-    canceled = False  # Reset the flag
+    global canceled
+    canceled = False
 
     lel = await m.reply_photo(
-        "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",  # Replace with your image URL
+        "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
         caption="`⚡️ Processing...`",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("Cancel", callback_data="cancel_bcast"),  # Cancel button
-                    InlineKeyboardButton("Close", callback_data="close_bcast")   # Close button
+                    InlineKeyboardButton("Cancel", callback_data="cancel_bcast"),
+                    InlineKeyboardButton("Close", callback_data="close_bcast")
                 ]
             ]
         )
@@ -198,82 +198,57 @@ async def bcast(_, m: Message):
 
     total_users = users.count_documents({})
     stats = {"success": 0, "failed": 0, "deactivated": 0, "blocked": 0}
-    
-    # Loop through each user in the database
+
     for idx, u in enumerate(users.find(), 1):
-        # Check if the process was canceled
         if canceled:
             await lel.edit(
-                "The broadcast process has been canceled.",
+                "❌ Broadcast process has been canceled.",
                 reply_markup=InlineKeyboardMarkup(
-                    [
-                        [InlineKeyboardButton("Close", callback_data="close_bcast")]
-                    ]
+                    [[InlineKeyboardButton("Close", callback_data="close_bcast")]]
                 )
             )
             break
 
-        progress = int((idx / total_users) * 100)  # Calculate percentage of progress
-        progress_bar = f"[{'█' * (progress // 5)}{' ' * (20 - (progress // 5))}] {progress}%"
+        progress = int((idx / total_users) * 100)
+        bars = int(progress / 5)
+        progress_bar = f"[{'█' * bars}{'—' * (20 - bars)}] {progress}%"
 
-        # Update the progress bar and keep the buttons visible
         await lel.edit(
-            f"Processing...\n\n"
-            f"Progress: {progress_bar}\n"
-            f"Success: `{stats['success']}` | Failed: `{stats['failed']}` | Deactivated: `{stats['deactivated']}` | Blocked: `{stats['blocked']}`",
+            f"📣 Broadcasting...\n\n"
+            f"{progress_bar}\n\n"
+            f"✅ Success: `{stats['success']}` | ❌ Failed: `{stats['failed']}`\n"
+            f"👻 Deactivated: `{stats['deactivated']}` | 🚫 Blocked: `{stats['blocked']}`",
             reply_markup=InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton("Cancel", callback_data="cancel_bcast"),
-                        InlineKeyboardButton("Close", callback_data="close_bcast")
-                    ]
-                ]
+                [[
+                    InlineKeyboardButton("Cancel", callback_data="cancel_bcast"),
+                    InlineKeyboardButton("Close", callback_data="close_bcast")
+                ]]
             )
         )
 
         try:
-            # Attempt to send the message
             await m.reply_to_message.copy(int(u["user_id"]))
             stats["success"] += 1
         except UserDeactivated:
             stats["deactivated"] += 1
         except UserBlocked:
             stats["blocked"] += 1
-        except Exception as e:
+        except Exception:
             stats["failed"] += 1
 
-        # Optional: Add a small delay to avoid hitting rate limits
         await asyncio.sleep(0.1)
 
-    # Once the loop finishes, update the message with the stats
     if not canceled:
         await lel.edit(
+            f"✅ Broadcast finished!\n\n"
             f"✅ Successful: `{stats['success']}`\n"
             f"❌ Failed: `{stats['failed']}`\n"
             f"👾 Blocked: `{stats['blocked']}`\n"
             f"👻 Deactivated: `{stats['deactivated']}`",
             reply_markup=InlineKeyboardMarkup(
-                [
-                    [InlineKeyboardButton("Close", callback_data="close_bcast")]
-                ]
+                [[InlineKeyboardButton("Close", callback_data="close_bcast")]]
             )
         )
-
-
-@app.on_callback_query(filters.regex("cancel_bcast"))
-async def cancel_bcast(_, cb: CallbackQuery):
-    global canceled
-    canceled = True  # Set the flag to True when cancel is pressed
-    # Acknowledge the callback and inform the user
-    await cb.answer("Broadcast process has been canceled.", show_alert=True)
-
-
-@app.on_callback_query(filters.regex("close_bcast"))
-async def close_bcast(_, cb: CallbackQuery):
-    # Delete the message or edit it to indicate that the process has been closed
-    await cb.message.delete()
-    # Acknowledge the callback
-    await cb.answer("Broadcast process has been closed.", show_alert=True)
 
 # ====================================================
 #               BROADCAST (FORWARD)
