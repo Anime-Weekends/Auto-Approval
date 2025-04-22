@@ -12,6 +12,7 @@ from pyrogram.errors import UserNotParticipant
 from pyrogram.errors.exceptions.flood_420 import FloodWait
 
 from database import add_user, add_group, all_users, all_groups, users, remove_user
+from database import add_admin_db, remove_admin_db, list_admins_db, is_admin
 from configs import cfg
 
 import random
@@ -320,37 +321,58 @@ async def help_command(_, m: Message):
 @app.on_message(filters.command("addadmin") & filters.user(cfg.SUDO))
 async def addadmin(_, m: Message):
     if len(m.command) < 2 or not m.command[1].isdigit():
-        return await m.reply("**Usage:** `/addadmin <user_id>`")
+        return await m.reply(
+            "Usage: `/addadmin <user_id>`",
+            parse_mode="Markdown"
+        )
     
     user_id = int(m.command[1])
     if is_admin(user_id):
-        return await m.reply("**This user is already an admin.**")
+        return await m.reply(
+            "This user is already an admin.",
+            parse_mode="Markdown"
+        )
     
     add_admin_db(user_id)
-    await m.reply(f"✅ **User `{user_id}` has been added as an admin.**")
+    await m.reply(
+        f"✅ User [{user_id}](tg://user?id={user_id}) has been added as an admin.",
+        parse_mode="Markdown"
+    )
 
 
 @app.on_message(filters.command("removeadmin") & filters.user(cfg.SUDO))
 async def removeadmin(_, m: Message):
     if len(m.command) < 2 or not m.command[1].isdigit():
-        return await m.reply("**Usage:** `/removeadmin <user_id>`")
+        return await m.reply(
+            "Usage: `/removeadmin <user_id>`",
+            parse_mode="Markdown"
+        )
 
     user_id = int(m.command[1])
     if not is_admin(user_id):
-        return await m.reply("**User is not an admin.**")
+        return await m.reply(
+            "User is not an admin.",
+            parse_mode="Markdown"
+        )
 
     remove_admin_db(user_id)
-    await m.reply(f"❌ **User `{user_id}` has been removed from admins.**")
+    await m.reply(
+        f"❌ User [{user_id}](tg://user?id={user_id}) has been removed from admins.",
+        parse_mode="Markdown"
+    )
 
 
 @app.on_message(filters.command("listadmin") & filters.user(cfg.SUDO))
 async def listadmin(_, m: Message):
     admin_ids = list_admins_db()
     if not admin_ids:
-        return await m.reply("**No admins found.**")
+        return await m.reply("No admins found.", parse_mode="Markdown")
     
-    text = "**Current Admins:**\n" + "\n".join([f"• `{uid}`" for uid in admin_ids])
-    await m.reply(text)
+    lines = ["**Current Admins:**"]
+    for uid in admin_ids:
+        lines.append(f"• [{uid}](tg://user?id={uid}) (`{uid}`)")
+    
+    await m.reply("\n".join(lines), parse_mode="Markdown")
 
 # ====================================================
 #                    BOT START
