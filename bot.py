@@ -306,6 +306,35 @@ async def fcast(_, m: Message):
     )
 
 # ====================================================
+#                    HELP CENTER
+# ====================================================
+
+@app.on_message(filters.private & filters.command("help"))
+async def help_command(_, m: Message):
+    keyboard = InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("👨‍💻 Support", url="https://t.me/YourSupportChannel"),
+            InlineKeyboardButton("📢 Main Channel", url="https://t.me/YourMainChannel")
+        ],
+        [
+            InlineKeyboardButton("💬 FAQ", url="https://t.me/YourFAQChannel"),
+            InlineKeyboardButton("❓ Ask a Question", url="https://t.me/YourSupportBot")
+        ]
+    ])
+
+    # Send the help message with buttons and an image
+    await m.reply_photo(
+        "https://i.ibb.co/YourImageLink.jpg",  # Replace with your image link
+        caption="**<b>Here is how you can use the bot:</b>\n\n"
+                "1. Click on the buttons to access different features.\n"
+                "2. Reach out to support if you have any questions.\n"
+                "3. Subscribe to the main channel for updates.\n"
+                "4. Check the FAQ if you're having trouble.\n\n"
+                "Feel free to ask if you need more help!**",
+        reply_markup=keyboard
+    )
+
+# ====================================================
 #                    BOT START
 # ====================================================
 
