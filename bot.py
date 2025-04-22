@@ -154,7 +154,7 @@ async def dbtool(_, m: Message):
     
     keyboard = InlineKeyboardMarkup(
         [
-            [InlineKeyboardButton("❌ Close", callback_data="close_stats")]
+            [InlineKeyboardButton("Cʟᴏsᴇ ᴄᴜᴛɪᴇ", callback_data="close_stats")]
         ]
     )
 
@@ -162,9 +162,9 @@ async def dbtool(_, m: Message):
         "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
         caption=(
             f"🍀 **Chats Stats** 🍀\n"
-            f"🙋‍♂️ Users : `{total_users}`\n"
-            f"👥 Groups : `{total_groups}`\n"
-            f"🚧 Total : `{total}`"
+            f"❏ Users : `{total_users}`\n"
+            f"❏ Groups : `{total_groups}`\n"
+            f"❏ Total : `{total}`"
         ),
         reply_markup=keyboard
     )
