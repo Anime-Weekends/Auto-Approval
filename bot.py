@@ -345,20 +345,20 @@ async def removeadmin(_, m: Message):
     if len(m.command) < 2 or not m.command[1].isdigit():
         return await m.reply(
             "Usage: `/removeadmin <user_id>`",
-            parse_mode="Markdown"
+            parse_mode="html"
         )
 
     user_id = int(m.command[1])
     if not is_admin(user_id):
         return await m.reply(
             "User is not an admin.",
-            parse_mode="Markdown"
+            parse_mode="html"
         )
 
     remove_admin_db(user_id)
     await m.reply(
         f"❌ User [{user_id}](tg://user?id={user_id}) has been removed from admins.",
-        parse_mode="Markdown"
+        parse_mode="html"
     )
 
 
@@ -372,7 +372,7 @@ async def listadmin(_, m: Message):
     for uid in admin_ids:
         lines.append(f"• [{uid}](tg://user?id={uid}) (`{uid}`)")
     
-    await m.reply("\n".join(lines), parse_mode="Markdown")
+    await m.reply("\n".join(lines), parse_mode="html")
 
 # ====================================================
 #                    BOT START
