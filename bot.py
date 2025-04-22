@@ -151,12 +151,28 @@ async def dbtool(_, m: Message):
     total_users = all_users()
     total_groups = all_groups()
     total = total_users + total_groups
-    await m.reply_text(
-        f"🍀 **Chats Stats** 🍀\n"
-        f"🙋‍♂️ Users : `{total_users}`\n"
-        f"👥 Groups : `{total_groups}`\n"
-        f"🚧 Total : `{total}`"
+    
+    keyboard = InlineKeyboardMarkup(
+        [
+            [InlineKeyboardButton("❌ Close", callback_data="close_stats")]
+        ]
     )
+
+    await m.reply_photo(
+        "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
+        caption=(
+            f"🍀 **Chats Stats** 🍀\n"
+            f"🙋‍♂️ Users : `{total_users}`\n"
+            f"👥 Groups : `{total_groups}`\n"
+            f"🚧 Total : `{total}`"
+        ),
+        reply_markup=keyboard
+    )
+
+@app.on_callback_query(filters.regex("close_stats"))
+async def close_stats(_, cb: CallbackQuery):
+    await cb.message.delete()
+    await cb.answer("Stats message closed.", show_alert=True)
 
 # ====================================================
 #                 BROADCAST (COPY)
