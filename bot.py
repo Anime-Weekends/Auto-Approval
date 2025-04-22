@@ -180,29 +180,69 @@ async def close_stats(_, cb: CallbackQuery):
 
 @app.on_message(filters.command("bcast") & filters.user(cfg.SUDO))
 async def bcast(_, m: Message):
-    lel = await m.reply("`⚡️ Processing...`")
+    # Send the initial message with cancel and close buttons
+    lel = await m.reply_photo(
+        "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",  # Replace with your image URL
+        caption="`⚡️ Processing...`",
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [InlineKeyboardButton("Cancel", callback_data="cancel_bcast")], # Cancel button
+                [InlineKeyboardButton("Close", callback_data="close_bcast")]  # Close button
+            ]
+        )
+    )
+
+    total_users = users.count_documents({})
     stats = {"success": 0, "failed": 0, "deactivated": 0, "blocked": 0}
-    
-    for u in users.find():
+    canceled = False  # Flag to track if the process is canceled
+
+    # Loop through each user in the database
+    for idx, u in enumerate(users.find(), 1):
+        # Check if the process was canceled
+        if canceled:
+            await lel.edit("The broadcast process has been canceled.")
+            break
+
+        progress = int((idx / total_users) * 100)  # Calculate percentage of progress
+        progress_bar = f"[{'█' * (progress // 5)}{' ' * (20 - (progress // 5))}] {progress}%"
+
+        # Update the progress bar
+        await lel.edit(
+            f"Processing...\n\n"
+            f"Progress: {progress_bar}\n"
+            f"Success: `{stats['success']}` | Failed: `{stats['failed']}` | Deactivated: `{stats['deactivated']}` | Blocked: `{stats['blocked']}`"
+        )
+
         try:
             await m.reply_to_message.copy(int(u["user_id"]))
             stats["success"] += 1
-        except FloodWait as e:
-            await asyncio.sleep(e.value)
-        except errors.InputUserDeactivated:
-            stats["deactivated"] += 1
-            remove_user(u["user_id"])
-        except errors.UserIsBlocked:
-            stats["blocked"] += 1
-        except:
+        except Exception as e:
             stats["failed"] += 1
 
-    await lel.edit(
-        f"✅ Successful: `{stats['success']}`\n"
-        f"❌ Failed: `{stats['failed']}`\n"
-        f"👾 Blocked: `{stats['blocked']}`\n"
-        f"👻 Deactivated: `{stats['deactivated']}`"
-    )
+    # Once the loop finishes, update the message with the stats
+    if not canceled:
+        await lel.edit(
+            f"✅ Successful: `{stats['success']}`\n"
+            f"❌ Failed: `{stats['failed']}`\n"
+            f"👾 Blocked: `{stats['blocked']}`\n"
+            f"👻 Deactivated: `{stats['deactivated']}`"
+        )
+
+@app.on_callback_query(filters.regex("cancel_bcast"))
+async def cancel_bcast(_, cb: CallbackQuery):
+    global canceled
+    canceled = True
+    # Acknowledge the callback
+    await cb.answer("Broadcast process has been canceled.", show_alert=True)
+
+@app.on_callback_query(filters.regex("close_bcast"))
+async def close_bcast(_, cb: CallbackQuery):
+    # Close the broadcast by deleting the message or editing it
+    await cb.message.delete()  # Deletes the message completely
+    # Or you can edit it to show a closed status
+    # await cb.message.edit("The broadcast process is now closed.")
+    # Acknowledge the callback
+    await cb.answer("Broadcast process has been closed.", show_alert=True)
 
 # ====================================================
 #               BROADCAST (FORWARD)
