@@ -188,8 +188,10 @@ async def bcast(_, m: Message):
         caption="`⚡️ Processing...`",
         reply_markup=InlineKeyboardMarkup(
             [
-                [InlineKeyboardButton("Cancel", callback_data="cancel_bcast")],  # Cancel button
-                [InlineKeyboardButton("Close", callback_data="close_bcast")]  # Close button
+                [
+                    InlineKeyboardButton("Cancel", callback_data="cancel_bcast"),  # Cancel button
+                    InlineKeyboardButton("Close", callback_data="close_bcast")   # Close button
+                ]
             ]
         )
     )
@@ -221,8 +223,10 @@ async def bcast(_, m: Message):
             f"Success: `{stats['success']}` | Failed: `{stats['failed']}` | Deactivated: `{stats['deactivated']}` | Blocked: `{stats['blocked']}`",
             reply_markup=InlineKeyboardMarkup(
                 [
-                    [InlineKeyboardButton("Cancel", callback_data="cancel_bcast")],
-                    [InlineKeyboardButton("Close", callback_data="close_bcast")]
+                    [
+                        InlineKeyboardButton("Cancel", callback_data="cancel_bcast"),
+                        InlineKeyboardButton("Close", callback_data="close_bcast")
+                    ]
                 ]
             )
         )
