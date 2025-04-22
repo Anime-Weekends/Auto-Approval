@@ -74,6 +74,8 @@ async def popup_action(_, cb: CallbackQuery):
 #                      START
 # ====================================================
 
+from pyrogram.types import InputMediaPhoto
+
 @app.on_message(filters.private & filters.command("start"))
 async def start_command(_, m: Message):
     try:
@@ -90,8 +92,10 @@ async def start_command(_, m: Message):
                 InlineKeyboardButton("ᴛʀʏ ᴀɢᴀɪɴ!", url="https://t.me/Private_Auto_Approval_Bot?start=start")
             ]]
         )
-        return await m.reply_text(
-            "**<blockquote>⚠️ Aᴄᴄᴇss ᴅᴇɴɪᴇᴅ! ⚠️\n\nYou must join the required channel first. Please do so and try again.</blockquote>**",
+
+        return await m.reply_photo(
+            photo="https://example.com/image.jpg",  # Replace with your image URL or file path
+            caption="**<blockquote>⚠️ Aᴄᴄᴇss ᴅᴇɴɪᴇᴅ! ⚠️\n\nYou must join the required channel first. Please do so and try again.</blockquote>**",
             reply_markup=button
         )
 
