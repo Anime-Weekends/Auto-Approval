@@ -314,6 +314,45 @@ async def help_command(_, m: Message):
     )
 
 # ====================================================
+#                    ADMIMS
+# ====================================================
+
+@app.on_message(filters.command("addadmin") & filters.user(cfg.SUDO))
+async def addadmin(_, m: Message):
+    if len(m.command) < 2 or not m.command[1].isdigit():
+        return await m.reply("**Usage:** `/addadmin <user_id>`")
+    
+    user_id = int(m.command[1])
+    if is_admin(user_id):
+        return await m.reply("**This user is already an admin.**")
+    
+    add_admin_db(user_id)
+    await m.reply(f"✅ **User `{user_id}` has been added as an admin.**")
+
+
+@app.on_message(filters.command("removeadmin") & filters.user(cfg.SUDO))
+async def removeadmin(_, m: Message):
+    if len(m.command) < 2 or not m.command[1].isdigit():
+        return await m.reply("**Usage:** `/removeadmin <user_id>`")
+
+    user_id = int(m.command[1])
+    if not is_admin(user_id):
+        return await m.reply("**User is not an admin.**")
+
+    remove_admin_db(user_id)
+    await m.reply(f"❌ **User `{user_id}` has been removed from admins.**")
+
+
+@app.on_message(filters.command("listadmin") & filters.user(cfg.SUDO))
+async def listadmin(_, m: Message):
+    admin_ids = list_admins_db()
+    if not admin_ids:
+        return await m.reply("**No admins found.**")
+    
+    text = "**Current Admins:**\n" + "\n".join([f"• `{uid}`" for uid in admin_ids])
+    await m.reply(text)
+
+# ====================================================
 #                    BOT START
 # ====================================================
 
