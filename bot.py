@@ -323,20 +323,20 @@ async def addadmin(_, m: Message):
     if len(m.command) < 2 or not m.command[1].isdigit():
         return await m.reply(
             "Usage: `/addadmin <user_id>`",
-            parse_mode="Markdown"
+            parse_mode=ParseMode.MARKDOWN
         )
     
     user_id = int(m.command[1])
     if is_admin(user_id):
         return await m.reply(
             "This user is already an admin.",
-            parse_mode="Markdown"
+            parse_mode=ParseMode.MARKDOWN
         )
     
     add_admin_db(user_id)
     await m.reply(
         f"✅ User [{user_id}](tg://user?id={user_id}) has been added as an admin.",
-        parse_mode="Markdown"
+        parse_mode=ParseMode.MARKDOWN
     )
 
 
@@ -345,20 +345,20 @@ async def removeadmin(_, m: Message):
     if len(m.command) < 2 or not m.command[1].isdigit():
         return await m.reply(
             "Usage: `/removeadmin <user_id>`",
-            parse_mode="html"
+            parse_mode=ParseMode.MARKDOWN
         )
 
     user_id = int(m.command[1])
     if not is_admin(user_id):
         return await m.reply(
             "User is not an admin.",
-            parse_mode="html"
+            parse_mode=ParseMode.MARKDOWN
         )
 
     remove_admin_db(user_id)
     await m.reply(
         f"❌ User [{user_id}](tg://user?id={user_id}) has been removed from admins.",
-        parse_mode="html"
+        parse_mode=ParseMode.MARKDOWN
     )
 
 
@@ -366,13 +366,13 @@ async def removeadmin(_, m: Message):
 async def listadmin(_, m: Message):
     admin_ids = list_admins_db()
     if not admin_ids:
-        return await m.reply("No admins found.", parse_mode="Markdown")
+        return await m.reply("No admins found.", parse_mode=ParseMode.MARKDOWN)
     
     lines = ["**Current Admins:**"]
     for uid in admin_ids:
         lines.append(f"• [{uid}](tg://user?id={uid}) (`{uid}`)")
     
-    await m.reply("\n".join(lines), parse_mode="html")
+    await m.reply("\n".join(lines), parse_mode=ParseMode.MARKDOWN)
 
 # ====================================================
 #                    BOT START
