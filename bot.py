@@ -55,7 +55,8 @@ async def approve(_, m: Message):
             user.id,
             "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
             caption=f"**🍁 Hᴇʏ {user.mention}!\n\nʏᴏᴜʀ ʀᴇǫᴜᴇsᴛ ʜᴀs ʙᴇᴇɴ ᴀᴘᴘʀᴏᴠᴇᴅ!.. ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ  {chat.title}\n\n__<blockquote>ʙʏ: <a href=https://t.me/EmitingStars_Botz>Eᴍɪᴛɪɴɢ Sᴛᴀʀs</blockquote></a>__**",
-            reply_markup=keyboard
+            reply_markup=keyboard, 
+            message_effect_id=5104841245755180586 #🔥
         )
         add_user(user.id)
 
@@ -108,7 +109,8 @@ async def start_command(_, m: Message):
     await m.reply_photo(
         "https://i.ibb.co/v6J0JM80/photo-2025-03-13-18-50-40-7481368571868610580.jpg",
         caption=f"**<blockquote>🍁 ʜᴇʟʟᴏ {m.from_user.mention}!</blockquote>\n<blockquote expandable>ɪ'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ. ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ᴄʜᴀᴛ ᴀɴᴅ ᴘʀᴏᴍᴏᴛᴇ ᴍᴇ ᴛᴏ ᴀᴅᴍɪɴ ᴡɪᴛʜ ᴀᴅᴅ ᴍᴇᴍʙᴇʀs ᴘᴇʀᴍɪssɪᴏɴ.</blockquote>__**",
-        reply_markup=keyboard
+        reply_markup=keyboard, 
+        message_effect_id=5104841245755180586 #🔥
     )
 
 # ====================================================
