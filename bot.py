@@ -324,7 +324,7 @@ async def help_command(_, m: Message):
 
     # Send the help message with buttons and an image
     await m.reply_photo(
-        "https://i.ibb.co/YourImageLink.jpg",  # Replace with your image link
+        "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",  # Replace with your image link
         caption="**<b>Here is how you can use the bot:</b>\n\n"
                 "1. Click on the buttons to access different features.\n"
                 "2. Reach out to support if you have any questions.\n"
