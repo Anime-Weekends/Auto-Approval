@@ -99,7 +99,7 @@ async def start_command(_, m: Message):
         )
 
         return await m.reply_photo(
-            photo="https://example.com/image.jpg",  # Replace with your image URL or file path
+            photo="https://i.ibb.co/C5N2Xhk9/photo-2025-04-19-18-11-35-7496424313436766224.jpg",  # Replace with your image URL or file path
             caption="**<blockquote>⚠️ Aᴄᴄᴇss ᴅᴇɴɪᴇᴅ! ⚠️\n\nYou must join the required channel first. Please do so and try again.</blockquote>**",
             reply_markup=button
         )
