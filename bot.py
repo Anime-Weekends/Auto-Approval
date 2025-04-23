@@ -604,59 +604,34 @@ def is_sudo():
 #                   TESTING PURPOSE
 # ====================================================
 
-async def safe_reply(m: Message, text: str, reply_markup=None):
-    try:
-        return await m.reply(text, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
-    except Exception as err:
-        print(f"Reply failed: {err}")
-
 @user_app.on_message(filters.command("acceptall"))
 async def accept_all(_, m: Message):
     try:
-        me = await user_app.get_me()
-        member = await user_app.get_chat_member(m.chat.id, me.id)
+        chat_id = m.chat.id
+        requests = [req async for req in user_app.get_chat_join_requests(chat_id)]
 
-        # Check if bot is admin
-        if member.status not in ("administrator", "creator"):
-            button = InlineKeyboardMarkup([
-                [InlineKeyboardButton("➕ Add as Admin", url=f"https://t.me/{me.username}")]
-            ])
-            return await safe_reply(
-                m,
-                f"⚠️ <b>Please add</b> <code>@{me.username}</code> <b>as an admin with permission to approve join requests.</b>",
-                button
-            )
-
-        # Check for invite permission (if privileges exists)
-        try:
-            if hasattr(member, "privileges") and not member.privileges.can_invite_users:
-                button = InlineKeyboardMarkup([
-                    [InlineKeyboardButton("➕ Add as Admin", url=f"https://t.me/{me.username}")]
-                ])
-                return await safe_reply(
-                    m,
-                    f"⚠️ <b>Please ensure</b> <code>@{me.username}</code> <b>has 'Add Users' permission.</b>",
-                    button
-                )
-        except Exception as e:
-            print(f"Privilege check skipped: {e}")
-
-        # Approve join requests
-        requests = [req async for req in user_app.get_chat_join_requests(m.chat.id)]
         batch_size = 50
         delay_seconds = 5
         approved = 0
 
         for i in range(0, len(requests), batch_size):
-            for req in requests[i:i + batch_size]:
-                await user_app.approve_chat_join_request(m.chat.id, req.user.id)
+            batch = requests[i:i + batch_size]
+            for req in batch:
+                await user_app.approve_chat_join_request(chat_id, req.user.id)
                 approved += 1
             await asyncio.sleep(delay_seconds)
 
-        await safe_reply(m, f"✅ <b>Successfully approved {approved} join requests.</b>")
+        await m.reply(
+            f"✅ Successfully approved <b>{approved}</b> join request(s).",
+            parse_mode="html"
+        )
 
+    except PeerIdInvalid:
+        await m.reply("❌ <b>Invalid group/channel ID.</b>", parse_mode=ParseMode.HTML)
+    except RPCError as err:
+        await m.reply(f"⚠️ <b>Telegram Error:</b> <code>{err}</code>", parse_mode=ParseMode.HTML)
     except Exception as err:
-        await safe_reply(m, f"⚠️ <b>Unexpected Error:</b> <code>{err}</code>")
+        await m.reply(f"⚠️ <b>Unexpected Error:</b> <code>{err}</code>", parse_mode=ParseMode.HTML)
 
 # ====================================================
 #                   USER ID
