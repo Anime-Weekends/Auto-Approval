@@ -332,9 +332,9 @@ async def help_command(_, m: Message):
 async def addadmin(_, m: Message):
     if len(m.command) < 2 or not all(x.isdigit() for x in m.command[1:]):
         return await m.reply(
-            "Yᴏᴜ ɴᴇᴇᴅ ᴛᴏ ᴀᴅᴅ Aᴅᴍɪɴ ɪᴅs<br><br>"
-            "<b>EXAMPLE:</b><br>"
-            "<blockquote>/addadmin 123456789 — ᴀᴅᴅ ᴏɴᴇ ᴜsᴇʀ<br>"
+            "Yᴏᴜ ɴᴇᴇᴅ ᴛᴏ ᴀᴅᴅ Aᴅᴍɪɴ ɪᴅs\n"
+            "<b>EXAMPLE:</b>\n"
+            "<blockquote>/addadmin 123456789 — ᴀᴅᴅ ᴏɴᴇ ᴜsᴇʀ\n"
             "/addadmin 123456789 987654321 — ᴀᴅᴅ ᴍᴜʟᴛɪᴘʟᴇ ᴜsᴇʀs</blockquote>",
             parse_mode=ParseMode.HTML
         )
@@ -361,20 +361,20 @@ async def removeadmin(_, m: Message):
     if len(m.command) < 2 or not m.command[1].isdigit():
         return await m.reply(
             "Usage: `/removeadmin <user_id>`",
-            parse_mode=ParseMode.MARKDOWN
+            parse_mode=ParseMode.HTML
         )
 
     user_id = int(m.command[1])
     if not is_admin(user_id):
         return await m.reply(
             "User is not an admin.",
-            parse_mode=ParseMode.MARKDOWN
+            parse_mode=ParseMode.HTML
         )
 
     remove_admin_db(user_id)
     await m.reply(
         f"❌ User [{user_id}](tg://user?id={user_id}) has been removed from admins.",
-        parse_mode=ParseMode.MARKDOWN
+        parse_mode=ParseMode.HTML
     )
 
 
@@ -382,13 +382,13 @@ async def removeadmin(_, m: Message):
 async def listadmin(_, m: Message):
     admin_ids = list_admins_db()
     if not admin_ids:
-        return await m.reply("No admins found.", parse_mode=ParseMode.MARKDOWN)
+        return await m.reply("No admins found.", parse_mode=ParseMode.HTML)
     
     lines = ["**Current Admins:**"]
     for uid in admin_ids:
         lines.append(f"• [{uid}](tg://user?id={uid}) (`{uid}`)")
     
-    await m.reply("\n".join(lines), parse_mode=ParseMode.MARKDOWN)
+    await m.reply("\n".join(lines), parse_mode=ParseMode.HTML)
 
 def is_sudo():
     return filters.create(lambda _, __, m: m.from_user and (m.from_user.id in cfg.SUDO or is_admin(m.from_user.id)))
