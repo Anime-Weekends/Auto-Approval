@@ -18,6 +18,7 @@ from configs import cfg
 from database import datetime
 from database import is_sudo
 
+from app import app
 import random
 import asyncio
 
@@ -376,33 +377,40 @@ async def close_msg_cb(_, cb):
 
 @app.on_message(filters.command("removeadmin") & filters.user(cfg.SUDO))
 async def removeadmin(_, m: Message):
-    if len(m.command) < 2 or not all(x.isdigit() for x in m.command[1:]):
+    args = m.command[1:]
+
+    if not args:
         return await m.reply(
             "⁉️ Pʟᴇᴀsᴇ, Pʀᴏᴠɪᴅᴇ ᴠᴀʟɪᴅ ɪᴅs ᴏʀ ᴀʀɢᴜᴍᴇɴᴛs\n\n"
             "<b><blockquote>EXAMPLES:</b>\n"
-            "/del_admins 123456789 — ᴛᴏ ᴅᴇʟᴇᴛᴇ ᴏɴᴇ sᴘᴇᴄɪғɪᴇᴅ ɪᴅ\n"
-            "/del_admins 123456789 987654321 — ᴛᴏ ᴅᴇʟᴇᴛᴇ ᴍᴜʟᴛɪᴘʟᴇ sᴘᴇᴄɪғɪᴇᴅ ɪᴅs\n"
-            "/del_admins all — ᴛᴏ ᴅᴇʟᴇᴛᴇ ᴀʟʟ ᴀᴠᴀɪʟᴀʙʟᴇ ᴜsᴇʀ ɪᴅs</blockquote>",
+            "/removeadmin 123456789 — ᴛᴏ ᴅᴇʟᴇᴛᴇ ᴏɴᴇ sᴘᴇᴄɪғɪᴇᴅ ɪᴅ\n"
+            "/removeadmin 123456789 987654321 — ᴛᴏ ᴅᴇʟᴇᴛᴇ ᴍᴜʟᴛɪᴘʟᴇ sᴘᴇᴄɪғɪᴇᴅ ɪᴅs\n"
+            "/removeadmin all — ᴛᴏ ᴅᴇʟᴇᴛᴇ ᴀʟʟ ᴀᴅᴍɪɴs</blockquote>",
             parse_mode=ParseMode.HTML,
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
             )
         )
 
-    removed = []
-    for user_id in m.command[1:]:
-        if user_id == "all":
-            # Delete all admins (Optional, this will delete all the admins from the database)
-            for admin in list_admins_db():
-                remove_admin_db(admin)
-            return await m.reply(
-                "✅ All admins have been removed.",
-                parse_mode=ParseMode.HTML,
-                reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
-                )
+    if args[0].lower() == "all":
+        all_admins = list_admins_db()
+        if not all_admins:
+            return await m.reply("No admins found to remove.")
+        for admin in all_admins:
+            remove_admin_db(admin)
+        return await m.reply(
+            "✅ All admins have been removed.",
+            parse_mode=ParseMode.HTML,
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
             )
+        )
 
+    if not all(x.isdigit() for x in args):
+        return await m.reply("❌ Please enter valid numeric user IDs.")
+
+    removed = []
+    for user_id in args:
         uid = int(user_id)
         if is_admin(uid):
             remove_admin_db(uid)
@@ -431,7 +439,6 @@ async def removeadmin(_, m: Message):
 async def close_msg_cb(_, cb):
     await cb.message.delete()
     await cb.answer()
-
 
 @app.on_message(filters.command("listadmin") & is_sudo())
 async def listadmin(_, m: Message):
