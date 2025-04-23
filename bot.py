@@ -14,7 +14,7 @@ from pyrogram.enums import ChatMemberStatus, ParseMode
 from pyrogram.errors import UserDeactivated, UserBlocked
 from pyrogram.errors import PeerIdInvalid
 from pyrogram.errors import RPCError
-from database import log_approval, get_total_approvals
+from database import get_total_approvals
 
 from database import add_user, add_group, all_users, all_groups, users, remove_user
 from database import add_admin_db, remove_admin_db, list_admins_db, is_admin
@@ -681,7 +681,7 @@ async def close_callback(client, callback_query):
 @user_app.on_message(filters.command("totalapproved") & is_sudo())
 async def total_approved(_, m: Message):
     try:
-        total = db['approvals'].count_documents({})
+        total = get_total_approvals()
         await m.reply(
             f"✅ <b>Total users approved by the bot:</b> <code>{total}</code>",
             parse_mode=ParseMode.HTML
