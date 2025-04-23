@@ -79,7 +79,7 @@ async def approve(_, m: Message):
             caption=caption,
             reply_markup=keyboard,
             parse_mode=ParseMode.HTML,
-            message_effect_id=5104841245755180586 #🔥
+            message_effect_id=5044134455711629726 #💔
         )
         add_user(user.id)
 
