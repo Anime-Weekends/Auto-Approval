@@ -333,8 +333,8 @@ async def addadmin(_, m: Message):
     if len(m.command) < 2 or not all(x.isdigit() for x in m.command[1:]):
         return await m.reply(
             "Yᴏᴜ ɴᴇᴇᴅ ᴛᴏ ᴀᴅᴅ Aᴅᴍɪɴ ɪᴅs\n"
-            "<b>EXAMPLE:</b>\n"
-            "<blockquote>/addadmin 123456789 — ᴀᴅᴅ ᴏɴᴇ ᴜsᴇʀ\n"
+            "<b><blockquote>EXAMPLE:</b>\n"
+            "/addadmin 123456789 — ᴀᴅᴅ ᴏɴᴇ ᴜsᴇʀ\n"
             "/addadmin 123456789 987654321 — ᴀᴅᴅ ᴍᴜʟᴛɪᴘʟᴇ ᴜsᴇʀs</blockquote>",
             parse_mode=ParseMode.HTML,
             reply_markup=InlineKeyboardMarkup(
