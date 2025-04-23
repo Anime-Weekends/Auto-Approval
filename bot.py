@@ -193,7 +193,7 @@ async def close_stats(_, cb: CallbackQuery):
 #                 BROADCAST (COPY)
 # ====================================================
 
-@app.on_message(filters.command("bcast") & filters.user(cfg.SUDO))
+@app.on_message(filters.command("bcast") & is_sudo())
 async def bcast(_, m: Message):
     global canceled
     canceled = False
@@ -269,7 +269,7 @@ async def bcast(_, m: Message):
 #               BROADCAST (FORWARD)
 # ====================================================
 
-@app.on_message(filters.command("fcast") & filters.user(cfg.SUDO))
+@app.on_message(filters.command("fcast") & is_sudo())
 async def fcast(_, m: Message):
     lel = await m.reply("`⚡️ Processing...`")
     stats = {"success": 0, "failed": 0, "deactivated": 0, "blocked": 0}
@@ -372,7 +372,7 @@ async def removeadmin(_, m: Message):
     )
 
 
-@app.on_message(filters.command("listadmin") & filters.user(cfg.SUDO))
+@app.on_message(filters.command("listadmin") & is_sudo())
 async def listadmin(_, m: Message):
     admin_ids = list_admins_db()
     if not admin_ids:
