@@ -24,13 +24,20 @@ from database import is_sudo
 import random
 import asyncio
 
-# Initialize Bot Client
+# Run as Bot (for inline buttons, messages, commands):
 app = Client(
-    "approver",
+    "bot_session",
     api_id=cfg.API_ID,
     api_hash=cfg.API_HASH,
-    session_string=cfg.STRING_SESSION,
     bot_token=cfg.BOT_TOKEN
+)
+
+# Run as User (for accessing private channels, etc):
+app = Client(
+    "user_session",
+    api_id=cfg.API_ID,
+    api_hash=cfg.API_HASH,
+    session_string=cfg.STRING_SESSION
 )
 
 # ====================================================
