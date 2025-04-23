@@ -623,7 +623,7 @@ async def accept_all(_, m: Message):
 
         await m.reply(
             f"✅ Successfully approved <b>{approved}</b> join request(s).",
-            parse_mode="html"
+            parse_mode=ParseMode.HTML
         )
 
     except PeerIdInvalid:
