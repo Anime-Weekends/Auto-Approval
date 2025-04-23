@@ -152,7 +152,7 @@ async def chk_callback(_, cb: CallbackQuery):
 #                      INFO CMD
 # ====================================================
 
-@app.on_message(filters.command("users") & filters.user(cfg.SUDO))
+@app.on_message(filters.command("users") & is_sudo())
 async def dbtool(_, m: Message):
     total_users = all_users()
     total_groups = all_groups()
@@ -374,6 +374,9 @@ async def listadmin(_, m: Message):
         lines.append(f"• [{uid}](tg://user?id={uid}) (`{uid}`)")
     
     await m.reply("\n".join(lines), parse_mode=ParseMode.MARKDOWN)
+
+def is_sudo():
+    return filters.create(lambda _, __, m: m.from_user and (m.from_user.id in cfg.SUDO or is_admin(m.from_user.id)))
 
 # ====================================================
 #                    BOT START
