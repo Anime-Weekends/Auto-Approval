@@ -59,7 +59,7 @@ async def approve(_, m: Message):
                 [InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz")],  # Button with callback
                 [
                     InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl"), 
-                    InlineKeyboardButton("⚡", callback_data="popup_action")
+                    InlineKeyboardButton("Cʟɪᴄᴋ ʜᴇʀᴇ", callback_data="popup_action")
                 ]
             ]
         )
@@ -93,7 +93,7 @@ async def approve(_, m: Message):
 @bot_app.on_callback_query(filters.regex("popup_action"))
 async def popup_action(_, cb: CallbackQuery):
     # This sends the popup-style alert when the "⚡" button is clicked
-    await cb.answer("This is a popup message!", show_alert=True)
+    await cb.answer("Iғ ɪ ᴄʀᴏssᴇᴅ ɢᴀʟᴀxɪᴇs ᴀɴᴅ ʙᴇɴᴛ ᴛɪᴍᴇ ᴊᴜsᴛ ᴛᴏ ғɪɴᴅ ʏᴏᴜ, ɪᴛ’ᴅ sᴛɪʟʟ ʙᴇ ᴡᴏʀᴛʜ ᴇᴠᴇʀʏ sᴜᴘᴇʀɴᴏᴠᴀ—ʙᴇᴄᴀᴜsᴇ ɪɴ ᴀʟʟ ᴛʜᴇ ᴍᴜʟᴛɪᴠᴇʀsᴇs, ʏᴏᴜ'ʀᴇ ᴛʜᴇ ᴏɴʟʏ ᴄᴏɴsᴛᴀɴᴛ ᴍʏ ʜᴇᴀʀᴛ ᴏʀʙɪᴛs.", show_alert=True)
     
 # ====================================================
 #                      START
