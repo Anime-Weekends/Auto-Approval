@@ -18,7 +18,7 @@ from configs import cfg
 from database import datetime
 from database import is_sudo
 
-from app import app
+from bot import app
 import random
 import asyncio
 
