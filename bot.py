@@ -42,9 +42,10 @@ async def approve(_, m: Message):
         add_group(chat.id)
         await app.approve_chat_join_request(chat.id, user.id)
         
+        # Inline buttons layout
         keyboard = InlineKeyboardMarkup(
             [
-                [InlineKeyboardButton("⚡", callback_data="popup_action")],
+                [InlineKeyboardButton("⚡", callback_data="popup_action")],  # Button with callback
                 [
                     InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),
                     InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/Private_Auto_Approval_Bot")
@@ -52,6 +53,7 @@ async def approve(_, m: Message):
             ]
         )
 
+        # Caption with user and chat links
         caption = (
             f"🍁 <b>Hey</b> <a href='tg://user?id={user.id}'>{user.first_name}</a>!\n\n"
             f"Your request has been approved! Welcome to "
@@ -59,6 +61,7 @@ async def approve(_, m: Message):
             f"<i>By: <a href='https://t.me/EmitingStars_Botz'>Emiting Stars</a></i>"
         )
         
+        # Sending a photo with the message and buttons
         await app.send_photo(
             user.id,
             "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
@@ -73,6 +76,13 @@ async def approve(_, m: Message):
         print("User isn't a proper peer (possibly a group)")
     except Exception as err:
         print(str(err))
+
+
+# Callback query handler for the "⚡" button to show a popup message
+@app.on_callback_query(filters.regex("popup_action"))
+async def popup_action(_, cb: CallbackQuery):
+    # This sends the popup-style alert when the "⚡" button is clicked
+    await cb.answer("This is a popup message!", show_alert=True)
     
 # ====================================================
 #                      START
