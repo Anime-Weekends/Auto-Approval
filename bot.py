@@ -272,10 +272,52 @@ async def bcast(_, m: Message):
 
 @app.on_message(filters.command("fcast") & is_sudo())
 async def fcast(_, m: Message):
-    lel = await m.reply("`⚡️ Processing...`")
+    global canceled
+    canceled = False
+
+    lel = await m.reply_photo(
+        "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
+        caption="`⚡️ Processing...`",
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton("Cancel", callback_data="cancel_fcast"),
+                    InlineKeyboardButton("Close", callback_data="close_fcast")
+                ]
+            ]
+        )
+    )
+
+    total_users = users.count_documents({})
     stats = {"success": 0, "failed": 0, "deactivated": 0, "blocked": 0}
-    
-    for u in users.find():
+
+    for idx, u in enumerate(users.find(), 1):
+        if canceled:
+            await lel.edit(
+                "❌ Broadcast process has been canceled.",
+                reply_markup=InlineKeyboardMarkup(
+                    [[InlineKeyboardButton("Close", callback_data="close_fcast")]]
+                )
+            )
+            break
+
+        progress = int((idx / total_users) * 100)
+        bars = int(progress / 5)
+        progress_bar = f"[{'█' * bars}{'—' * (20 - bars)}] {progress}%"
+
+        await lel.edit(
+            f"📣 Broadcasting...\n\n"
+            f"{progress_bar}\n\n"
+            f"✅ Success: `{stats['success']}` | ❌ Failed: `{stats['failed']}`\n"
+            f"👻 Deactivated: `{stats['deactivated']}` | 🚫 Blocked: `{stats['blocked']}`",
+            reply_markup=InlineKeyboardMarkup(
+                [[
+                    InlineKeyboardButton("Cancel", callback_data="cancel_fcast"),
+                    InlineKeyboardButton("Close", callback_data="close_fcast")
+                ]]
+            )
+        )
+
         try:
             await m.reply_to_message.forward(int(u["user_id"]))
             stats["success"] += 1
@@ -283,18 +325,44 @@ async def fcast(_, m: Message):
             await asyncio.sleep(e.value)
         except errors.InputUserDeactivated:
             stats["deactivated"] += 1
-            remove_user(u["user_id"])
+            remove_user(u["user_id"])  # Remove deactivated user
         except errors.UserIsBlocked:
             stats["blocked"] += 1
-        except:
+        except Exception:
             stats["failed"] += 1
 
-    await lel.edit(
-        f"✅ Successful: `{stats['success']}`\n"
-        f"❌ Failed: `{stats['failed']}`\n"
-        f"👾 Blocked: `{stats['blocked']}`\n"
-        f"👻 Deactivated: `{stats['deactivated']}`"
+        await asyncio.sleep(0.1)
+
+    if not canceled:
+        await lel.edit(
+            f"✅ Broadcast finished!\n\n"
+            f"✅ Successful: `{stats['success']}`\n"
+            f"❌ Failed: `{stats['failed']}`\n"
+            f"👾 Blocked: `{stats['blocked']}`\n"
+            f"👻 Deactivated: `{stats['deactivated']}`",
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton("Close", callback_data="close_fcast")]]
+            )
+        )
+
+# === Cancel Button Callback ===
+@app.on_callback_query(filters.regex("cancel_fcast"))
+async def cancel_fcast(_, cb):
+    global canceled
+    canceled = True
+    await cb.answer("Broadcast has been canceled.")
+    await cb.message.edit(
+        "❌ Broadcast process has been canceled.",
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("Close", callback_data="close_fcast")]]
+        )
     )
+
+# === Close Button Callback ===
+@app.on_callback_query(filters.regex("close_fcast"))
+async def close_fcast(_, cb):
+    await cb.message.delete()
+    await cb.answer()
 
 # ====================================================
 #                    HELP CENTER
