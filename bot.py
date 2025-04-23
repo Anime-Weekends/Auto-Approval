@@ -635,14 +635,14 @@ async def accept_all(_, m: Message):
                 approved += 1
             await asyncio.sleep(delay_seconds)
 
-        await m.reply(f"✅ <b>Successfully approved {approved} join requests.</b>", parse_mode=ParseMode.HTML")
+        await m.reply(f"✅ <b>Successfully approved {approved} join requests.</b>", parse_mode=ParseMode.HTML)
 
     except PeerIdInvalid:
-        await m.reply("❌ <b>Invalid group/channel ID.</b>", parse_mode=ParseMode.HTML")
+        await m.reply("❌ <b>Invalid group/channel ID.</b>", parse_mode=ParseMode.HTML)
     except RPCError as err:
-        await m.reply(f"⚠️ <b>Telegram Error:</b> <code>{err}</code>", parse_mode=ParseMode.HTML")
+        await m.reply(f"⚠️ <b>Telegram Error:</b> <code>{err}</code>", parse_mode=ParseMode.HTML)
     except Exception as err:
-        await m.reply(f"⚠️ <b>Unexpected Error:</b> <code>{err}</code>", parse_mode=ParseMode.HTML")
+        await m.reply(f"⚠️ <b>Unexpected Error:</b> <code>{err}</code>", parse_mode=ParseMode.HTML)
 
 
 @user_app.on_message(filters.command("rejectall"))
@@ -657,7 +657,7 @@ async def reject_all(_, m: Message):
             return await m.reply(
                 f"⚠️ <b>Please add</b> <code>@{user.username}</code> <b>as an admin in this group/channel to reject requests.</b>",
                 reply_markup=button,
-                parse_mode=ParseMode.HTML"
+                parse_mode=ParseMode.HTML
             )
 
         keyboard = InlineKeyboardMarkup([
@@ -667,11 +667,11 @@ async def reject_all(_, m: Message):
         await m.reply(
             "Are you sure you want to reject all pending join requests?",
             reply_markup=keyboard,
-            parse_mode=ParseMode.HTML"
+            parse_mode=ParseMode.HTML
         )
 
     except Exception as err:
-        await m.reply(f"⚠️ <b>Unexpected Error:</b> <code>{err}</code>", parse_mode=ParseMode.HTML")
+        await m.reply(f"⚠️ <b>Unexpected Error:</b> <code>{err}</code>", parse_mode=ParseMode.HTML)
 
 
 @user_app.on_callback_query(filters.regex("reject_all_confirm"))
@@ -686,7 +686,7 @@ async def reject_all_confirm(_, cb: CallbackQuery):
             return await cb.message.edit(
                 f"⚠️ <b>Please add</b> <code>@{user.username}</code> <b>as an admin in this group/channel to reject requests.</b>",
                 reply_markup=button,
-                parse_mode=ParseMode.HTML"
+                parse_mode=ParseMode.HTML
             )
 
         batch_size = 50
@@ -705,7 +705,7 @@ async def reject_all_confirm(_, cb: CallbackQuery):
             await asyncio.sleep(delay_seconds)
 
         await cb.answer("All requests rejected.", show_alert=True)
-        await cb.message.edit(f"❌ <b>Successfully rejected {rejected} join requests.</b>", parse_mode=ParseMode.HTML")
+        await cb.message.edit(f"❌ <b>Successfully rejected {rejected} join requests.</b>", parse_mode=ParseMode.HTML)
 
     except PeerIdInvalid:
         await cb.answer("Invalid chat ID.", show_alert=True)
@@ -724,7 +724,7 @@ async def reject_all_cancel(_, cb: CallbackQuery):
 #                   USER ID
 # ====================================================
 
-@Bot.on_message(filters.command("myid") & filters.private)
+@Bot_app.on_message(filters.command("myid") & filters.private)
 async def showid(client, message):
     user_id = message.chat.id
     photo_url = "https://i.ibb.co/YzFqHky/photo-2025-04-15-09-14-30-7493465832589099024.jpg"
@@ -744,7 +744,7 @@ async def showid(client, message):
         parse_mode=ParseMode.HTML
     )
 
-@Bot.on_callback_query(filters.regex("close"))
+@Bot_app.on_callback_query(filters.regex("close"))
 async def close_callback(client, callback_query):
     await callback_query.message.delete()
     await callback_query.answer()
