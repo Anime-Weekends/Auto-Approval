@@ -25,7 +25,7 @@ import random
 import asyncio
 
 # Run as Bot (for inline buttons, messages, commands):
-app = Client(
+bot_app = Client(
     "bot_session",
     api_id=cfg.API_ID,
     api_hash=cfg.API_HASH,
@@ -33,7 +33,7 @@ app = Client(
 )
 
 # Run as User (for accessing private channels, etc):
-app = Client(
+user_app = Client(
     "user_session",
     api_id=cfg.API_ID,
     api_hash=cfg.API_HASH,
