@@ -199,6 +199,7 @@ async def bcast(_, m: Message):
     global canceled
     canceled = False
 
+    # Sending the initial message with photo and inline buttons
     lel = await m.reply_photo(
         "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
         caption="`⚡️ Processing...`",
@@ -212,9 +213,11 @@ async def bcast(_, m: Message):
         )
     )
 
+    # Get total number of users from the database
     total_users = users.count_documents({})
     stats = {"success": 0, "failed": 0, "deactivated": 0, "blocked": 0}
 
+    # Loop through all users and broadcast the message
     for idx, u in enumerate(users.find(), 1):
         if canceled:
             await lel.edit(
@@ -225,10 +228,12 @@ async def bcast(_, m: Message):
             )
             break
 
+        # Calculate progress for the broadcast
         progress = int((idx / total_users) * 100)
         bars = int(progress / 5)
         progress_bar = f"[{'█' * bars}{'—' * (20 - bars)}] {progress}%"
 
+        # Update the user with the progress
         await lel.edit(
             f"📣 Broadcasting...\n\n"
             f"{progress_bar}\n\n"
@@ -242,18 +247,24 @@ async def bcast(_, m: Message):
             )
         )
 
+        # Try to forward the message to the user
         try:
             await m.reply_to_message.copy(int(u["user_id"]))
             stats["success"] += 1
         except UserDeactivated:
             stats["deactivated"] += 1
+            # Remove the user from the database if they are deactivated
+            users.delete_one({"user_id": u["user_id"]})
         except UserBlocked:
             stats["blocked"] += 1
-        except Exception:
+        except Exception as e:
             stats["failed"] += 1
+            print(f"Error with user {u['user_id']}: {e}")
 
+        # To prevent rate limiting, give some time between messages
         await asyncio.sleep(0.1)
 
+    # After the broadcast is done, update the user on the status
     if not canceled:
         await lel.edit(
             f"✅ Broadcast finished!\n\n"
@@ -265,6 +276,25 @@ async def bcast(_, m: Message):
                 [[InlineKeyboardButton("Close", callback_data="close_bcast")]]
             )
         )
+
+# === Cancel Button Callback ===
+@app.on_callback_query(filters.regex("cancel_bcast"))
+async def cancel_bcast(_, cb):
+    global canceled
+    canceled = True
+    await cb.answer("Broadcast has been canceled.")
+    await cb.message.edit(
+        "❌ Broadcast process has been canceled.",
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("Close", callback_data="close_bcast")]]
+        )
+    )
+
+# === Close Button Callback ===
+@app.on_callback_query(filters.regex("close_bcast"))
+async def close_bcast(_, cb):
+    await cb.message.delete()
+    await cb.answer()
 
 # ====================================================
 #               BROADCAST (FORWARD)
