@@ -336,7 +336,7 @@ async def addadmin(_, m: Message):
             "<b>EXAMPLE:</b><br>"
             "<blockquote>/addadmin 123456789 — ᴀᴅᴅ ᴏɴᴇ ᴜsᴇʀ<br>"
             "/addadmin 123456789 987654321 — ᴀᴅᴅ ᴍᴜʟᴛɪᴘʟᴇ ᴜsᴇʀs</blockquote>",
-            parse_mode="HTML"
+            parse_mode=ParseMode.HTML
         )
 
     added = []
@@ -347,12 +347,12 @@ async def addadmin(_, m: Message):
             added.append(uid)
 
     if not added:
-        return await m.reply("All provided users are already admins.", parse_mode="HTML")
+        return await m.reply("All provided users are already admins.", parse_mode=ParseMode.HTML)
 
     added_text = "\n".join([f"• <a href='tg://user?id={uid}'>{uid}</a>" for uid in added])
     await m.reply(
         f"✅ The following user(s) were added as admins:\n{added_text}",
-        parse_mode="HTML"
+        parse_mode=ParseMode.HTML
     )
 
 
