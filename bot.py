@@ -650,6 +650,35 @@ async def reject_all_cancel(_, cb: CallbackQuery):
     await cb.message.edit("❎ Rejection of pending join requests has been cancelled.")
 
 # ====================================================
+#                   USER ID
+# ====================================================
+
+@Bot.on_message(filters.command("myid") & filters.private)
+async def showid(client, message):
+    user_id = message.chat.id
+    photo_url = "https://i.ibb.co/YzFqHky/photo-2025-04-15-09-14-30-7493465832589099024.jpg"
+
+    buttons = InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("Dᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/RexySama"),
+            InlineKeyboardButton("❌ Close", callback_data="close")
+        ]
+    ])
+
+    await message.reply_photo(
+        photo=photo_url,
+        caption=f"<b>Your user ID is:</b> <code>{user_id}</code>",
+        reply_markup=buttons,
+        quote=True,
+        parse_mode=ParseMode.HTML
+    )
+
+@Bot.on_callback_query(filters.regex("close"))
+async def close_callback(client, callback_query):
+    await callback_query.message.delete()
+    await callback_query.answer()
+
+# ====================================================
 #                    BOT START
 # ====================================================
 
