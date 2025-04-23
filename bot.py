@@ -329,7 +329,7 @@ async def help_command(_, m: Message):
 #                    ADMIMS
 # ====================================================
 
-@app.on_message(filters.command("addadmin") & is_sudo())
+@app.on_message(filters.command("addadmin") & filters.user(cfg.SUDO))
 async def addadmin(_, m: Message):
     if len(m.command) < 2 or not all(x.isdigit() for x in m.command[1:]):
         return await m.reply(
@@ -367,12 +367,6 @@ async def addadmin(_, m: Message):
             [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
         )
     )
-
-
-@app.on_callback_query(filters.regex("close_msg"))
-async def close_msg_cb(_, cb):
-    await cb.message.delete()
-    await cb.answer()
 
 
 @app.on_message(filters.command("removeadmin") & filters.user(cfg.SUDO))
@@ -435,12 +429,7 @@ async def removeadmin(_, m: Message):
     )
 
 
-@app.on_callback_query(filters.regex("close_msg"))
-async def close_msg_cb(_, cb):
-    await cb.message.delete()
-    await cb.answer()
-
-@app.on_message(filters.command("listadmin") & is_sudo())
+@app.on_message(filters.command("listadmin") & filters.user(cfg.SUDO))
 async def listadmin(_, m: Message):
     admin_ids = list_admins_db()
     if not admin_ids:
@@ -470,6 +459,12 @@ async def listadmin(_, m: Message):
         )
     )
 
+
+@app.on_callback_query(filters.regex("close_msg"))
+async def close_msg_cb(_, cb):
+    await cb.message.delete()
+    await cb.answer()
+    
 def is_sudo():
     return filters.create(lambda _, __, m: m.from_user and (m.from_user.id in cfg.SUDO or is_admin(m.from_user.id)))
 
