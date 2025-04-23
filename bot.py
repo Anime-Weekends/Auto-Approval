@@ -429,7 +429,7 @@ async def removeadmin(_, m: Message):
     )
 
 
-@app.on_message(filters.command("listadmin") & filters.user(cfg.SUDO))
+@app.on_message(filters.command("listadmin") & is_sudo())
 async def listadmin(_, m: Message):
     admin_ids = list_admins_db()
     if not admin_ids:
