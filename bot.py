@@ -622,7 +622,7 @@ async def accept_all(_, m: Message):
             await asyncio.sleep(delay_seconds)
 
         await m.reply(
-            f"✅ Successfully approved <b>{approved}</b> join request(s).",
+            f"✅ Successfully approved  <b>{approved}</b> join request (s).",
             parse_mode=ParseMode.HTML,
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton("❌ Close", callback_data="close_msg")]]
