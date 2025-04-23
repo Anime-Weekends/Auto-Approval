@@ -13,6 +13,7 @@ from pyrogram.errors.exceptions.flood_420 import FloodWait
 from pyrogram.enums import ParseMode
 from pyrogram.errors import UserDeactivated, UserBlocked
 from pyrogram.errors import PeerIdInvalid
+from pyrogram.errors import RPCError
 
 from database import add_user, add_group, all_users, all_groups, users, remove_user
 from database import add_admin_db, remove_admin_db, list_admins_db, is_admin
@@ -598,19 +599,15 @@ def is_sudo():
 @app.on_message(filters.command("acceptall"))
 async def accept_all(_, m: Message):
     try:
-        requests = await app.get_chat_join_requests(m.chat.id)
-        if not requests:
-            return await m.reply("No pending join requests found.")
-        
-        for req in requests:
+        async for req in app.get_chat_join_requests(m.chat.id):
             await app.approve_chat_join_request(m.chat.id, req.user.id)
         await m.reply("✅ All pending requests have been accepted successfully.")
     except PeerIdInvalid:
         await m.reply("❌ Invalid group/channel ID.")
     except RPCError as err:
-        await m.reply(f"⚠️ Error: {err.MESSAGE}")
+        await m.reply(f"⚠️ Telegram Error: {err}")
     except Exception as err:
-        await m.reply(f"⚠️ Unexpected error: {err}")
+        await m.reply(f"⚠️ Unexpected Error: {err}")
 
 
 # Reject All Join Requests with Confirmation
@@ -623,27 +620,23 @@ async def reject_all(_, m: Message):
     await m.reply("Are you sure you want to reject all pending join requests?", reply_markup=keyboard)
 
 
-# Handle Rejection Confirmation
+# Confirm rejection
 @app.on_callback_query(filters.regex("reject_all_confirm"))
 async def reject_all_confirm(_, cb: CallbackQuery):
     try:
-        requests = await app.get_chat_join_requests(cb.message.chat.id)
-        if not requests:
-            return await cb.message.edit("No pending join requests to reject.")
-        
-        for req in requests:
+        async for req in app.get_chat_join_requests(cb.message.chat.id):
             await app.decline_chat_join_request(cb.message.chat.id, req.user.id)
         await cb.answer("All requests rejected.", show_alert=True)
         await cb.message.edit("❌ All pending join requests have been rejected.")
     except PeerIdInvalid:
         await cb.answer("Invalid chat ID.", show_alert=True)
     except RPCError as err:
-        await cb.answer(f"Error: {err.MESSAGE}", show_alert=True)
+        await cb.answer(f"Telegram Error: {err}", show_alert=True)
     except Exception as err:
-        await cb.answer(f"Unexpected error: {err}", show_alert=True)
+        await cb.answer(f"Unexpected Error: {err}", show_alert=True)
 
 
-# Cancel Rejection
+# Cancel rejection
 @app.on_callback_query(filters.regex("reject_all_cancel"))
 async def reject_all_cancel(_, cb: CallbackQuery):
     await cb.answer("Action cancelled.", show_alert=True)
