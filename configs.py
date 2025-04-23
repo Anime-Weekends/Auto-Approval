@@ -15,6 +15,8 @@ class Config:
     # Force Subscribe Channel ID (Ensure bot is admin)
     CHID = int(os.getenv("CHID", "-1002410513772"))
 
+    SESSION_STRING = os.getenv("SESSION_STRING", "your_userbot_session_string")
+
     # Admin User IDs
     SUDO = list(map(int, os.getenv("SUDO", "5548954124 6429532957").split()))
     
