@@ -66,10 +66,10 @@ async def approve(_, m: Message):
 
         # Caption with user and chat links
         caption = (
-            f"<b>Hᴇʏ sᴡᴇᴇᴛɪᴇ</b> <a href='tg://user?id={user.id}'>{user.first_name}</a>  ⭐✨\n\n"
-            f"Aᴄᴄᴇss ʜᴀs ʙᴇᴇɴ <b>Gʀᴀɴᴛᴇᴅ</b> sᴛᴇᴘ ɪɴᴛᴏ ᴛʜᴇ ᴘʀᴇsᴛɪɢɪᴏᴜs ʜᴀʟʟs ᴏғ"
-            f"<a href='https://t.me/c/{str(chat.id)[4:]}'>{chat.title}</a>\n"
-            f"<i>Pʀᴇsᴇɴᴛᴇᴅ ᴡɪᴛʜ ʜᴏɴᴏʀ ʙʏ <a href='https://t.me/EmitingStars_Botz'>Eᴍɪᴛɪɴɢ sᴛᴀʀs</a></i>"
+            f"<b><blockquote>Hᴇʏ sᴡᴇᴇᴛɪᴇ</b> <a href='tg://user?id={user.id}'>{user.first_name}</a>  ⭐✨</blockquote>\n\n"
+            f"<blockquote>Aᴄᴄᴇss ʜᴀs ʙᴇᴇɴ <b>Gʀᴀɴᴛᴇᴅ</b> sᴛᴇᴘ ɪɴᴛᴏ ᴛʜᴇ ᴘʀᴇsᴛɪɢɪᴏᴜs ʜᴀʟʟs ᴏғ "
+            f"<a href='https://t.me/c/{str(chat.id)[4:]}'>{chat.title}</a></blockquote>\n"
+            f"<i><blockquote>Pʀᴇsᴇɴᴛᴇᴅ ᴡɪᴛʜ ʜᴏɴᴏʀ ʙʏ <a href='https://t.me/EmitingStars_Botz'>Eᴍɪᴛɪɴɢ sᴛᴀʀs</a></blockquote></i>"
         )
         
         # Sending a photo with the message and buttons
