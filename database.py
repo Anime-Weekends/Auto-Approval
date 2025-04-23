@@ -11,7 +11,8 @@ users = db['users']
 groups = db['groups']
 admins = db['admins']
 logs = db['logs']  # For logging actions like /acceptall, /rejectall
-counters = db['command_counters']  # For tracking command usage count
+counters = db['command_counters'] # For tracking command usage count
+approvals = db['approvals']
 
 # === Users ===
 def already_db(user_id):
