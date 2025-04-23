@@ -437,13 +437,26 @@ async def close_msg_cb(_, cb):
 async def listadmin(_, m: Message):
     admin_ids = list_admins_db()
     if not admin_ids:
-        return await m.reply("No admins found.", parse_mode=ParseMode.HTML)
-    
-    lines = ["**Current Admins:**"]
+        return await m.reply(
+            "No admins found.",
+            parse_mode=ParseMode.HTML,
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
+            )
+        )
+
+    text = "<b>🤖 𝗕𝗢𝗧 𝗔𝗗𝗠𝗜𝗡𝗦 𝗟𝗜𝗦𝗧 :</b>\n\n"
     for uid in admin_ids:
-        lines.append(f"• [{uid}](tg://user?id={uid}) (`{uid}`)")
-    
-    await m.reply("\n".join(lines), parse_mode=ParseMode.HTML)
+        text += f"<b>NAME:</b> <a href='tg://user?id={uid}'>Click Here</a>\n(ID: <code>{uid}</code>)\n\n"
+
+    await m.reply_photo(
+        photo="https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
+        caption=text,
+        parse_mode="HTML",
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
+        )
+    )
 
 def is_sudo():
     return filters.create(lambda _, __, m: m.from_user and (m.from_user.id in cfg.SUDO or is_admin(m.from_user.id)))
