@@ -332,24 +332,27 @@ async def help_command(_, m: Message):
 async def addadmin(_, m: Message):
     if len(m.command) < 2 or not all(x.isdigit() for x in m.command[1:]):
         return await m.reply(
-            "Yᴏᴜ ɴᴇᴇᴅ ᴛᴏ ᴀᴅᴅ Aᴅᴍɪɴ ɪᴅs\n\n"
-            "**<blockquote>EXAMPLE:**\n"
-            "`/addadmin 123456789` — ᴀᴅᴅ ᴏɴᴇ ᴜsᴇʀ\n"
-            "`/addadmin 123456789 987654321` — ᴀᴅᴅ ᴍᴜʟᴛɪᴘʟᴇ ᴜsᴇʀs</blockquote>",
-            parse_mode=ParseMode.MARKDOWN
+            "Yᴏᴜ ɴᴇᴇᴅ ᴛᴏ ᴀᴅᴅ Aᴅᴍɪɴ ɪᴅs<br><br>"
+            "<b>EXAMPLE:</b><br>"
+            "<blockquote>/addadmin 123456789 — ᴀᴅᴅ ᴏɴᴇ ᴜsᴇʀ<br>"
+            "/addadmin 123456789 987654321 — ᴀᴅᴅ ᴍᴜʟᴛɪᴘʟᴇ ᴜsᴇʀs</blockquote>",
+            parse_mode="HTML"
         )
-    
-    user_id = int(m.command[1])
-    if is_admin(user_id):
-        return await m.reply(
-            "This user is already an admin.",
-            parse_mode=ParseMode.MARKDOWN
-        )
-    
-    add_admin_db(user_id)
+
+    added = []
+    for user_id in m.command[1:]:
+        uid = int(user_id)
+        if not is_admin(uid):
+            add_admin_db(uid)
+            added.append(uid)
+
+    if not added:
+        return await m.reply("All provided users are already admins.", parse_mode="HTML")
+
+    added_text = "\n".join([f"• <a href='tg://user?id={uid}'>{uid}</a>" for uid in added])
     await m.reply(
-        f"✅ User [{user_id}](tg://user?id={user_id}) has been added as an admin.",
-        parse_mode=ParseMode.MARKDOWN
+        f"✅ The following user(s) were added as admins:\n{added_text}",
+        parse_mode="HTML"
     )
 
 
