@@ -81,7 +81,7 @@ async def approve(_, m: Message):
 from pyrogram.types import InputMediaPhoto
 
 
-app.on_message(filters.private & filters.command("start"))
+@app.on_message(filters.private & filters.command("start"))
 async def start_command(_, m: Message):
     try:
         await app.get_chat_member(cfg.CHID, m.from_user.id)
@@ -120,7 +120,7 @@ async def start_command(_, m: Message):
     await m.reply_photo(
         "https://i.ibb.co/v6J0JM80/photo-2025-03-13-18-50-40-7481368571868610580.jpg",
         caption=(
-            f"🍁 <b>Hello</b> {m.from_user.mention}!\n\n"
+            f"🍁 <b>Hello</b> <a href='tg://user?id={m.from_user.id}'>{m.from_user.first_name}</a>!\n\n"
             "I'm an auto-approve bot. Add me to your chat and promote me to admin "
             "with <b>Add Members</b> permission."
         ),
@@ -128,6 +128,7 @@ async def start_command(_, m: Message):
         parse_mode=ParseMode.HTML,
         message_effect_id=5104841245755180586 #🔥
     )
+
 # ====================================================
 #                   CALLBACK CHECK
 # ====================================================
