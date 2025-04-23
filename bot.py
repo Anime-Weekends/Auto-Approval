@@ -421,7 +421,7 @@ async def cancel_fcast(_, cb):
     )
 
 # === Close Button Callback ===
-@app.on_callback_query(filters.regex("close_fcast"))
+@bot_app.on_callback_query(filters.regex("close_fcast"))
 async def close_fcast(_, cb):
     await cb.message.delete()
     await cb.answer()
@@ -453,7 +453,7 @@ async def help_command(_, m: Message):
         parse_mode=ParseMode.HTML
     )
 
-@app.on_callback_query(filters.regex("close_help"))
+@bot_app.on_callback_query(filters.regex("close_help"))
 async def close_help(_, cb: CallbackQuery):
     await cb.message.delete()
 
