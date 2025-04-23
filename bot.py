@@ -56,10 +56,11 @@ async def approve(_, m: Message):
         # Inline buttons layout
         keyboard = InlineKeyboardMarkup(
             [
-                [InlineKeyboardButton("⚡", callback_data="popup_action")],  # Button with callback
+                [InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz")],  # Button with callback
                 [
-                    InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),
-                    InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/Private_Auto_Approval_Bot")
+                    InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/Private_Auto_Approval_Bot"), 
+                    InlineKeyboardButton("⚡", callback_data="popup_action")
+                   
                 ]
             ]
         )
@@ -75,7 +76,7 @@ async def approve(_, m: Message):
         # Sending a photo with the message and buttons
         await bot_app.send_photo(
             user.id,
-            "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
+            "https://i.ibb.co/vxMhkZQD/photo-2025-04-23-20-40-27-7496611286248062984.jpg",
             caption=caption,
             reply_markup=keyboard,
             parse_mode=ParseMode.HTML,
