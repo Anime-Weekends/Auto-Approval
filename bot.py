@@ -60,7 +60,6 @@ async def approve(_, m: Message):
                 [
                     InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/Private_Auto_Approval_Bot"), 
                     InlineKeyboardButton("⚡", callback_data="popup_action")
-                   
                 ]
             ]
         )
