@@ -11,8 +11,8 @@ users = db['users']
 groups = db['groups']
 admins = db['admins']
 logs = db['logs']  # For logging actions like /acceptall, /rejectall
-counters = db['command_counters'] # For tracking command usage count
-approvals = db['approvals']
+counters = db['command_counters']  # For tracking command usage count
+approvals = db['approvals']  # <-- NEW collection for approved users
 
 # === Users ===
 def already_db(user_id):
@@ -91,3 +91,15 @@ def is_sudo():
     return filters.create(lambda _, __, m: m.from_user and (
         m.from_user.id in cfg.SUDO or is_admin(m.from_user.id)
     ))
+
+
+# === Approvals Tracker (NEW) ===
+def log_approval(user_id, chat_id):
+    approvals.insert_one({
+        "user_id": int(user_id),
+        "chat_id": int(chat_id),
+        "timestamp": datetime.utcnow()
+    })
+
+def get_total_approvals():
+    return approvals.count_documents({})
