@@ -58,7 +58,7 @@ async def approve(_, m: Message):
             [
                 [InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz")],  # Button with callback
                 [
-                    InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/Private_Auto_Approval_Bot"), 
+                    InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl"), 
                     InlineKeyboardButton("⚡", callback_data="popup_action")
                 ]
             ]
