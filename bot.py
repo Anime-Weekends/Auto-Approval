@@ -454,7 +454,12 @@ async def listadmin(_, m: Message):
 
     text = "<b>🤖 𝗕𝗢𝗧 𝗔𝗗𝗠𝗜𝗡𝗦 𝗟𝗜𝗦𝗧 :</b>\n\n"
     for uid in admin_ids:
-        text += f"<b>NAME:</b> <a href='tg://user?id={uid}'>Click Here</a>\n(ID: <code>{uid}</code>)\n\n"
+        try:
+            user = await _.get_users(uid)
+            name = user.mention(style="html")
+        except:
+            name = f"<a href='tg://user?id={uid}'>Unknown</a>"
+        text += f"{name}\nID: <code>{uid}</code>\n\n"
 
     await m.reply_photo(
         photo="https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
