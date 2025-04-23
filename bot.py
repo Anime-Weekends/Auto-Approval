@@ -110,12 +110,12 @@ async def start_command(_, m: Message):
         try:
             invite_link = await app.create_chat_invite_link(cfg.CHID)
         except:
-            return await m.reply("**Make sure I am an admin in your channel**")
+            return await m.reply("**<blockquote>Mᴀᴋᴇ sᴜʀᴇ ɪ ᴀᴍ ᴀɴ ᴀᴅᴍɪɴ ɪɴ ʏᴏᴜʀ ᴄʜᴀɴɴᴇʟ</blockquote>**")
 
         button = InlineKeyboardMarkup(
             [[
-                InlineKeyboardButton("Join Channel", url=invite_link.invite_link),
-                InlineKeyboardButton("Try Again", url="https://t.me/Private_Auto_Approval_Bot?start=start")
+                InlineKeyboardButton("Jᴏɪɴ ʜᴇʀᴇ", url=invite_link.invite_link),
+                InlineKeyboardButton("Rᴇғʀᴇsʜ", url="https://t.me/Private_Auto_Approval_Bot?start=start")
             ]]
         )
 
@@ -123,18 +123,19 @@ async def start_command(_, m: Message):
             photo="https://i.ibb.co/C5N2Xhk9/photo-2025-04-19-18-11-35-7496424313436766224.jpg",
             caption="⚠️ <b>Access Denied!</b>\n\nYou must join the required channel first. Please do so and try again.",
             reply_markup=button,
-            parse_mode=ParseMode.HTML
+            parse_mode=ParseMode.HTML, 
+            message_effect_id=5104841245755180586 #🔥
         )
 
     add_user(m.from_user.id)
 
     keyboard = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("Main Channel", url="https://t.me/EmitingStars_Botz"),
-            InlineKeyboardButton("Support", url="https://t.me/+HZuPVe0l-F1mM2Jl")
+            InlineKeyboardButton("Mᴀɪɴ ᴄʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),
+            InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
         ],
         [
-            InlineKeyboardButton("⤬ Kidnapp Me Baby ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
+            InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ ᴍᴇ ʙᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
         ]
     ])
 
@@ -160,17 +161,17 @@ async def chk_callback(_, cb: CallbackQuery):
         await bot_app.get_chat_member(cfg.CHID, cb.from_user.id)
     except:
         return await cb.answer(
-            "You haven't joined our channel yet. Please join and try again!",
+            "Yᴏᴜ ʜᴀᴠᴇɴ'ᴛ ᴊᴏɪɴᴇᴅ ᴏᴜʀ ᴄʜᴀɴɴᴇʟ ʏᴇᴛ. ᴘʟᴇᴀsᴇ ᴊᴏɪɴ ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ!",
             show_alert=True
         )
 
     keyboard = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("Main Channel", url="https://t.me/EmitingStars_Botz"),
-            InlineKeyboardButton("Support", url="https://t.me/+HZuPVe0l-F1mM2Jl")
+            InlineKeyboardButton("Mᴀɪɴ ᴄʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),
+            InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
         ],
         [
-            InlineKeyboardButton("⤬ Kidnapp Me Baby ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
+            InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ ᴍᴇ ʙᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
         ]
     ])
 
@@ -181,7 +182,8 @@ async def chk_callback(_, cb: CallbackQuery):
         "I'm an <b>auto-approve bot</b>. Add me to your chat and promote me to admin "
         "with <b>Add Members</b> permission.",
         reply_markup=keyboard,
-        parse_mode=ParseMode.HTML
+        parse_mode=ParseMode.HTML, 
+        message_effect_id=5104841245755180586 #🔥
     )
 
 # ====================================================
@@ -198,7 +200,7 @@ async def dbtool(_, m: Message):
     group_percent = (total_groups / total) * 100 if total else 0
 
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("✖ Close", callback_data="close_stats")]
+        [InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_stats")]
     ])
 
     timestamp = datetime.now().strftime("%d %b %Y • %I:%M %p")
@@ -215,7 +217,8 @@ async def dbtool(_, m: Message):
         photo="https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
         caption=caption,
         reply_markup=keyboard,
-        parse_mode=ParseMode.MARKDOWN
+        parse_mode=ParseMode.HTML, 
+        message_effect_id=5046509860389126442 #🎉
     )
     
 @bot_app.on_callback_query(filters.regex("close_stats"))
