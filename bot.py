@@ -328,11 +328,14 @@ async def help_command(_, m: Message):
 #                    ADMIMS
 # ====================================================
 
-@app.on_message(filters.command("addadmin") & filters.user(cfg.SUDO))
+@app.on_message(filters.command("addadmin") & is_sudo())
 async def addadmin(_, m: Message):
-    if len(m.command) < 2 or not m.command[1].isdigit():
+    if len(m.command) < 2 or not all(x.isdigit() for x in m.command[1:]):
         return await m.reply(
-            "Usage: `/addadmin <user_id>`",
+            "Yᴏᴜ ɴᴇᴇᴅ ᴛᴏ ᴀᴅᴅ Aᴅᴍɪɴ ɪᴅs\n\n"
+            "**<blockquote>EXAMPLE:**\n"
+            "`/addadmin 123456789` — ᴀᴅᴅ ᴏɴᴇ ᴜsᴇʀ\n"
+            "`/addadmin 123456789 987654321` — ᴀᴅᴅ ᴍᴜʟᴛɪᴘʟᴇ ᴜsᴇʀs</blockquote>",
             parse_mode=ParseMode.MARKDOWN
         )
     
