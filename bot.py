@@ -452,7 +452,7 @@ async def listadmin(_, m: Message):
     await m.reply_photo(
         photo="https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
         caption=text,
-        parse_mode="HTML",
+        parse_mode=ParseMode.HTML,
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
         )
