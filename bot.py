@@ -44,7 +44,7 @@ user_app = Client(
 #                   MAIN PROCESS
 # ====================================================
 
-@app.on_chat_join_request(filters.group | filters.channel)
+@bot_app.on_chat_join_request(filters.group | filters.channel)
 async def approve(_, m: Message):
     chat = m.chat
     user = m.from_user
@@ -101,7 +101,7 @@ async def popup_action(_, cb: CallbackQuery):
 from pyrogram.types import InputMediaPhoto
 
 
-@app.on_message(filters.private & filters.command("start"))
+@bot_app.on_message(filters.private & filters.command("start"))
 async def start_command(_, m: Message):
     try:
         await app.get_chat_member(cfg.CHID, m.from_user.id)
@@ -153,7 +153,7 @@ async def start_command(_, m: Message):
 #                   CALLBACK CHECK
 # ====================================================
 
-@app.on_callback_query(filters.regex("chk"))
+@bot_app.on_callback_query(filters.regex("chk"))
 async def chk_callback(_, cb: CallbackQuery):
     try:
         await app.get_chat_member(cfg.CHID, cb.from_user.id)
@@ -187,7 +187,7 @@ async def chk_callback(_, cb: CallbackQuery):
 #                      INFO CMD
 # ====================================================
 
-@app.on_message(filters.command("users") & is_sudo())
+@bot_app.on_message(filters.command("users") & is_sudo())
 async def dbtool(_, m: Message):
     total_users = all_users()
     total_groups = all_groups()
@@ -217,7 +217,7 @@ async def dbtool(_, m: Message):
         parse_mode=ParseMode.MARKDOWN
     )
     
-@app.on_callback_query(filters.regex("close_stats"))
+@bot_app.on_callback_query(filters.regex("close_stats"))
 async def close_stats(_, cb: CallbackQuery):
     await cb.message.delete()
     await cb.answer("Closed!", show_alert=True)
@@ -226,7 +226,7 @@ async def close_stats(_, cb: CallbackQuery):
 #                 BROADCAST (COPY)
 # ====================================================
 
-@app.on_message(filters.command("bcast") & is_sudo())
+@bot_app.on_message(filters.command("bcast") & is_sudo())
 async def bcast(_, m: Message):
     global canceled
     canceled = False
@@ -310,7 +310,7 @@ async def bcast(_, m: Message):
         )
 
 # === Cancel Button Callback ===
-@app.on_callback_query(filters.regex("cancel_bcast"))
+@bot_app.on_callback_query(filters.regex("cancel_bcast"))
 async def cancel_bcast(_, cb):
     global canceled
     canceled = True
@@ -323,7 +323,7 @@ async def cancel_bcast(_, cb):
     )
 
 # === Close Button Callback ===
-@app.on_callback_query(filters.regex("close_bcast"))
+@bot_app.on_callback_query(filters.regex("close_bcast"))
 async def close_bcast(_, cb):
     await cb.message.delete()
     await cb.answer()
@@ -332,7 +332,7 @@ async def close_bcast(_, cb):
 #               BROADCAST (FORWARD)
 # ====================================================
 
-@app.on_message(filters.command("fcast") & is_sudo())
+@bot_app.on_message(filters.command("fcast") & is_sudo())
 async def fcast(_, m: Message):
     global canceled
     canceled = False
@@ -408,7 +408,7 @@ async def fcast(_, m: Message):
         )
 
 # === Cancel Button Callback ===
-@app.on_callback_query(filters.regex("cancel_fcast"))
+@bot_app.on_callback_query(filters.regex("cancel_fcast"))
 async def cancel_fcast(_, cb):
     global canceled
     canceled = True
@@ -430,7 +430,7 @@ async def close_fcast(_, cb):
 #                    HELP CENTER
 # ====================================================
 
-@app.on_message(filters.private & filters.command("help"))
+@bot_app.on_message(filters.private & filters.command("help"))
 async def help_command(_, m: Message):
     keyboard = InlineKeyboardMarkup([
         [InlineKeyboardButton("🛠 Bot Guide", url="https://t.me/YourBotGuide")],  # Row 1
@@ -461,7 +461,7 @@ async def close_help(_, cb: CallbackQuery):
 #                    ADMIMS
 # ====================================================
 
-@app.on_message(filters.command("addadmin") & filters.user(cfg.SUDO))
+@bot_app.on_message(filters.command("addadmin") & filters.user(cfg.SUDO))
 async def addadmin(_, m: Message):
     if len(m.command) < 2 or not all(x.isdigit() for x in m.command[1:]):
         return await m.reply(
@@ -501,7 +501,7 @@ async def addadmin(_, m: Message):
     )
 
 
-@app.on_message(filters.command("removeadmin") & filters.user(cfg.SUDO))
+@bot_app.on_message(filters.command("removeadmin") & filters.user(cfg.SUDO))
 async def removeadmin(_, m: Message):
     args = m.command[1:]
 
@@ -561,7 +561,7 @@ async def removeadmin(_, m: Message):
     )
 
 
-@app.on_message(filters.command("listadmin") & is_sudo())
+@bot_app.on_message(filters.command("listadmin") & is_sudo())
 async def listadmin(_, m: Message):
     admin_ids = list_admins_db()
     if not admin_ids:
@@ -592,7 +592,7 @@ async def listadmin(_, m: Message):
     )
 
 
-@app.on_callback_query(filters.regex("close_msg"))
+@bot_app.on_callback_query(filters.regex("close_msg"))
 async def close_msg_cb(_, cb):
     await cb.message.delete()
     await cb.answer()
@@ -604,7 +604,7 @@ def is_sudo():
 #                   TESTING PURPOSE
 # ====================================================
 
-@app.on_message(filters.command("acceptall"))
+@user_app.on_message(filters.command("acceptall"))
 async def accept_all(_, m: Message):
     try:
         async for req in app.get_chat_join_requests(m.chat.id):
@@ -619,7 +619,7 @@ async def accept_all(_, m: Message):
 
 
 # Reject All Join Requests with Confirmation
-@app.on_message(filters.command("rejectall"))
+@user_app.on_message(filters.command("rejectall"))
 async def reject_all(_, m: Message):
     keyboard = InlineKeyboardMarkup([
         [InlineKeyboardButton("✅ Yes", callback_data="reject_all_confirm"),
@@ -629,7 +629,7 @@ async def reject_all(_, m: Message):
 
 
 # Confirm rejection
-@app.on_callback_query(filters.regex("reject_all_confirm"))
+@user_app.on_callback_query(filters.regex("reject_all_confirm"))
 async def reject_all_confirm(_, cb: CallbackQuery):
     try:
         async for req in app.get_chat_join_requests(cb.message.chat.id):
@@ -645,7 +645,7 @@ async def reject_all_confirm(_, cb: CallbackQuery):
 
 
 # Cancel rejection
-@app.on_callback_query(filters.regex("reject_all_cancel"))
+@user_app.on_callback_query(filters.regex("reject_all_cancel"))
 async def reject_all_cancel(_, cb: CallbackQuery):
     await cb.answer("Action cancelled.", show_alert=True)
     await cb.message.edit("❎ Rejection of pending join requests has been cancelled.")
