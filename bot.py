@@ -139,23 +139,28 @@ async def chk_callback(_, cb: CallbackQuery):
         await app.get_chat_member(cfg.CHID, cb.from_user.id)
     except:
         return await cb.answer(
-            "Yᴏᴜ ʜᴀᴠᴇɴ'ᴛ ᴊᴏɪɴᴇᴅ ᴏᴜʀ ᴄʜᴀɴɴᴇʟ ʏᴇᴛ. Pʟᴇᴀsᴇ ᴊᴏɪɴ ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ..!",
+            "You haven't joined our channel yet. Please join and try again!",
             show_alert=True
         )
 
     keyboard = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),
-            InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
+            InlineKeyboardButton("Main Channel", url="https://t.me/EmitingStars_Botz"),
+            InlineKeyboardButton("Support", url="https://t.me/+HZuPVe0l-F1mM2Jl")
         ],
         [
-            InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ Mᴇ Bᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
+            InlineKeyboardButton("⤬ Kidnapp Me Baby ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
         ]
     ])
+
     add_user(cb.from_user.id)
-    await cb.edit_text(
-        f"**<blockquote>🍁 ʜᴇʟʟᴏ {cb.from_user.mention}!</blockquote>\n<blockquote expandable>ɪ'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ...</blockquote>__**",
-        reply_markup=keyboard
+
+    await cb.edit_message_text(
+        f"🍁 <b>Hello</b> {cb.from_user.mention()}!\n\n"
+        "I'm an <b>auto-approve bot</b>. Add me to your chat and promote me to admin "
+        "with <b>Add Members</b> permission.",
+        reply_markup=keyboard,
+        parse_mode=ParseMode.HTML
     )
 
 # ====================================================
