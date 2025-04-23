@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from datetime import datetime
 from configs import cfg
 
 client = MongoClient(cfg.MONGO_URI)
@@ -16,7 +17,10 @@ def already_db(user_id):
 def add_user(user_id):
     if already_db(user_id):
         return
-    users.insert_one({"user_id": str(user_id)})
+    users.insert_one({
+        "user_id": str(user_id),
+        "joined_at": datetime.utcnow().isoformat()
+    })
 
 def remove_user(user_id):
     if not already_db(user_id):
@@ -34,7 +38,10 @@ def already_dbg(chat_id):
 def add_group(chat_id):
     if already_dbg(chat_id):
         return
-    groups.insert_one({"chat_id": str(chat_id)})
+    groups.insert_one({
+        "chat_id": str(chat_id),
+        "joined_at": datetime.utcnow().isoformat()
+    })
 
 def all_groups():
     return groups.count_documents({})
