@@ -89,7 +89,7 @@ async def approve(_, m: Message):
 
 
 # Callback query handler for the "⚡" button to show a popup message
-@app.on_callback_query(filters.regex("popup_action"))
+@bot_app.on_callback_query(filters.regex("popup_action"))
 async def popup_action(_, cb: CallbackQuery):
     # This sends the popup-style alert when the "⚡" button is clicked
     await cb.answer("This is a popup message!", show_alert=True)
