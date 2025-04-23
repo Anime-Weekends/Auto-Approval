@@ -16,7 +16,7 @@ class Config:
     CHID = int(os.getenv("CHID", "-1002410513772"))
     
     # Add your string session here
-    STRING_SESSION = os.getenv("STRING_SESSION", "BQG2mwYAf3DF9RzUKBx_ey01hdgqCYToVg8w-0TGWntQnq7QSwr3_Nz8Agk7oGmAqAJyV6-SaTjr1MLPgi8NBarag-Uc0CRHxRNhVM3Nh-ZWOW10JUEwXtJksQMw9lW_ci7Hj49a9DswedSOJ550dAeo74EFGLlccz4Y_5kpY7X_dWp63CIp4jxhz0EWsiibfNccVwrFctv2y9AAS4Reiy-mEEK2jTmx-Xx1tJXJ9x5bIO-eru7Wl2OloVyenq-11ttTs21M9GB9L5lKKhmDDvUSZVOjm30F0fnH2Pioftfy7J4SkRe_Hqxj5B7Q4Xh6vTujK7pwzZCk-Tz7qBYYVpNLfTP3IwAAAAF1g6UNAA")
+    STRING_SESSION = os.getenv("STRING_SESSION", "BQGcIrIAOh8-Sqw77vfX0IcZSH_BFbZUDCkRFeQfQfLKSMm2IB52qDSJepEwCp25OVYPgOVcH0-dZS2ImqlWJA8QLPL6v5XdGX7-1bun5CtY11nmBGTi4VANhtBJ4be8PeZsMzUDnLUFtoqCuoZm_xTszs6iySjUaHIHrvgV9MssqbcCJ_bScnTc1lyEHsX3SFSugL3Tw6V6LXgUqYN3EeASpt-Fanb-MQ6ObVoG8KazZZUyunsRSgR5JAqqz-wyvBAnFx7lelilMzLsmZRcmK1r1l9ub6zjpVhvQ0X8D1bcQu37Gz7_laxsKHrtJfhUwkIntdufk2zIy3mkJuYa3J459cg9dAAAAAF_OuMdAA")
 
     # Admin User IDs
     SUDO = list(map(int, os.getenv("SUDO", "5548954124 6429532957").split()))
