@@ -50,7 +50,7 @@ async def approve(_, m: Message):
     user = m.from_user
     try:
         add_group(chat.id)
-        await app.approve_chat_join_request(chat.id, user.id)
+        await bot_app.approve_chat_join_request(chat.id, user.id)
         
         # Inline buttons layout
         keyboard = InlineKeyboardMarkup(
@@ -72,7 +72,7 @@ async def approve(_, m: Message):
         )
         
         # Sending a photo with the message and buttons
-        await app.send_photo(
+        await bot_app.send_photo(
             user.id,
             "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
             caption=caption,
@@ -156,7 +156,7 @@ async def start_command(_, m: Message):
 @bot_app.on_callback_query(filters.regex("chk"))
 async def chk_callback(_, cb: CallbackQuery):
     try:
-        await app.get_chat_member(cfg.CHID, cb.from_user.id)
+        await bot_app.get_chat_member(cfg.CHID, cb.from_user.id)
     except:
         return await cb.answer(
             "You haven't joined our channel yet. Please join and try again!",
@@ -608,7 +608,7 @@ def is_sudo():
 async def accept_all(_, m: Message):
     try:
         async for req in app.get_chat_join_requests(m.chat.id):
-            await app.approve_chat_join_request(m.chat.id, req.user.id)
+            await user_app.approve_chat_join_request(m.chat.id, req.user.id)
         await m.reply("✅ All pending requests have been accepted successfully.")
     except PeerIdInvalid:
         await m.reply("❌ Invalid group/channel ID.")
@@ -633,7 +633,7 @@ async def reject_all(_, m: Message):
 async def reject_all_confirm(_, cb: CallbackQuery):
     try:
         async for req in app.get_chat_join_requests(cb.message.chat.id):
-            await app.decline_chat_join_request(cb.message.chat.id, req.user.id)
+            await user_app.decline_chat_join_request(cb.message.chat.id, req.user.id)
         await cb.answer("All requests rejected.", show_alert=True)
         await cb.message.edit("❌ All pending join requests have been rejected.")
     except PeerIdInvalid:
