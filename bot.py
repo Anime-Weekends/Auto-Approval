@@ -16,6 +16,7 @@ from database import add_user, add_group, all_users, all_groups, users, remove_u
 from database import add_admin_db, remove_admin_db, list_admins_db, is_admin
 from configs import cfg
 from database import datetime
+from database import is_sudo
 
 import random
 import asyncio
