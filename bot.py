@@ -29,6 +29,7 @@ app = Client(
     "approver",
     api_id=cfg.API_ID,
     api_hash=cfg.API_HASH,
+    session_string=cfg.STRING_SESSION,
     bot_token=cfg.BOT_TOKEN
 )
 
