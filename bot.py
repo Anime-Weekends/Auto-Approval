@@ -607,99 +607,78 @@ def is_sudo():
 @user_app.on_message(filters.command("acceptall"))
 async def accept_all(_, m: Message):
     try:
-        member = await user_app.get_chat_member(m.chat.id, (await user_app.get_me()).id)
-        if member.status not in ("administrator", "creator"):
-            user = await user_app.get_me()
-            button = InlineKeyboardMarkup([
-                [InlineKeyboardButton("➕ Add as Admin", url=f"https://t.me/{user.username}")]
-            ])
-            return await m.reply(
-                f"⚠️ <b>Please add</b> <code>@{user.username}</code> <b>as an admin in this group/channel to approve requests.</b>",
-                reply_markup=button,
-                parse_mode=ParseMode.HTML
-            )
+        me = await user_app.get_me()
+        member = await user_app.get_chat_member(m.chat.id, me.id)
 
-        count = 0
+        if member.status not in ("administrator", "creator"):
+            button = InlineKeyboardMarkup([
+                [InlineKeyboardButton("➕ Add as Admin", url=f"https://t.me/{me.username}")]
+            ])
+            return await safe_reply(m, f"⚠️ <b>Please add</b> <code>@{me.username}</code> <b>as an admin to approve join requests.</b>", button)
+
+        requests = [req async for req in user_app.get_chat_join_requests(m.chat.id)]
+
         batch_size = 50
         delay_seconds = 5
         approved = 0
 
-        requests = []
-        async for req in user_app.get_chat_join_requests(m.chat.id):
-            requests.append(req)
-
         for i in range(0, len(requests), batch_size):
-            batch = requests[i:i+batch_size]
-            for req in batch:
+            for req in requests[i:i + batch_size]:
                 await user_app.approve_chat_join_request(m.chat.id, req.user.id)
                 approved += 1
             await asyncio.sleep(delay_seconds)
 
-        await m.reply(f"✅ <b>Successfully approved {approved} join requests.</b>", parse_mode=ParseMode.HTML)
+        await safe_reply(m, f"✅ <b>Successfully approved {approved} join requests.</b>")
 
     except PeerIdInvalid:
-        await m.reply("❌ <b>Invalid group/channel ID.</b>", parse_mode=ParseMode.HTML)
-    except RPCError as err:
-        await m.reply(f"⚠️ <b>Telegram Error:</b> <code>{err}</code>", parse_mode=ParseMode.HTML)
+        await safe_reply(m, "❌ <b>Invalid group/channel ID.</b>")
     except Exception as err:
-        await m.reply(f"⚠️ <b>Unexpected Error:</b> <code>{err}</code>", parse_mode=ParseMode.HTML)
-
+        await safe_reply(m, f"⚠️ <b>Unexpected Error:</b> <code>{err}</code>")
 
 @user_app.on_message(filters.command("rejectall"))
 async def reject_all(_, m: Message):
     try:
-        member = await user_app.get_chat_member(m.chat.id, (await user_app.get_me()).id)
+        me = await user_app.get_me()
+        member = await user_app.get_chat_member(m.chat.id, me.id)
+
         if member.status not in ("administrator", "creator"):
-            user = await user_app.get_me()
             button = InlineKeyboardMarkup([
-                [InlineKeyboardButton("➕ Add as Admin", url=f"https://t.me/{user.username}")]
+                [InlineKeyboardButton("➕ Add as Admin", url=f"https://t.me/{me.username}")]
             ])
-            return await m.reply(
-                f"⚠️ <b>Please add</b> <code>@{user.username}</code> <b>as an admin in this group/channel to reject requests.</b>",
-                reply_markup=button,
-                parse_mode=ParseMode.HTML
-            )
+            return await safe_reply(m, f"⚠️ <b>Please add</b> <code>@{me.username}</code> <b>as an admin to reject join requests.</b>", button)
 
         keyboard = InlineKeyboardMarkup([
             [InlineKeyboardButton("✅ Yes", callback_data="reject_all_confirm"),
              InlineKeyboardButton("❌ No", callback_data="reject_all_cancel")]
         ])
-        await m.reply(
-            "Are you sure you want to reject all pending join requests?",
-            reply_markup=keyboard,
-            parse_mode=ParseMode.HTML
-        )
+        await safe_reply(m, "Are you sure you want to reject all pending join requests?", keyboard)
 
     except Exception as err:
-        await m.reply(f"⚠️ <b>Unexpected Error:</b> <code>{err}</code>", parse_mode=ParseMode.HTML)
-
+        await safe_reply(m, f"⚠️ <b>Unexpected Error:</b> <code>{err}</code>")
 
 @user_app.on_callback_query(filters.regex("reject_all_confirm"))
 async def reject_all_confirm(_, cb: CallbackQuery):
     try:
-        member = await user_app.get_chat_member(cb.message.chat.id, (await user_app.get_me()).id)
+        me = await user_app.get_me()
+        member = await user_app.get_chat_member(cb.message.chat.id, me.id)
+
         if member.status not in ("administrator", "creator"):
-            user = await user_app.get_me()
             button = InlineKeyboardMarkup([
-                [InlineKeyboardButton("➕ Add as Admin", url=f"https://t.me/{user.username}")]
+                [InlineKeyboardButton("➕ Add as Admin", url=f"https://t.me/{me.username}")]
             ])
             return await cb.message.edit(
-                f"⚠️ <b>Please add</b> <code>@{user.username}</code> <b>as an admin in this group/channel to reject requests.</b>",
+                f"⚠️ <b>Please add</b> <code>@{me.username}</code> <b>as an admin to reject join requests.</b>",
                 reply_markup=button,
                 parse_mode=ParseMode.HTML
             )
 
+        requests = [req async for req in user_app.get_chat_join_requests(cb.message.chat.id)]
         batch_size = 50
         delay_seconds = 5
         rejected = 0
 
-        requests = []
-        async for req in user_app.get_chat_join_requests(cb.message.chat.id):
-            requests.append(req)
-
         for i in range(0, len(requests), batch_size):
-            batch = requests[i:i+batch_size]
-            for req in batch:
+            for req in requests[i:i + batch_size]:
                 await user_app.decline_chat_join_request(cb.message.chat.id, req.user.id)
                 rejected += 1
             await asyncio.sleep(delay_seconds)
@@ -707,18 +686,20 @@ async def reject_all_confirm(_, cb: CallbackQuery):
         await cb.answer("All requests rejected.", show_alert=True)
         await cb.message.edit(f"❌ <b>Successfully rejected {rejected} join requests.</b>", parse_mode=ParseMode.HTML)
 
-    except PeerIdInvalid:
-        await cb.answer("Invalid chat ID.", show_alert=True)
-    except RPCError as err:
-        await cb.answer(f"Telegram Error: {err}", show_alert=True)
     except Exception as err:
         await cb.answer(f"Unexpected Error: {err}", show_alert=True)
-
 
 @user_app.on_callback_query(filters.regex("reject_all_cancel"))
 async def reject_all_cancel(_, cb: CallbackQuery):
     await cb.answer("Action cancelled.", show_alert=True)
     await cb.message.edit("❎ Rejection of pending join requests has been cancelled.")
+
+# Helper for safe replies
+async def safe_reply(m: Message, text: str, reply_markup=None):
+    try:
+        return await m.reply(text, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
+    except Exception as err:
+        print(f"Reply failed: {err}")
 
 # ====================================================
 #                   USER ID
