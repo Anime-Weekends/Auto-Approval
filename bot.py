@@ -15,6 +15,7 @@ from pyrogram.enums import ParseMode
 from database import add_user, add_group, all_users, all_groups, users, remove_user
 from database import add_admin_db, remove_admin_db, list_admins_db, is_admin
 from configs import cfg
+from database import datetime
 
 import random
 import asyncio
@@ -157,29 +158,36 @@ async def dbtool(_, m: Message):
     total_users = all_users()
     total_groups = all_groups()
     total = total_users + total_groups
-    
-    keyboard = InlineKeyboardMarkup(
-        [
-            [InlineKeyboardButton("Cʟᴏsᴇ ᴄᴜᴛɪᴇ", callback_data="close_stats")]
-        ]
+
+    user_percent = (total_users / total) * 100 if total else 0
+    group_percent = (total_groups / total) * 100 if total else 0
+
+    keyboard = InlineKeyboardMarkup([
+        [InlineKeyboardButton("✖ Close", callback_data="close_stats")]
+    ])
+
+    timestamp = datetime.now().strftime("%d %b %Y • %I:%M %p")
+
+    caption = (
+        f"**📊 Chat Statistics**\n\n"
+        f"👤 Users: `{total_users}` ({user_percent:.1f}%)\n"
+        f"👥 Groups: `{total_groups}` ({group_percent:.1f}%)\n"
+        f"📦 Total Chats: `{total}`\n\n"
+        f"🕒 Last Updated: `{timestamp}`"
     )
 
     await m.reply_photo(
-        "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
-        caption=(
-            f"🍀 **Chats Stats** 🍀\n"
-            f"❏ Users : `{total_users}`\n"
-            f"❏ Groups : `{total_groups}`\n"
-            f"❏ Total : `{total}`"
-        ),
-        reply_markup=keyboard
+        photo="https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
+        caption=caption,
+        reply_markup=keyboard,
+        parse_mode=ParseMode.MARKDOWN
     )
-
+    
 @app.on_callback_query(filters.regex("close_stats"))
 async def close_stats(_, cb: CallbackQuery):
     await cb.message.delete()
-    await cb.answer("Stats message closed.", show_alert=True)
-
+    await cb.answer("Closed!", show_alert=True)
+    
 # ====================================================
 #                 BROADCAST (COPY)
 # ====================================================
