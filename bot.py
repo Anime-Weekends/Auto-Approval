@@ -81,7 +81,8 @@ async def popup_action(_, cb: CallbackQuery):
 
 from pyrogram.types import InputMediaPhoto
 
-@app.on_message(filters.private & filters.command("start"))
+
+app.on_message(filters.private & filters.command("start"))
 async def start_command(_, m: Message):
     try:
         await app.get_chat_member(cfg.CHID, m.from_user.id)
@@ -89,39 +90,45 @@ async def start_command(_, m: Message):
         try:
             invite_link = await app.create_chat_invite_link(cfg.CHID)
         except:
-            return await m.reply("**Make Sure I Am Admin In Your Channel**")
+            return await m.reply("**Make sure I am an admin in your channel**")
 
         button = InlineKeyboardMarkup(
             [[
-                InlineKeyboardButton("Jᴏɪɴ ᴄʜᴀɴɴᴇʟ", url=invite_link.invite_link),
-                InlineKeyboardButton("ᴛʀʏ ᴀɢᴀɪɴ!", url="https://t.me/Private_Auto_Approval_Bot?start=start")
+                InlineKeyboardButton("Join Channel", url=invite_link.invite_link),
+                InlineKeyboardButton("Try Again", url="https://t.me/Private_Auto_Approval_Bot?start=start")
             ]]
         )
 
         return await m.reply_photo(
-            photo="https://i.ibb.co/C5N2Xhk9/photo-2025-04-19-18-11-35-7496424313436766224.jpg",  # Replace with your image URL or file path
-            caption="**<blockquote>⚠️ Aᴄᴄᴇss ᴅᴇɴɪᴇᴅ! ⚠️\n\nYou must join the required channel first. Please do so and try again.</blockquote>**",
-            reply_markup=button
+            photo="https://i.ibb.co/C5N2Xhk9/photo-2025-04-19-18-11-35-7496424313436766224.jpg",
+            caption="⚠️ <b>Access Denied!</b>\n\nYou must join the required channel first. Please do so and try again.",
+            reply_markup=button,
+            parse_mode=ParseMode.HTML
         )
 
     add_user(m.from_user.id)
+
     keyboard = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),
-            InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
+            InlineKeyboardButton("Main Channel", url="https://t.me/EmitingStars_Botz"),
+            InlineKeyboardButton("Support", url="https://t.me/+HZuPVe0l-F1mM2Jl")
         ],
         [
-            InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ Mᴇ Bᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
+            InlineKeyboardButton("⤬ Kidnapp Me Baby ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
         ]
     ])
 
     await m.reply_photo(
         "https://i.ibb.co/v6J0JM80/photo-2025-03-13-18-50-40-7481368571868610580.jpg",
-        caption=f"**<blockquote>🍁 ʜᴇʟʟᴏ {m.from_user.mention}!</blockquote>\n<blockquote expandable>ɪ'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ. ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ᴄʜᴀᴛ ᴀɴᴅ ᴘʀᴏᴍᴏᴛᴇ ᴍᴇ ᴛᴏ ᴀᴅᴍɪɴ ᴡɪᴛʜ ᴀᴅᴅ ᴍᴇᴍʙᴇʀs ᴘᴇʀᴍɪssɪᴏɴ.</blockquote>__**",
-        reply_markup=keyboard, 
+        caption=(
+            f"🍁 <b>Hello</b> {m.from_user.mention}!\n\n"
+            "I'm an auto-approve bot. Add me to your chat and promote me to admin "
+            "with <b>Add Members</b> permission."
+        ),
+        reply_markup=keyboard,
+        parse_mode=ParseMode.HTML,
         message_effect_id=5104841245755180586 #🔥
     )
-
 # ====================================================
 #                   CALLBACK CHECK
 # ====================================================
