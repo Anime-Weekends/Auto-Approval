@@ -28,8 +28,7 @@ app = Client(
     "approver",
     api_id=cfg.API_ID,
     api_hash=cfg.API_HASH,
-    bot_token=cfg.BOT_TOKEN, 
-    session_string=cfg.SESSION_STRING
+    bot_token=cfg.BOT_TOKEN
 )
 
 # ====================================================
