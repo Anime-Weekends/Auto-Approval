@@ -67,9 +67,9 @@ async def approve(_, m: Message):
         # Caption with user and chat links
         caption = (
             f"<b>Hᴇʏ sᴡᴇᴇᴛɪᴇ</b> <a href='tg://user?id={user.id}'>{user.first_name}</a>  ⭐✨\n\n"
-            f"Your request has been approved! Welcome to"
-            f"<a href='https://t.me/c/{str(chat.id)[4:]}'>{chat.title}</a>\n\n"
-            f"<i>By: <a href='https://t.me/EmitingStars_Botz'>Emiting Stars</a></i>"
+            f"Aᴄᴄᴇss ʜᴀs ʙᴇᴇɴ <b>Gʀᴀɴᴛᴇᴅ</b> sᴛᴇᴘ ɪɴᴛᴏ ᴛʜᴇ ᴘʀᴇsᴛɪɢɪᴏᴜs ʜᴀʟʟs ᴏғ"
+            f"<a href='https://t.me/c/{str(chat.id)[4:]}'>{chat.title}</a>\n"
+            f"<i>By: <a href='https://t.me/EmitingStars_Botz'>Eᴍɪᴛɪɴɢ sᴛᴀʀs</a></i>"
         )
         
         # Sending a photo with the message and buttons
