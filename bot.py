@@ -206,11 +206,11 @@ async def dbtool(_, m: Message):
     timestamp = datetime.now().strftime("%d %b %Y • %I:%M %p")
 
     caption = (
-        f"**📊 Chat Statistics**\n\n"
-        f"👤 Users: `{total_users}` ({user_percent:.1f}%)\n"
-        f"👥 Groups: `{total_groups}` ({group_percent:.1f}%)\n"
-        f"📦 Total Chats: `{total}`\n\n"
-        f"🕒 Last Updated: `{timestamp}`"
+        f"**<blockquote>📊 Cʜᴀᴛ sᴛᴀᴛɪsᴛɪᴄs</blockquote>**\n\n"
+        f"<blockquote>👤 ᴜsᴇʀs : `{total_users}` ({user_percent:.1f}%)</blockquote>\n"
+        f"<blockquote>👥 ɢʀᴏᴜᴘs : `{total_groups}` ({group_percent:.1f}%)</blockquote>\n"
+        f"<blockquote>📦 ᴛᴏᴛᴀʟ ᴄʜᴀᴛs : `{total}`</blockquote>\n\n"
+        f"<blockquote>🕒 ʟᴀsᴛ ᴜᴘᴅᴀᴛᴇᴅ : `{timestamp}`</blockquote>"
     )
 
     await m.reply_photo(
