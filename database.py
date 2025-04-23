@@ -103,3 +103,8 @@ def log_approval(user_id, chat_id):
 
 def get_total_approvals():
     return approvals.count_documents({})
+
+# === Approval + Logging Wrapper ===
+async def approve_and_log(bot, chat_id, user_id):
+    await bot.approve_chat_join_request(chat_id, user_id)
+    log_approval(user_id, chat_id)
