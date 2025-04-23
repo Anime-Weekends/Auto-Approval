@@ -655,4 +655,6 @@ async def reject_all_cancel(_, cb: CallbackQuery):
 # ====================================================
 
 print("I'm Alive Now!")
-app.run()
+if __name__ == "__main__":
+    user_app.start()
+    bot_app.run()
