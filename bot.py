@@ -677,10 +677,10 @@ async def close_callback(client, callback_query):
 #                   TOTAL APPROVED
 # ====================================================
 
-@user_app.on_message(filters.command("totalapproved"))
+@user_app.on_message(filters.command("totalapproved") & is_sudo())
 async def total_approved(_, m: Message):
     try:
-        total = approved_collection.count_documents({})
+        total = db['approvals'].count_documents({})
         await m.reply(
             f"✅ <b>Total users approved by the bot:</b> <code>{total}</code>",
             parse_mode=ParseMode.HTML
