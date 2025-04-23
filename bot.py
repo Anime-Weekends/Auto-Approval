@@ -672,6 +672,25 @@ async def close_callback(client, callback_query):
     await callback_query.message.delete()
     await callback_query.answer()
 
+
+# ====================================================
+#                   TOTAL APPROVED
+# ====================================================
+
+@user_app.on_message(filters.command("totalapproved"))
+async def total_approved(_, m: Message):
+    try:
+        total = approved_collection.count_documents({})
+        await m.reply(
+            f"✅ <b>Total users approved by the bot:</b> <code>{total}</code>",
+            parse_mode=ParseMode.HTML
+        )
+    except Exception as e:
+        await m.reply(
+            f"⚠️ <b>Error:</b> <code>{e}</code>",
+            parse_mode=ParseMode.HTML
+        )
+        
 # ====================================================
 #                    BOT START
 # ====================================================
