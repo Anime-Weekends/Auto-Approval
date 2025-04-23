@@ -104,7 +104,7 @@ from pyrogram.types import InputMediaPhoto
 @bot_app.on_message(filters.private & filters.command("start"))
 async def start_command(_, m: Message):
     try:
-        await app.get_chat_member(cfg.CHID, m.from_user.id)
+        await bot_app.get_chat_member(cfg.CHID, m.from_user.id)
     except:
         try:
             invite_link = await app.create_chat_invite_link(cfg.CHID)
