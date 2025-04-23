@@ -1,14 +1,17 @@
 from pymongo import MongoClient
 from datetime import datetime
 from configs import cfg
+from pyrogram import filters
 
 client = MongoClient(cfg.MONGO_URI)
 
+# === Database & Collections ===
 db = client['main']
 users = db['users']
 groups = db['groups']
-admins = db['admins']  # Collection for custom admins
-
+admins = db['admins']
+logs = db['logs']  # For logging actions like /acceptall, /rejectall
+counters = db['command_counters']  # For tracking command usage count
 
 # === Users ===
 def already_db(user_id):
@@ -58,9 +61,31 @@ def remove_admin_db(user_id):
 def list_admins_db():
     return [admin["user_id"] for admin in admins.find()]
 
-# === Sudo Checker ===
-from pyrogram import filters
 
+# === Logging Actions (Optional) ===
+def log_action(user_id, chat_id, action_type):
+    logs.insert_one({
+        "user_id": int(user_id),
+        "chat_id": int(chat_id),
+        "action": action_type,  # 'acceptall' or 'rejectall'
+        "timestamp": datetime.utcnow().isoformat()
+    })
+
+
+# === Command Counter (Optional) ===
+def increment_command_count(command_name):
+    counters.update_one(
+        {"command": command_name},
+        {"$inc": {"count": 1}},
+        upsert=True
+    )
+
+def get_command_count(command_name):
+    cmd = counters.find_one({"command": command_name})
+    return cmd["count"] if cmd else 0
+
+
+# === Sudo Checker ===
 def is_sudo():
     return filters.create(lambda _, __, m: m.from_user and (
         m.from_user.id in cfg.SUDO or is_admin(m.from_user.id)
