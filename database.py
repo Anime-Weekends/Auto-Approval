@@ -7,7 +7,7 @@ client = MongoClient(cfg.MONGO_URI)
 db = client['main']
 users = db['users']
 groups = db['groups']
-admins = db['admins']  # New collection for admins
+admins = db['admins']  # Collection for custom admins
 
 
 # === Users ===
@@ -60,3 +60,12 @@ def remove_admin_db(user_id):
 
 def list_admins_db():
     return [admin["user_id"] for admin in admins.find()]
+
+
+# === Sudo Checker ===
+from pyrogram import filters
+
+def is_sudo():
+    return filters.create(lambda _, __, m: m.from_user and (
+        m.from_user.id in cfg.SUDO or is_admin(m.from_user.id)
+    ))
