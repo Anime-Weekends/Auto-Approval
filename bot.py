@@ -598,55 +598,46 @@ def is_sudo():
 @app.on_message(filters.command("acceptall"))
 async def accept_all(_, m: Message):
     try:
-        # Get all pending join requests for the chat
-        pending_requests = await app.get_chat_join_requests(m.chat.id)
-        for request in pending_requests:
-            await app.approve_chat_join_request(m.chat.id, request.user.id)
-        
-        await m.reply("All pending requests have been accepted successfully.")
+        async for request in app.get_chat_join_requests(m.chat.id):
+            await app.approve_chat_join_request(m.chat.id, request.from_user.id)
+        await m.reply("✅ All pending requests have been accepted successfully.")
     except PeerIdInvalid:
-        await m.reply("Invalid group/channel ID.")
+        await m.reply("❌ Invalid group/channel ID.")
     except Exception as err:
-        await m.reply(f"An error occurred: {err}")
+        await m.reply(f"⚠️ An error occurred: {err}")
 
 
 # Reject all join requests with confirmation
 @app.on_message(filters.command("rejectall"))
 async def reject_all(_, m: Message):
-    # Confirmation request for rejecting all
     keyboard = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("Yes", callback_data="reject_all_confirm"),
-            InlineKeyboardButton("No", callback_data="reject_all_cancel")
+            InlineKeyboardButton("✅ Yes", callback_data="reject_all_confirm"),
+            InlineKeyboardButton("❌ No", callback_data="reject_all_cancel")
         ]
     ])
-    
     await m.reply("Are you sure you want to reject all pending join requests?", reply_markup=keyboard)
 
 
-# Handle the confirmation to reject all join requests
+# Confirm rejection
 @app.on_callback_query(filters.regex("reject_all_confirm"))
 async def reject_all_confirm(_, cb: CallbackQuery):
     try:
-        # Get all pending join requests for the chat
-        pending_requests = await app.get_chat_join_requests(cb.message.chat.id)
-        for request in pending_requests:
-            await app.decline_chat_join_request(cb.message.chat.id, request.user.id)
-        
-        await cb.answer("All pending requests have been rejected.", show_alert=True)
-        await cb.message.edit("All pending requests have been rejected.")
+        async for request in app.get_chat_join_requests(cb.message.chat.id):
+            await app.decline_chat_join_request(cb.message.chat.id, request.from_user.id)
+        await cb.answer("All requests rejected.", show_alert=True)
+        await cb.message.edit("❌ All pending join requests have been rejected.")
     except PeerIdInvalid:
-        await cb.answer("Invalid group/channel ID.", show_alert=True)
+        await cb.answer("Invalid chat ID.", show_alert=True)
     except Exception as err:
-        await cb.answer(f"An error occurred: {err}", show_alert=True)
+        await cb.answer(f"Error: {err}", show_alert=True)
 
 
-# Handle the cancellation of the rejection action
+# Cancel rejection
 @app.on_callback_query(filters.regex("reject_all_cancel"))
 async def reject_all_cancel(_, cb: CallbackQuery):
     await cb.answer("Action cancelled.", show_alert=True)
-    await cb.message.edit("You have cancelled the action of rejecting all pending requests.")
-
+    await cb.message.edit("❎ Rejection of pending join requests has been cancelled.")
 
 # ====================================================
 #                    BOT START
