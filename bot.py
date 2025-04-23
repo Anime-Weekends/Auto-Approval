@@ -607,9 +607,10 @@ def is_sudo():
 @user_app.on_message(filters.command("acceptall"))
 async def accept_all(_, m: Message):
     try:
-        async for req in app.get_chat_join_requests(m.chat.id):
-            await user_app.approve_chat_join_request(m.chat.id, req.user.id)
-        await m.reply("✅ All pending requests have been accepted successfully.")
+        chat = await user_app.get_chat(m.chat.id)
+        async for req in user_app.get_chat_join_requests(chat.id):
+            await user_app.approve_chat_join_request(chat.id, req.user.id)
+        await m.reply("✅ All pending join requests have been approved.")
     except PeerIdInvalid:
         await m.reply("❌ Invalid group/channel ID.")
     except RPCError as err:
@@ -618,7 +619,6 @@ async def accept_all(_, m: Message):
         await m.reply(f"⚠️ Unexpected Error: {err}")
 
 
-# Reject All Join Requests with Confirmation
 @user_app.on_message(filters.command("rejectall"))
 async def reject_all(_, m: Message):
     keyboard = InlineKeyboardMarkup([
@@ -628,12 +628,12 @@ async def reject_all(_, m: Message):
     await m.reply("Are you sure you want to reject all pending join requests?", reply_markup=keyboard)
 
 
-# Confirm rejection
 @user_app.on_callback_query(filters.regex("reject_all_confirm"))
 async def reject_all_confirm(_, cb: CallbackQuery):
     try:
-        async for req in app.get_chat_join_requests(cb.message.chat.id):
-            await user_app.decline_chat_join_request(cb.message.chat.id, req.user.id)
+        chat = await user_app.get_chat(cb.message.chat.id)
+        async for req in user_app.get_chat_join_requests(chat.id):
+            await user_app.decline_chat_join_request(chat.id, req.user.id)
         await cb.answer("All requests rejected.", show_alert=True)
         await cb.message.edit("❌ All pending join requests have been rejected.")
     except PeerIdInvalid:
@@ -644,7 +644,6 @@ async def reject_all_confirm(_, cb: CallbackQuery):
         await cb.answer(f"Unexpected Error: {err}", show_alert=True)
 
 
-# Cancel rejection
 @user_app.on_callback_query(filters.regex("reject_all_cancel"))
 async def reject_all_cancel(_, cb: CallbackQuery):
     await cb.answer("Action cancelled.", show_alert=True)
