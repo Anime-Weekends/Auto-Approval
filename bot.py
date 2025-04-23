@@ -623,7 +623,10 @@ async def accept_all(_, m: Message):
 
         await m.reply(
             f"✅ Successfully approved <b>{approved}</b> join request(s).",
-            parse_mode=ParseMode.HTML
+            parse_mode=ParseMode.HTML,
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton("❌ Close", callback_data="close_msg")]]
+            )
         )
 
     except PeerIdInvalid:
@@ -632,6 +635,13 @@ async def accept_all(_, m: Message):
         await m.reply(f"⚠️ <b>Telegram Error:</b> <code>{err}</code>", parse_mode=ParseMode.HTML)
     except Exception as err:
         await m.reply(f"⚠️ <b>Unexpected Error:</b> <code>{err}</code>", parse_mode=ParseMode.HTML)
+
+@user_app.on_callback_query(filters.regex("close_msg"))
+async def close_message(_, cb):
+    try:
+        await cb.message.delete()
+    except Exception:
+        await cb.answer("Couldn't delete the message.", show_alert=True)
 
 # ====================================================
 #                   USER ID
