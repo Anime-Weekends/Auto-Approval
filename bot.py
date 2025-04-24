@@ -767,7 +767,7 @@ async def close_message(_, cb):
 @bot_app.on_message(filters.private & filters.command("approveall"))
 async def help_command(_, m: Message):
     # Welcome animation
-    welcome_text = "<pre>Pʀᴇᴘᴀʀɪɴɢ sᴛᴀᴛᴜs ʀᴇᴘᴏʀᴛ...</pre>"
+    welcome_text = "<pre>Hᴏʟᴅ ᴜᴘ, ᴄᴜᴛɪᴇ… ɴᴏᴛ sᴏ ғᴀsᴛ</pre>"
     msg = await m.reply_text(welcome_text)
     await asyncio.sleep(0.2)
     await msg.edit_text("<b><i><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ...</pre></i></b>")
