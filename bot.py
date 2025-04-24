@@ -743,7 +743,7 @@ async def help_command(_, m: Message):
     )
 
     # Image URL or file path (you can use a URL to the image)
-    image_url = "https://example.com/path/to/your/image.jpg"  # Replace with your image URL or file path
+    image_url = "https://i.ibb.co/xSG8wZJD/photo-2025-04-24-11-20-18-7496838026161553424.jpg"  # Replace with your image URL or file path
 
     buttons = InlineKeyboardMarkup([
         [
