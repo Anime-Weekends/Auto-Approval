@@ -25,6 +25,8 @@ from database import is_sudo
 
 import random
 import asyncio
+import sys
+import os
 
 # Run as Bot (for inline buttons, messages, commands):
 bot_app = Client(
@@ -938,6 +940,35 @@ async def total_approved(_, message: Message):
         await message.reply(
             f"⚠️ <b>Error:</b> <code>{str(e)}</code>",
             parse_mode=ParseMode.HTML
+        )
+
+# ====================================================
+#                   TOTAL APPROVED
+# ====================================================
+
+@Bot_app.on_message(filters.command('restart') & filters.private & filters.user(SUDO))
+async def restart_bot(client: Client, message: Message):
+    print("Restarting bot...")
+    
+    # Send a message indicating bot restart
+    msg = await message.reply(
+        text=f"<b><i><blockquote>⚠️ {client.name} ɢᴏɪɴɢ ᴛᴏ Rᴇsᴛᴀʀᴛ...</blockquote></i></b>"
+    )
+    
+    try:
+        # Wait for 6 seconds before restarting
+        await asyncio.sleep(6)
+        await msg.delete()
+
+        # Restart the bot by executing the same script
+        args = [sys.executable, sys.argv[0]]
+        os.execl(sys.executable, *args)
+        
+    except Exception as e:
+        print(f"Error occurred while restarting the bot: {e}")
+        await msg.edit_text(
+            f"<b><i>! Eʀʀᴏʀ, Cᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ sᴏʟᴠᴇ ᴛʜᴇ ɪssᴜᴇs @JeffySama</i></b>\n"
+            f"<blockquote expandable><b>Rᴇᴀsᴏɴ:</b> {e}</blockquote>"
         )
         
 # ====================================================
