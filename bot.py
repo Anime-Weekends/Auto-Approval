@@ -106,9 +106,8 @@ async def start_command(_, m: Message):
     welcome_text = "<i>ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ <b>ʟᴜᴄʏ</b>.\nʜᴏᴘᴇ ʏᴏᴜ'ʀᴇ ᴅᴏɪɴɢ ᴡᴇʟʟ...</i>"
 
     stickers = [
-        "CAACAgUAAxkBAAJFeWd037UWP-vgb_dWo55DCPZS9zJzAAJpEgACqXaJVxBrhzahNnwSHgQ",
-        "CAACAgUAAxkBAAIDT2Wj3RgUvN2sMIMiTW4E8RyR-NvUAAIzEgACqXaJVxHRZwFYo1l8HgQ",
-        "CAACAgUAAxkBAAIDUWWj3R1rHl7dTn7hV7Bojr6cKo9oAAJWEgACqXaJV8Wv2rqCqTRpHgQ"
+        "CAACAgUAAxkBAAEOW3hoCf_Za5Dh_qsmeH4OKtJpOEDhggACNwoAApLnMFfso_6k-QJv-zYE",
+        "CAACAgUAAxkBAAEOW3poCf_m_FMYs55gjI312AJxgvItxAACzQsAAhjwMVePhvS36tzPHzYE"
     ]
 
     start_pics = [
