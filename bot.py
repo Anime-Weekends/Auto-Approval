@@ -299,7 +299,7 @@ async def dbtool(_, m: Message):
     timestamp = datetime.now().strftime("%d %b %Y • %I:%M %p")
 
     caption = (
-        f"<blockquote><b>➥ 𝗖𝗛𝗔𝗧 𝗦𝗧𝗔𝗧𝗜𝗦𝗧𝗜𝗖𝗦</b></blockquote>\n"
+        f"<blockquote><b>➥ 𝗖𝗛𝗔𝗧 𝗦𝗧𝗔𝗧𝗜𝗦𝗧𝗜𝗖𝗦</b></blockquote>\n\n"
         f"<blockquote><b>❏ ᴜsᴇʀs : {total_users} ({user_percent:.1f}%)</b></blockquote>\n"
         f"<blockquote><b>❏ ɢʀᴏᴜᴘs : {total_groups} ({group_percent:.1f}%)</b></blockquote>\n"
         f"<blockquote><b>❏ ᴛᴏᴛᴀʟ ᴄʜᴀᴛs : {total}</blockquote></b>\n"
@@ -307,7 +307,7 @@ async def dbtool(_, m: Message):
     )
 
     await m.reply_photo(
-        photo="https://i.ibb.co/20pJntTr/photo-2025-04-24-09-40-54-7496812406681632780.jpg",
+        photo="https://i.ibb.co/gbbYfsXt/photo-2025-04-24-11-50-49-7496845877361770512.jpg",
         caption=caption,
         reply_markup=keyboard,
         parse_mode=ParseMode.HTML,
