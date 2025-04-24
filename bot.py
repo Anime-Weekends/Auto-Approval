@@ -299,7 +299,7 @@ async def dbtool(_, m: Message):
     timestamp = datetime.now().strftime("%d %b %Y • %I:%M %p")
 
     caption = (
-        f"<blockquote><b>➥ Cʜᴀᴛ sᴛᴀᴛɪsᴛɪᴄs</b></blockquote>\n"
+        f"<blockquote><b>➥ 𝗖𝗛𝗔𝗧 𝗦𝗧𝗔𝗧𝗜𝗦𝗧𝗜𝗖𝗦</b></blockquote>\n"
         f"<blockquote><b>❏ ᴜsᴇʀs : {total_users} ({user_percent:.1f}%)</b></blockquote>\n"
         f"<blockquote><b>❏ ɢʀᴏᴜᴘs : {total_groups} ({group_percent:.1f}%)</b></blockquote>\n"
         f"<blockquote><b>❏ ᴛᴏᴛᴀʟ ᴄʜᴀᴛs : {total}</blockquote></b>\n"
