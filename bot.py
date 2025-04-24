@@ -318,6 +318,11 @@ async def dbtool(_, m: Message):
 async def close_stats(_, cb: CallbackQuery):
     await cb.message.delete()
     await cb.answer("Closed!", show_alert=True)
+
+stickers = [
+        "CAACAgUAAxkBAAEOW3hoCf_Za5Dh_qsmeH4OKtJpOEDhggACNwoAApLnMFfso_6k-QJv-zYE",
+        "CAACAgUAAxkBAAEOW3poCf_m_FMYs55gjI312AJxgvItxAACzQsAAhjwMVePhvS36tzPHzYE"
+    ]
     
 # ====================================================
 #                 BROADCAST (COPY)
