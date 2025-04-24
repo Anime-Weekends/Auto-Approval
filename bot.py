@@ -835,8 +835,7 @@ async def showid(client, message):
 
     # Random sticker from list
     stickers = [
-        "CAACAgUAAxkBAAIBgWYqY3yMZMJYkuf5tLxjBrXnK1e3AAIbAwAC2MNpVjXpWxuDqZkPMwQ",
-        "CAACAgUAAxkBAAIBg2YqY4OQ8QABFzM9UcwDf90m_JA2dgACYAQAAulVZRrB8ykNP5xj9jME",
+        "CAACAgUAAxkBAAEOXB5oCoNqWhB4frESNLfx8JgVJ688VAACBQ0AAudaGVWG3TppHeiJUjYE",
         # Add more if you want variety
     ]
     await message.reply_sticker(random.choice(stickers))
