@@ -528,7 +528,7 @@ async def help_command(_, m: Message):
     await m.reply_photo(
         "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
         caption=(
-            "<b>How to use the bot:</b>\n\n"
+            "<blockquote>𝗨𝗦𝗘𝗥 𝗚𝗨𝗜𝗗𝗘</blockquote>\n"
             "• Use the guide for full instructions.\n"
             "• Join our support and main channels.\n"
             "• Click close to dismiss this message."
