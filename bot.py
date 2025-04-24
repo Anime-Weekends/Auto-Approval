@@ -827,6 +827,23 @@ async def help_close(_, cq: CallbackQuery):
 
 @bot_app.on_message(filters.command("myid") & filters.private)
 async def showid(client, message):
+    # Animated status text
+    welcome_text = "<pre>Pʀᴇᴘᴀʀɪɴɢ sᴛᴀᴛᴜs ʀᴇᴘᴏʀᴛ...</pre>"
+    msg = await message.reply_text(welcome_text)
+    await asyncio.sleep(0.2)
+    await msg.edit_text("<b><i><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ...</pre></i></b>")
+    await asyncio.sleep(0.1)
+    await msg.delete()
+
+    # Random sticker from list
+    stickers = [
+        "CAACAgUAAxkBAAIBgWYqY3yMZMJYkuf5tLxjBrXnK1e3AAIbAwAC2MNpVjXpWxuDqZkPMwQ",
+        "CAACAgUAAxkBAAIBg2YqY4OQ8QABFzM9UcwDf90m_JA2dgACYAQAAulVZRrB8ykNP5xj9jME",
+        # Add more if you want variety
+    ]
+    await message.reply_sticker(random.choice(stickers))
+
+    # User ID display
     user_id = message.chat.id
     photo_url = "https://i.ibb.co/YzFqHky/photo-2025-04-15-09-14-30-7493465832589099024.jpg"
 
