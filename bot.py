@@ -946,7 +946,7 @@ async def total_approved(_, message: Message):
 #                   TOTAL APPROVED
 # ====================================================
 
-@Bot_app.on_message(filters.command('restart') & filters.private & filters.user(SUDO))
+@Bot_app.on_message(filters.command('restart') & is_sudo())
 async def restart_bot(client: Client, message: Message):
     print("Restarting bot...")
     
