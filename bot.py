@@ -687,7 +687,7 @@ async def listadmin(_, m: Message):
 
     # Random sticker from list
     stickers = [
-        "CAACAgUAAxkBAAEOXBhoCoKZ76jevKX-Vc5v5SZhCeQAAXMAAh4KAALJrhlVZygbxFWWTLw2BA",
+        "", 
         # Add more if you want variety
     ]
     await m.reply_sticker(random.choice(stickers))
@@ -700,31 +700,30 @@ async def listadmin(_, m: Message):
             parse_mode=ParseMode.HTML,
             message_effect_id=5046509860389126442, 
             reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_msg")]]
+                [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
             )
         )
 
-    text = "<b>🤖 𝗕𝗢𝗧 𝗔𝗗𝗠𝗜𝗡𝗦 𝗟𝗜𝗦𝗧 :</b>\n\n"
-    for uid in admin_ids:
+    admin_list = ""
+    for id in admin_ids:
+        await m.reply_chat_action(ChatAction.TYPING)
         try:
-            user = await _.get_users(uid)
-            # Mention the user (using @username if available)
-            if user.username:
-                mention = f"<a href='tg://user?id={uid}'>@{user.username}</a>"
-            else:
-                mention = f"<a href='tg://user?id={uid}'>Unknown</a>"
-        except:
-            mention = f"<a href='tg://user?id={uid}'>Unknown</a>"
-
-        text += f"{mention}\nID: <code>{uid}</code>\n\n"
+            user = await _.get_users(id)
+            user_link = f"tg://openmessage?user_id={id}"
+            first_name = user.first_name if user.first_name else "No first name!"
+            
+            admin_list += f"<b><blockquote>NAME: <a href='{user_link}'>{first_name}</a>\n(ID: <code>{id}</code>)</blockquote></b>\n\n"
+                
+        except Exception as e:
+            admin_list += f"<b><blockquote>ɪᴅ: <code>{id}</code>\n<i>ᴜɴᴀʙʟᴇ ᴛᴏ ʟᴏᴀᴅ ᴏᴛʜᴇʀ ᴅᴇᴛᴀɪʟs..</i></blockquote></b>\n\n"
 
     await m.reply_photo(
-        photo="https://i.ibb.co/nsfh7ytW/photo-2025-04-24-18-47-51-7496953350328418324.jpg",
-        caption=text,
+        photo="",
+        caption=f"<b>🤖 𝗕𝗢𝗧 𝗔𝗗𝗠𝗜𝗡𝗦 𝗟𝗜𝗦𝗧 :</b>\n\n{admin_list}",
         parse_mode=ParseMode.HTML,
         message_effect_id=5046509860389126442, 
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_msg")]]
+            [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
         )
     )
 
@@ -732,7 +731,6 @@ async def listadmin(_, m: Message):
 async def close_msg_cb(_, cb):
     await cb.message.delete()
     await cb.answer()
-
     
 def is_sudo():
     return filters.create(lambda _, __, m: m.from_user and (m.from_user.id in cfg.SUDO or is_admin(m.from_user.id)))
