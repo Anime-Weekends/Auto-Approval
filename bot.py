@@ -727,6 +727,57 @@ async def close_message(_, cb):
     except Exception:
         await cb.answer("Couldn't delete the message.", show_alert=True)
 
+
+# ====================================================
+#                   USER ID
+# ====================================================
+
+@bot_app.on_message(filters.private & filters.command("approvall"))
+async def help_command(_, m: Message):
+    help_text = (
+        "<b>Help Menu</b>\n\n"
+        "Here's what I can do for you:\n"
+        "1. Auto-approve join requests\n"
+        "2. Simple setup\n"
+        "3. Custom welcome messages (coming soon)\n\n"
+        "<i>Use the buttons below to explore more or close this message.</i>"
+    )
+
+    # Image URL or file path (you can use a URL to the image)
+    image_url = "https://example.com/path/to/your/image.jpg"  # Replace with your image URL or file path
+
+    buttons = InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("1 - First Row", callback_data="first_help")
+        ],
+        [
+            InlineKeyboardButton("2 - Second Row", callback_data="second_help"),
+            InlineKeyboardButton("Close", callback_data="close_msg")
+        ]
+    ])
+
+    # Send the help message with an image
+    await m.reply_photo(
+        photo=image_url,
+        caption=help_text,
+        reply_markup=buttons,
+        parse_mode=ParseMode.HTML
+    )
+
+# Optional handlers for the help buttons for future 🔮 use
+@bot_app.on_callback_query(filters.regex("first_help"))
+async def help_first(_, cq: CallbackQuery):
+    await cq.answer("This is the first help button.")
+
+@bot_app.on_callback_query(filters.regex("second_help"))
+async def help_second(_, cq: CallbackQuery):
+    await cq.answer("This is the second help button.")
+
+@bot_app.on_callback_query(filters.regex("close_msg"))
+async def help_close(_, cq: CallbackQuery):
+    await cq.answer()
+    await cq.message.delete()
+
 # ====================================================
 #                   USER ID
 # ====================================================
