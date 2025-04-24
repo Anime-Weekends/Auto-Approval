@@ -22,6 +22,11 @@ from database import add_admin_db, remove_admin_db, list_admins_db, is_admin
 from configs import cfg
 from database import datetime
 from database import is_sudo
+from pymongo import MongoClient
+
+# Your MongoDB connection and database setup here...
+from your_database_module import close_db_connection, reconnect_db
+
 
 import random
 import asyncio
@@ -943,7 +948,7 @@ async def total_approved(_, message: Message):
         )
 
 # ====================================================
-#                   TOTAL APPROVED
+#                   RESTART 
 # ====================================================
 
 @Bot_app.on_message(filters.command('restart') & is_sudo())
@@ -956,6 +961,9 @@ async def restart_bot(client: Client, message: Message):
     )
     
     try:
+        # Close the database connection before restarting
+        close_db_connection()
+
         # Wait for 6 seconds before restarting
         await asyncio.sleep(6)
         await msg.delete()
@@ -970,6 +978,9 @@ async def restart_bot(client: Client, message: Message):
             f"<b><i>! Eʀʀᴏʀ, Cᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ sᴏʟᴠᴇ ᴛʜᴇ ɪssᴜᴇs @JeffySama</i></b>\n"
             f"<blockquote expandable><b>Rᴇᴀsᴏɴ:</b> {e}</blockquote>"
         )
+
+    # Once restarted, reconnect to the database
+    reconnect_db()
         
 # ====================================================
 #                    BOT START
