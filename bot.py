@@ -15,6 +15,7 @@ from pyrogram.errors import UserDeactivated, UserBlocked
 from pyrogram.errors import PeerIdInvalid
 from pyrogram.errors import RPCError
 from database import get_total_approvals
+from pyrogram import ChatAction
 
 from database import add_user, add_group, all_users, all_groups, users, remove_user
 from database import add_admin_db, remove_admin_db, list_admins_db, is_admin
