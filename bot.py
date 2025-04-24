@@ -775,8 +775,7 @@ async def help_command(_, m: Message):
 
     # Random sticker from a list
     stickers = [
-        "CAACAgUAAxkBAAIBgWYqY3yMZMJYkuf5tLxjBrXnK1e3AAIbAwAC2MNpVjXpWxuDqZkPMwQ",
-        "CAACAgUAAxkBAAIBg2YqY4OQ8QABFzM9UcwDf90m_JA2dgACYAQAAulVZRrB8ykNP5xj9jME",
+        "CAACAgUAAxkBAAEOXBpoCoLgW4BDYySk2CEv2av7Hw9bHwACjAkAArIJGVUWyBghZ-dV-zYE",
         # Add more sticker file_ids here
     ]
     await m.reply_sticker(random.choice(stickers))
