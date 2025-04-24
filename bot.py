@@ -181,16 +181,20 @@ async def about_callback(_, cq: CallbackQuery):
             InlineKeyboardButton("⨉ Cʟᴏsᴇ", callback_data="close_msg")
         ]
     ])
-    await cq.message.edit_text(
-        "<b>About ʟᴜᴄʏ</b>\n\n"
-        "A sleek auto-approval bot for Telegram.\n"
-        "Created to simplify managing join requests.\n"
-        "Fast, aesthetic, and private.\n\n"
-        "<i>Made with love by the team.</i>",
-        reply_markup=about_markup,
-        parse_mode=ParseMode.HTML
+    await cq.message.edit_media(
+        media=InputMediaPhoto(
+            media="https://i.ibb.co/YjLZ6QD/about-image.jpg",  # Your about image
+            caption=(
+                "<b>About ʟᴜᴄʏ</b>\n\n"
+                "A sleek auto-approval bot for Telegram.\n"
+                "Created to simplify managing join requests.\n"
+                "Fast, aesthetic, and private.\n\n"
+                "<i>Made with love by the team.</i>"
+            ),
+            parse_mode=ParseMode.HTML
+        ),
+        reply_markup=about_markup
     )
-
 
 @bot_app.on_callback_query(filters.regex("start_again"))
 async def back_to_start(_, cq: CallbackQuery):
@@ -207,15 +211,17 @@ async def back_to_start(_, cq: CallbackQuery):
             InlineKeyboardButton("⧉ Aʙᴏᴜᴛ", callback_data="about")
         ]
     ])
-
-    await cq.message.edit_caption(
-        caption=(
-            f"🍁 <b>Hello</b> <a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name}</a>!\n\n"
-            "I'm an auto-approve bot. Add me to your chat and promote me to admin "
-            "with <b>Add Members</b> permission."
+    await cq.message.edit_media(
+        media=InputMediaPhoto(
+            media="https://i.ibb.co/v6J0JM80/photo-2025-03-13-18-50-40-7481368571868610580.jpg",  # Your start image
+            caption=(
+                f"🍁 <b>Hello</b> <a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name}</a>!\n\n"
+                "I'm an auto-approve bot. Add me to your chat and promote me to admin "
+                "with <b>Add Members</b> permission."
+            ),
+            parse_mode=ParseMode.HTML
         ),
-        reply_markup=keyboard,
-        parse_mode=ParseMode.HTML
+        reply_markup=keyboard
     )
 
 
