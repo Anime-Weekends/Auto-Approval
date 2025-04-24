@@ -687,8 +687,7 @@ async def listadmin(_, m: Message):
 
     # Random sticker from list
     stickers = [
-        "CAACAgUAAxkBAAIBgWYqY3yMZMJYkuf5tLxjBrXnK1e3AAIbAwAC2MNpVjXpWxuDqZkPMwQ",
-        "CAACAgUAAxkBAAIBg2YqY4OQ8QABFzM9UcwDf90m_JA2dgACYAQAAulVZRrB8ykNP5xj9jME",
+        "CAACAgUAAxkBAAEOXBhoCoKZ76jevKX-Vc5v5SZhCeQAAXMAAh4KAALJrhlVZygbxFWWTLw2BA",
         # Add more if you want variety
     ]
     await m.reply_sticker(random.choice(stickers))
@@ -699,8 +698,9 @@ async def listadmin(_, m: Message):
         return await m.reply(
             "No admins found.",
             parse_mode=ParseMode.HTML,
+            message_effect_id=5046509860389126442, 
             reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
+                [[InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_msg")]]
             )
         )
 
@@ -719,11 +719,12 @@ async def listadmin(_, m: Message):
         text += f"{mention}\nID: <code>{uid}</code>\n\n"
 
     await m.reply_photo(
-        photo="https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
+        photo="https://i.ibb.co/nsfh7ytW/photo-2025-04-24-18-47-51-7496953350328418324.jpg",
         caption=text,
         parse_mode=ParseMode.HTML,
+        message_effect_id=5046509860389126442, 
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
+            [[InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_msg")]]
         )
     )
 
