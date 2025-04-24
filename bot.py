@@ -687,7 +687,7 @@ async def listadmin(_, m: Message):
 
     # Random sticker from list
     stickers = [
-        "", 
+        "CAACAgUAAxkBAAEOXBhoCoKZ76jevKX-Vc5v5SZhCeQAAXMAAh4KAALJrhlVZygbxFWWTLw2BA", 
         # Add more if you want variety
     ]
     await m.reply_sticker(random.choice(stickers))
@@ -718,7 +718,7 @@ async def listadmin(_, m: Message):
             admin_list += f"<b><blockquote>ɪᴅ: <code>{id}</code>\n<i>ᴜɴᴀʙʟᴇ ᴛᴏ ʟᴏᴀᴅ ᴏᴛʜᴇʀ ᴅᴇᴛᴀɪʟs..</i></blockquote></b>\n\n"
 
     await m.reply_photo(
-        photo="",
+        photo="https://i.ibb.co/nsfh7ytW/photo-2025-04-24-18-47-51-7496953350328418324.jpg",
         caption=f"<b>🤖 𝗕𝗢𝗧 𝗔𝗗𝗠𝗜𝗡𝗦 𝗟𝗜𝗦𝗧 :</b>\n\n{admin_list}",
         parse_mode=ParseMode.HTML,
         message_effect_id=5046509860389126442, 
