@@ -534,13 +534,28 @@ async def close_fcast(_, cb):
 
 @bot_app.on_message(filters.private & filters.command("help"))
 async def help_command(_, m: Message):
+    welcome_text = "<pre>Pʀᴇᴘᴀʀɪɴɢ sᴛᴀᴛᴜs ʀᴇᴘᴏʀᴛ...</pre>"
+    msg = await m.reply_text(welcome_text)
+    await asyncio.sleep(0.2)
+    await msg.edit_text("<b><i><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ...</pre></i></b>")
+    await asyncio.sleep(0.1)
+    await msg.delete()
+
+    # Random sticker from a predefined list
+    stickers = [
+        "CAACAgUAAxkBAAIBgWYqY3yMZMJYkuf5tLxjBrXnK1e3AAIbAwAC2MNpVjXpWxuDqZkPMwQ",
+        "CAACAgUAAxkBAAIBg2YqY4OQ8QABFzM9UcwDf90m_JA2dgACYAQAAulVZRrB8ykNP5xj9jME",
+        # Add more sticker file_ids as needed
+    ]
+    await m.reply_sticker(random.choice(stickers))
+
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("Dᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/RexySama")],  # Row 1
+        [InlineKeyboardButton("Dᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/RexySama")],
         [
             InlineKeyboardButton("Mᴀɪɴ ᴄʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),
             InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
-        ],  # Row 2
-        [InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_help")]  # Row 3
+        ],
+        [InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_help")]
     ])
 
     await m.reply_photo(
@@ -550,8 +565,8 @@ async def help_command(_, m: Message):
             "<blockquote expandable>➥ Kɪɴᴅʟʏ ᴀᴅᴅ ᴛʜɪs ʙᴏᴛ ᴛᴏ ʏᴏᴜʀ ᴇsᴛᴇᴇᴍᴇᴅ ᴄʜᴀɴɴᴇʟ, ᴀɴᴅ ɪᴛ ᴡɪʟʟ ɢʀᴀᴄᴇғᴜʟʟʏ ʙᴇɢɪɴ ᴀᴘᴘʀᴏᴠɪɴɢ ᴀʟʟ ɴᴇᴡ ᴍᴇᴍʙᴇʀs ᴡɪᴛʜ ᴇғғɪᴄɪᴇɴᴄʏ ᴀɴᴅ ᴄᴀʀᴇ.</blockquote>\n"
         ),
         reply_markup=keyboard,
-        parse_mode=ParseMode.HTML, 
-        message_effect_id=5046509860389126442 #🎉
+        parse_mode=ParseMode.HTML,
+        message_effect_id=5046509860389126442 #
     )
 
 @bot_app.on_callback_query(filters.regex("close_help"))
