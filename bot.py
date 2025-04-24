@@ -766,6 +766,22 @@ async def close_message(_, cb):
 
 @bot_app.on_message(filters.private & filters.command("approveall"))
 async def help_command(_, m: Message):
+    # Welcome animation
+    welcome_text = "<pre>Pʀᴇᴘᴀʀɪɴɢ sᴛᴀᴛᴜs ʀᴇᴘᴏʀᴛ...</pre>"
+    msg = await m.reply_text(welcome_text)
+    await asyncio.sleep(0.2)
+    await msg.edit_text("<b><i><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ...</pre></i></b>")
+    await asyncio.sleep(0.1)
+    await msg.delete()
+
+    # Random sticker from a list
+    stickers = [
+        "CAACAgUAAxkBAAIBgWYqY3yMZMJYkuf5tLxjBrXnK1e3AAIbAwAC2MNpVjXpWxuDqZkPMwQ",
+        "CAACAgUAAxkBAAIBg2YqY4OQ8QABFzM9UcwDf90m_JA2dgACYAQAAulVZRrB8ykNP5xj9jME",
+        # Add more sticker file_ids here
+    ]
+    await m.reply_sticker(random.choice(stickers))
+
     help_text = (
         "<blockquote>𝗙𝗢𝗟𝗟𝗢𝗪 𝗧𝗛𝗘𝗦𝗘 𝗦𝗧𝗘𝗣𝗦</blockquote>\n"
         "<b><blockquote>➥ Sᴛᴇᴘ 1 :</b> Aᴅᴅ ᴛʜɪs ᴛᴇʟᴇɢʀᴀᴍ ɪᴅ ᴛᴏ ʏᴏᴜʀ ᴄʜᴀɴɴᴇʟ.</blockquote>\n"
@@ -773,26 +789,22 @@ async def help_command(_, m: Message):
         "<b><blockquote>➥ Sᴛᴇᴘ 3 :</b> Sᴇɴᴅ ᴛʜᴇ /acceptall ᴄᴏᴍᴍᴀɴᴅ ɪɴ ʏᴏᴜʀ ᴄʜᴀɴɴᴇʟ ᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ᴀʟʟ ᴘᴇɴᴅɪɴɢ ʀᴇǫᴜᴇsᴛs. ᴏɴᴄᴇ ᴅᴏɴᴇ, ʀᴇᴍᴏᴠᴇ ᴛʜɪs ɪᴅ ғʀᴏᴍ ʏᴏᴜʀ ᴄʜᴀɴɴᴇʟ.</blockquote>"
     )
 
-    # Image URL or file path (you can use a URL to the image)
-    image_url = "https://i.ibb.co/xSG8wZJD/photo-2025-04-24-11-20-18-7496838026161553424.jpg"  # Replace with your image URL or file path
+    image_url = "https://i.ibb.co/xSG8wZJD/photo-2025-04-24-11-20-18-7496838026161553424.jpg"
 
     buttons = InlineKeyboardMarkup([
-        [
-            InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
-        ],
+        [InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")],
         [
             InlineKeyboardButton("Dᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/RexySama"),
             InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_msg")
         ]
     ])
 
-    # Send the help message with an image
     await m.reply_photo(
         photo=image_url,
         caption=help_text,
         reply_markup=buttons,
-        parse_mode=ParseMode.HTML, 
-        message_effect_id=5046509860389126442 #🎉
+        parse_mode=ParseMode.HTML,
+        message_effect_id=5046509860389126442
     )
 
 # Optional handlers for the help buttons for future 🔮 use
