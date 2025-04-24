@@ -129,7 +129,7 @@ async def start_command(_, m: Message):
         await bot_app.get_chat_member(cfg.CHID, m.from_user.id)
     except:
         try:
-            invite_link = await app.create_chat_invite_link(cfg.CHID)
+            invite_link = await bot_app.create_chat_invite_link(cfg.CHID)
         except:
             return await m.reply("**<blockquote>Mᴀᴋᴇ sᴜʀᴇ ɪ ᴀᴍ ᴀɴ ᴀᴅᴍɪɴ ɪɴ ʏᴏᴜʀ ᴄʜᴀɴɴᴇʟ</blockquote>**")
 
