@@ -534,7 +534,7 @@ async def close_fcast(_, cb):
 
 @bot_app.on_message(filters.private & filters.command("help"))
 async def help_command(_, m: Message):
-    welcome_text = "<pre>Pʀᴇᴘᴀʀɪɴɢ sᴛᴀᴛᴜs ʀᴇᴘᴏʀᴛ...</pre>"
+    welcome_text = "<pre>Cʀᴇᴀᴛɪɴɢ ᴍᴇssᴀɢᴇ... </pre>"
     msg = await m.reply_text(welcome_text)
     await asyncio.sleep(0.2)
     await msg.edit_text("<b><i><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ...</pre></i></b>")
