@@ -828,7 +828,7 @@ async def help_close(_, cq: CallbackQuery):
 @bot_app.on_message(filters.command("myid") & filters.private)
 async def showid(client, message):
     # Animated status text
-    welcome_text = "<pre>Pʀᴇᴘᴀʀɪɴɢ sᴛᴀᴛᴜs ʀᴇᴘᴏʀᴛ...</pre>"
+    welcome_text = "<pre>Fᴇᴛᴄʜɪɴɢ ʏᴏᴜʀ ɪɴғᴏʀᴍᴀᴛɪᴏɴ... </pre>"
     msg = await message.reply_text(welcome_text)
     await asyncio.sleep(0.2)
     await msg.edit_text("<b><i><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ...</pre></i></b>")
@@ -850,7 +850,7 @@ async def showid(client, message):
     buttons = InlineKeyboardMarkup([
         [
             InlineKeyboardButton("Dᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/RexySama"),
-            InlineKeyboardButton("❌ Close", callback_data="close")
+            InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close")
         ]
     ])
 
@@ -859,7 +859,8 @@ async def showid(client, message):
         caption=f"<b>Your user ID is:</b> <code>{user_id}</code>",
         reply_markup=buttons,
         quote=True,
-        parse_mode=ParseMode.HTML
+        parse_mode=ParseMode.HTML, 
+        message_effect_id=5046509860389126442
     )
 
 @bot_app.on_callback_query(filters.regex("close"))
