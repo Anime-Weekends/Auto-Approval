@@ -517,12 +517,12 @@ async def close_fcast(_, cb):
 @bot_app.on_message(filters.private & filters.command("help"))
 async def help_command(_, m: Message):
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("🛠 Bot Guide", url="https://t.me/YourBotGuide")],  # Row 1
+        [InlineKeyboardButton("Dᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/RexySama")],  # Row 1
         [
-            InlineKeyboardButton("👨‍💻 Support", url="https://t.me/YourSupportChannel"),
-            InlineKeyboardButton("📢 Main Channel", url="https://t.me/YourMainChannel")
+            InlineKeyboardButton("Mᴀɪɴ ᴄʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),
+            InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
         ],  # Row 2
-        [InlineKeyboardButton("✖ Close", callback_data="close_help")]  # Row 3
+        [InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_help")]  # Row 3
     ])
 
     await m.reply_photo(
@@ -534,7 +534,8 @@ async def help_command(_, m: Message):
             "• Click close to dismiss this message."
         ),
         reply_markup=keyboard,
-        parse_mode=ParseMode.HTML
+        parse_mode=ParseMode.HTML, 
+        message_effect_id=5046509860389126442 #🎉
     )
 
 @bot_app.on_callback_query(filters.regex("close_help"))
