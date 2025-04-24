@@ -273,10 +273,10 @@ async def chk_callback(_, cb: CallbackQuery):
 @bot_app.on_message(filters.command("status") & is_sudo())
 async def dbtool(_, m: Message):
     # Animation sequence
-    welcome_text = "Welcome! Preparing status report..."
+    welcome_text = "```Welcome! Preparing status report...```"
     msg = await m.reply_text(welcome_text)
     await asyncio.sleep(0.2)
-    await msg.edit_text("<b><i>ꜱᴛᴀʀᴛɪɴɢ...</i></b>")
+    await msg.edit_text("<b><i>```ꜱᴛᴀʀᴛɪɴɢ...```</i></b>")
     await asyncio.sleep(0.2)
     await msg.delete()
 
