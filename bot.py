@@ -270,7 +270,7 @@ async def chk_callback(_, cb: CallbackQuery):
 #                      INFO CMD
 # ====================================================
 
-@bot_app.on_message(filters.command("users") & is_sudo())
+@bot_app.on_message(filters.command("status") & is_sudo())
 async def dbtool(_, m: Message):
     total_users = all_users()
     total_groups = all_groups()
@@ -294,7 +294,7 @@ async def dbtool(_, m: Message):
     )
 
     await m.reply_photo(
-        photo="https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
+        photo="https://i.ibb.co/20pJntTr/photo-2025-04-24-09-40-54-7496812406681632780.jpg",
         caption=caption,
         reply_markup=keyboard,
         parse_mode=ParseMode.HTML, 
@@ -310,7 +310,7 @@ async def close_stats(_, cb: CallbackQuery):
 #                 BROADCAST (COPY)
 # ====================================================
 
-@bot_app.on_message(filters.command("bcast") & is_sudo())
+@bot_app.on_message(filters.command("broadcast") & is_sudo())
 async def bcast(_, m: Message):
     global canceled
     canceled = False
@@ -416,7 +416,7 @@ async def close_bcast(_, cb):
 #               BROADCAST (FORWARD)
 # ====================================================
 
-@bot_app.on_message(filters.command("fcast") & is_sudo())
+@bot_app.on_message(filters.command("fbroadcast") & is_sudo())
 async def fcast(_, m: Message):
     global canceled
     canceled = False
@@ -645,7 +645,7 @@ async def removeadmin(_, m: Message):
     )
 
 
-@bot_app.on_message(filters.command("listadmin") & is_sudo())
+@bot_app.on_message(filters.command("listofadmins") & is_sudo())
 async def listadmin(_, m: Message):
     admin_ids = list_admins_db()
     if not admin_ids:
