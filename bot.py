@@ -898,15 +898,44 @@ async def close_callback(client, callback_query):
 # ====================================================
 
 @bot_app.on_message(filters.command("totalapproved") & is_sudo())
-async def total_approved(_, m: Message):
+async def total_approved(_, message: Message):
     try:
-        total = get_total_approvals()  # This must return an int or string
-        await m.reply(
-            f"✅ <b>Total users approved by the bot:</b> <code>{total}</code>",
-            parse_mode=ParseMode.HTML
+        await message.chat.send_action(ChatAction.TYPING)
+
+        # Info fetching animation
+        welcome_text = "<pre>Fᴇᴛᴄʜɪɴɢ ʏᴏᴜʀ ɪɴғᴏʀᴍᴀᴛɪᴏɴ... </pre>"
+        msg = await message.reply_text(welcome_text)
+        await asyncio.sleep(0.2)
+        await msg.edit_text("<b><i><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ...</pre></i></b>")
+        await asyncio.sleep(0.1)
+        await msg.delete()
+
+        # Send random sticker
+        stickers = [
+            "CAACAgUAAxkBAAEOXB5oCoNqWhB4frESNLfx8JgVJ688VAACBQ0AAudaGVWG3TppHeiJUjYE",
+            # Add more sticker file_ids if desired
+        ]
+        await message.reply_sticker(random.choice(stickers))
+
+        # Fetch approval data
+        total = get_total_approvals()
+
+        # Inline buttons
+        buttons = InlineKeyboardMarkup([
+            [InlineKeyboardButton("🔗 View Stats", url="https://yourwebsite.com/stats")],
+            [InlineKeyboardButton("✖️ Close", callback_data="close_msg")]
+        ])
+
+        # Send final photo with buttons
+        await message.reply_photo(
+            photo="https://telegra.ph/file/your-image-link.jpg",  # Replace with your actual image URL
+            caption=f"✅ <b>Total users approved by the bot:</b> <code>{total}</code>",
+            parse_mode=ParseMode.HTML,
+            reply_markup=buttons
         )
+
     except Exception as e:
-        await m.reply(
+        await message.reply(
             f"⚠️ <b>Error:</b> <code>{str(e)}</code>",
             parse_mode=ParseMode.HTML
         )
