@@ -239,13 +239,18 @@ async def close_message(_, cq: CallbackQuery):
 @bot_app.on_callback_query(filters.regex("chk"))
 async def chk_callback(_, cb: CallbackQuery):
     try:
-        await bot_app.get_chat_member(cfg.CHID, cb.from_user.id)
-    except:
+        # Check if user is a member of the required channel
+        member = await bot_app.get_chat_member(cfg.CHID, cb.from_user.id)
+        if member.status not in ["member", "administrator", "creator"]:
+            raise Exception("User not in channel")
+
+    except Exception as e:
         return await cb.answer(
             "Yᴏᴜ ʜᴀᴠᴇɴ'ᴛ ᴊᴏɪɴᴇᴅ ᴏᴜʀ ᴄʜᴀɴɴᴇʟ ʏᴇᴛ. ᴘʟᴇᴀsᴇ ᴊᴏɪɴ ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ!",
             show_alert=True
         )
 
+    # Create keyboard
     keyboard = InlineKeyboardMarkup([
         [
             InlineKeyboardButton("Mᴀɪɴ ᴄʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),
@@ -256,15 +261,16 @@ async def chk_callback(_, cb: CallbackQuery):
         ]
     ])
 
+    # Log user in DB
     add_user(cb.from_user.id)
 
+    # Edit the message with bot intro
     await cb.edit_message_text(
         f"🍁 <b>Hello</b> {cb.from_user.mention()}!\n\n"
         "I'm an <b>auto-approve bot</b>. Add me to your chat and promote me to admin "
         "with <b>Add Members</b> permission.",
         reply_markup=keyboard,
-        parse_mode=ParseMode.HTML, 
-        message_effect_id=5104841245755180586 #🔥
+        parse_mode=ParseMode.HTML
     )
 
 # ====================================================
