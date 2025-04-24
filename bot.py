@@ -104,6 +104,12 @@ from pyrogram.types import InputMediaPhoto
 
 @bot_app.on_message(filters.private & filters.command("start"))
 async def start_command(_, m: Message):
+    # Welcome animation
+    msg = await m.reply_text("<i>ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ <b>ʟᴜᴄʏ</b>.\nʜᴏᴘᴇ ʏᴏᴜ'ʀᴇ ᴅᴏɪɴɢ ᴡᴇʟʟ...</i>")
+    await asyncio.sleep(0.4)
+    await msg.edit_text("<b><i>ꜱᴛᴀʀᴛɪɴɢ...</i></b>")
+    await asyncio.sleep(0.4)
+
     try:
         await bot_app.get_chat_member(cfg.CHID, m.from_user.id)
     except:
@@ -124,7 +130,7 @@ async def start_command(_, m: Message):
             caption="<b><blockquote>Esᴛᴇᴇᴍᴇᴅ ɢᴜᴇsᴛ,</blockquote></b>\n<blockquote expandable>ᴀᴄᴄᴇss ᴛᴏ ᴍʏ sᴇʀᴠɪᴄᴇs ɪs ʀᴇsᴇʀᴠᴇᴅ ғᴏʀ ᴍᴇᴍʙᴇʀs ᴏғ ᴏᴜʀ ᴏғғɪᴄɪᴀʟ ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ ᴀɴ ᴇxᴄʟᴜsɪᴠᴇ ᴄɪʀᴄʟᴇ ᴡʜᴇʀᴇ ᴏɴʟʏ ᴛʜᴇ ᴅɪsᴛɪɴɢᴜɪsʜᴇᴅ sᴛᴀʏ ɪɴғᴏʀᴍᴇᴅ. ᴊᴏɪɴ ɴᴏᴡ ᴀɴᴅ sᴇᴄᴜʀᴇ ʏᴏᴜʀ ʀɪɢʜᴛғᴜʟ ᴘʟᴀᴄᴇ ᴀᴍᴏɴɢ ᴛʜᴇ ᴇʟɪᴛᴇ.</blockquote>",
             reply_markup=button,
             parse_mode=ParseMode.HTML, 
-            message_effect_id=5104841245755180586 #🔥
+            message_effect_id=5104841245755180586
         )
 
     add_user(m.from_user.id)
@@ -148,7 +154,7 @@ async def start_command(_, m: Message):
         ),
         reply_markup=keyboard,
         parse_mode=ParseMode.HTML,
-        message_effect_id=5104841245755180586 #🔥
+        message_effect_id=5104841245755180586
     )
 
 # ====================================================
