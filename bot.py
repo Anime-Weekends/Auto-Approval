@@ -101,14 +101,29 @@ async def popup_action(_, cb: CallbackQuery):
 
 from pyrogram.types import InputMediaPhoto
 
-
 @bot_app.on_message(filters.private & filters.command("start"))
 async def start_command(_, m: Message):
-    # Welcome animation
-    msg = await m.reply_text("<i>ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ <b>ʟᴜᴄʏ</b>.\nʜᴏᴘᴇ ʏᴏᴜ'ʀᴇ ᴅᴏɪɴɢ ᴡᴇʟʟ...</i>")
-    await asyncio.sleep(0.4)
+    welcome_text = "<i>ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ <b>ʟᴜᴄʏ</b>.\nʜᴏᴘᴇ ʏᴏᴜ'ʀᴇ ᴅᴏɪɴɢ ᴡᴇʟʟ...</i>"
+
+    stickers = [
+        "CAACAgUAAxkBAAJFeWd037UWP-vgb_dWo55DCPZS9zJzAAJpEgACqXaJVxBrhzahNnwSHgQ",
+        "CAACAgUAAxkBAAIDT2Wj3RgUvN2sMIMiTW4E8RyR-NvUAAIzEgACqXaJVxHRZwFYo1l8HgQ",
+        "CAACAgUAAxkBAAIDUWWj3R1rHl7dTn7hV7Bojr6cKo9oAAJWEgACqXaJV8Wv2rqCqTRpHgQ"
+    ]
+
+    start_pics = [
+        "https://i.ibb.co/v6J0JM80/photo-2025-03-13-18-50-40-7481368571868610580.jpg",
+        "https://i.ibb.co/C5N2Xhk9/photo-2025-04-19-18-11-35-7496424313436766224.jpg",
+        "https://i.ibb.co/Lhc4pMc/photo-2024-12-10-18-31-40.jpg"
+    ]
+
+    msg = await m.reply_text(welcome_text)
+    await asyncio.sleep(0.2)
     await msg.edit_text("<b><i>ꜱᴛᴀʀᴛɪɴɢ...</i></b>")
-    await asyncio.sleep(0.4)
+    await asyncio.sleep(0.2)
+    await msg.delete()
+
+    await m.reply_sticker(random.choice(stickers))
 
     try:
         await bot_app.get_chat_member(cfg.CHID, m.from_user.id)
@@ -118,18 +133,16 @@ async def start_command(_, m: Message):
         except:
             return await m.reply("**<blockquote>Mᴀᴋᴇ sᴜʀᴇ ɪ ᴀᴍ ᴀɴ ᴀᴅᴍɪɴ ɪɴ ʏᴏᴜʀ ᴄʜᴀɴɴᴇʟ</blockquote>**")
 
-        button = InlineKeyboardMarkup(
-            [[
-                InlineKeyboardButton("Jᴏɪɴ ʜᴇʀᴇ", url=invite_link.invite_link),
-                InlineKeyboardButton("Rᴇғʀᴇsʜ", url="https://t.me/Private_Auto_Approval_Bot?start=start")
-            ]]
-        )
+        button = InlineKeyboardMarkup([
+            [InlineKeyboardButton("Jᴏɪɴ ʜᴇʀᴇ", url=invite_link.invite_link)],
+            [InlineKeyboardButton("Rᴇғʀᴇsʜ", url="https://t.me/Private_Auto_Approval_Bot?start=start")]
+        ])
 
         return await m.reply_photo(
-            photo="https://i.ibb.co/C5N2Xhk9/photo-2025-04-19-18-11-35-7496424313436766224.jpg",
-            caption="<b><blockquote>Esᴛᴇᴇᴍᴇᴅ ɢᴜᴇsᴛ,</blockquote></b>\n<blockquote expandable>ᴀᴄᴄᴇss ᴛᴏ ᴍʏ sᴇʀᴠɪᴄᴇs ɪs ʀᴇsᴇʀᴠᴇᴅ ғᴏʀ ᴍᴇᴍʙᴇʀs ᴏғ ᴏᴜʀ ᴏғғɪᴄɪᴀʟ ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ ᴀɴ ᴇxᴄʟᴜsɪᴠᴇ ᴄɪʀᴄʟᴇ ᴡʜᴇʀᴇ ᴏɴʟʏ ᴛʜᴇ ᴅɪsᴛɪɴɢᴜɪsʜᴇᴅ sᴛᴀʏ ɪɴғᴏʀᴍᴇᴅ. ᴊᴏɪɴ ɴᴏᴡ ᴀɴᴅ sᴇᴄᴜʀᴇ ʏᴏᴜʀ ʀɪɢʜᴛғᴜʟ ᴘʟᴀᴄᴇ ᴀᴍᴏɴɢ ᴛʜᴇ ᴇʟɪᴛᴇ.</blockquote>",
+            photo=random.choice(start_pics),
+            caption="<b><blockquote>Esᴛᴇᴇᴍᴇᴅ ɢᴜᴇsᴛ,</blockquote></b>\n<blockquote expandable>ᴀᴄᴄᴇss ᴛᴏ ᴍʏ sᴇʀᴠɪᴄᴇs...</blockquote>",
             reply_markup=button,
-            parse_mode=ParseMode.HTML, 
+            parse_mode=ParseMode.HTML,
             message_effect_id=5104841245755180586
         )
 
@@ -142,11 +155,14 @@ async def start_command(_, m: Message):
         ],
         [
             InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ ᴍᴇ ʙᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
+        ],
+        [
+            InlineKeyboardButton("⧉ Aʙᴏᴜᴛ", callback_data="about")
         ]
     ])
 
     await m.reply_photo(
-        "https://i.ibb.co/v6J0JM80/photo-2025-03-13-18-50-40-7481368571868610580.jpg",
+        random.choice(start_pics),
         caption=(
             f"🍁 <b>Hello</b> <a href='tg://user?id={m.from_user.id}'>{m.from_user.first_name}</a>!\n\n"
             "I'm an auto-approve bot. Add me to your chat and promote me to admin "
@@ -156,6 +172,59 @@ async def start_command(_, m: Message):
         parse_mode=ParseMode.HTML,
         message_effect_id=5104841245755180586
     )
+
+@bot_app.on_callback_query(filters.regex("about"))
+async def about_callback(_, cq: CallbackQuery):
+    await cq.answer()
+    about_markup = InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("« Bᴀᴄᴋ", callback_data="start_again"),
+            InlineKeyboardButton("⨉ Cʟᴏsᴇ", callback_data="close_msg")
+        ]
+    ])
+    await cq.message.edit_text(
+        "<b>About ʟᴜᴄʏ</b>\n\n"
+        "A sleek auto-approval bot for Telegram.\n"
+        "Created to simplify managing join requests.\n"
+        "Fast, aesthetic, and private.\n\n"
+        "<i>Made with love by the team.</i>",
+        reply_markup=about_markup,
+        parse_mode=ParseMode.HTML
+    )
+
+
+@bot_app.on_callback_query(filters.regex("start_again"))
+async def back_to_start(_, cq: CallbackQuery):
+    await cq.answer()
+    keyboard = InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("Mᴀɪɴ ᴄʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),
+            InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
+        ],
+        [
+            InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ ᴍᴇ ʙᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
+        ],
+        [
+            InlineKeyboardButton("⧉ Aʙᴏᴜᴛ", callback_data="about")
+        ]
+    ])
+
+    await cq.message.edit_caption(
+        caption=(
+            f"🍁 <b>Hello</b> <a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name}</a>!\n\n"
+            "I'm an auto-approve bot. Add me to your chat and promote me to admin "
+            "with <b>Add Members</b> permission."
+        ),
+        reply_markup=keyboard,
+        parse_mode=ParseMode.HTML
+    )
+
+
+@bot_app.on_callback_query(filters.regex("close_msg"))
+async def close_message(_, cq: CallbackQuery):
+    await cq.answer()
+    await cq.message.delete()
+
 
 # ====================================================
 #                   CALLBACK CHECK
