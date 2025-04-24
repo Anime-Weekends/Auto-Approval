@@ -897,17 +897,17 @@ async def close_callback(client, callback_query):
 #                   TOTAL APPROVED
 # ====================================================
 
-@user_app.on_message(filters.command("totalapproved") & is_sudo())
+@bot_app.on_message(filters.command("totalapproved") & is_sudo())
 async def total_approved(_, m: Message):
     try:
-        total = get_total_approvals()
+        total = get_total_approvals()  # This must return an int or string
         await m.reply(
             f"✅ <b>Total users approved by the bot:</b> <code>{total}</code>",
             parse_mode=ParseMode.HTML
         )
     except Exception as e:
         await m.reply(
-            f"⚠️ <b>Error:</b> <code>{e}</code>",
+            f"⚠️ <b>Error:</b> <code>{str(e)}</code>",
             parse_mode=ParseMode.HTML
         )
         
