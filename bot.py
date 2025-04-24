@@ -734,10 +734,10 @@ async def close_message(_, cb):
 @bot_app.on_message(filters.private & filters.command("approveall"))
 async def help_command(_, m: Message):
     help_text = (
-        "<b>Help Menu</b>\n\n"
-        "Here's what I can do for you:\n"
-        "1. Auto-approve join requests\n"
-        "2. Simple setup\n"
+        "<blockquote>𝗙𝗢𝗟𝗟𝗢𝗪 𝗧𝗛𝗘𝗦𝗘 𝗦𝗧𝗘𝗣𝗦</blockquote>\n"
+        "<b>➥ Sᴛᴇᴘ 1 :</b>\n"
+        "<b>➥ Sᴛᴇᴘ 2 :</b>\n"
+        "<b>➥ Sᴛᴇᴘ 3 :</b>\n"
         "3. Custom welcome messages (coming soon)\n\n"
         "<i>Use the buttons below to explore more or close this message.</i>"
     )
@@ -747,11 +747,11 @@ async def help_command(_, m: Message):
 
     buttons = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("1 - First Row", callback_data="first_help")
+            InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
         ],
         [
-            InlineKeyboardButton("2 - Second Row", callback_data="second_help"),
-            InlineKeyboardButton("Close", callback_data="close_msg")
+            InlineKeyboardButton("Dᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/RexySama"),
+            InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_msg")
         ]
     ])
 
