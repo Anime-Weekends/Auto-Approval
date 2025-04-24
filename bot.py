@@ -272,6 +272,17 @@ async def chk_callback(_, cb: CallbackQuery):
 
 @bot_app.on_message(filters.command("status") & is_sudo())
 async def dbtool(_, m: Message):
+    # Animation sequence
+    welcome_text = "Welcome! Preparing status report..."
+    msg = await m.reply_text(welcome_text)
+    await asyncio.sleep(0.2)
+    await msg.edit_text("<b><i>ꜱᴛᴀʀᴛɪɴɢ...</i></b>")
+    await asyncio.sleep(0.2)
+    await msg.delete()
+
+    await m.reply_sticker(random.choice(stickers))
+
+    # Collect chat statistics
     total_users = all_users()
     total_groups = all_groups()
     total = total_users + total_groups
@@ -279,28 +290,30 @@ async def dbtool(_, m: Message):
     user_percent = (total_users / total) * 100 if total else 0
     group_percent = (total_groups / total) * 100 if total else 0
 
+    # Inline buttons
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_stats")]
+        [InlineKeyboardButton("Dᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/RexySama")],
+        [InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl"), InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_stats")]
     ])
 
     timestamp = datetime.now().strftime("%d %b %Y • %I:%M %p")
 
     caption = (
-        f"<blockquote><b>➥ Cʜᴀᴛ sᴛᴀᴛɪsᴛɪᴄs</b></blockquote>\n\n"
-        f"<blockquote>❏ ᴜsᴇʀs : {total_users} ({user_percent:.1f}%)</blockquote>\n"
-        f"<blockquote>❏ ɢʀᴏᴜᴘs : {total_groups} ({group_percent:.1f}%)</blockquote>\n"
-        f"<blockquote>❏ ᴛᴏᴛᴀʟ ᴄʜᴀᴛs : {total}</blockquote>\n"
-        f"<blockquote>❏ ʟᴀsᴛ ᴜᴘᴅᴀᴛᴇᴅ : {timestamp}</blockquote>"
+        f"<blockquote><b>➥ Cʜᴀᴛ sᴛᴀᴛɪsᴛɪᴄs</b></blockquote>\n"
+        f"<blockquote><b>❏ ᴜsᴇʀs : {total_users} ({user_percent:.1f}%)</b></blockquote>\n"
+        f"<blockquote><b>❏ ɢʀᴏᴜᴘs : {total_groups} ({group_percent:.1f}%)</b></blockquote>\n"
+        f"<blockquote><b>❏ ᴛᴏᴛᴀʟ ᴄʜᴀᴛs : {total}</blockquote></b>\n"
+        f"<blockquote><b>❏ ʟᴀsᴛ ᴜᴘᴅᴀᴛᴇᴅ : {timestamp}</blockquote></b>"
     )
 
     await m.reply_photo(
         photo="https://i.ibb.co/20pJntTr/photo-2025-04-24-09-40-54-7496812406681632780.jpg",
         caption=caption,
         reply_markup=keyboard,
-        parse_mode=ParseMode.HTML, 
-        message_effect_id=5046509860389126442 #🎉
+        parse_mode=ParseMode.HTML,
+        message_effect_id=5046509860389126442
     )
-    
+
 @bot_app.on_callback_query(filters.regex("close_stats"))
 async def close_stats(_, cb: CallbackQuery):
     await cb.message.delete()
