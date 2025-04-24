@@ -735,11 +735,10 @@ async def close_message(_, cb):
 async def help_command(_, m: Message):
     help_text = (
         "<blockquote>𝗙𝗢𝗟𝗟𝗢𝗪 𝗧𝗛𝗘𝗦𝗘 𝗦𝗧𝗘𝗣𝗦</blockquote>\n"
-        "<b>➥ Sᴛᴇᴘ 1 :</b>\n"
-        "<b>➥ Sᴛᴇᴘ 2 :</b>\n"
-        "<b>➥ Sᴛᴇᴘ 3 :</b>\n"
+        "<b>➥ Sᴛᴇᴘ 1 :</b> Aᴅᴅ ᴛʜɪs ᴛᴇʟᴇɢʀᴀᴍ ɪᴅ ᴛᴏ ʏᴏᴜʀ ᴄʜᴀɴɴᴇʟ.\n"
+        "<b>➥ Sᴛᴇᴘ 2 :</b> Mᴀᴋᴇ ᴛʜɪs ɪᴅ ᴀs ᴀᴅᴍɪɴ\n"
+        "<b>➥ Sᴛᴇᴘ 3 :</b> Sᴇɴᴅ ᴛʜᴇ /acceptall ᴄᴏᴍᴍᴀɴᴅ ɪɴ ʏᴏᴜʀ ᴄʜᴀɴɴᴇʟ ᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ᴀʟʟ ᴘᴇɴᴅɪɴɢ ʀᴇǫᴜᴇsᴛs. ᴏɴᴄᴇ ᴅᴏɴᴇ, ʀᴇᴍᴏᴠᴇ ᴛʜɪs ɪᴅ ғʀᴏᴍ ʏᴏᴜʀ ᴄʜᴀɴɴᴇʟ.\n\n"
         "3. Custom welcome messages (coming soon)\n\n"
-        "<i>Use the buttons below to explore more or close this message.</i>"
     )
 
     # Image URL or file path (you can use a URL to the image)
