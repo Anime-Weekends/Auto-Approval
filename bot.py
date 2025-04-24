@@ -675,9 +675,25 @@ async def removeadmin(_, m: Message):
         )
     )
 
-
 @bot_app.on_message(filters.command("listofadmins") & is_sudo())
 async def listadmin(_, m: Message):
+    # Animated status text
+    welcome_text = "<pre>Pʀᴇᴘᴀʀɪɴɢ sᴛᴀᴛᴜs ʀᴇᴘᴏʀᴛ...</pre>"
+    msg = await m.reply_text(welcome_text)
+    await asyncio.sleep(0.2)
+    await msg.edit_text("<b><i><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ...</pre></i></b>")
+    await asyncio.sleep(0.1)
+    await msg.delete()
+
+    # Random sticker from list
+    stickers = [
+        "CAACAgUAAxkBAAIBgWYqY3yMZMJYkuf5tLxjBrXnK1e3AAIbAwAC2MNpVjXpWxuDqZkPMwQ",
+        "CAACAgUAAxkBAAIBg2YqY4OQ8QABFzM9UcwDf90m_JA2dgACYAQAAulVZRrB8ykNP5xj9jME",
+        # Add more if you want variety
+    ]
+    await m.reply_sticker(random.choice(stickers))
+
+    # Get list of admins from the database
     admin_ids = list_admins_db()
     if not admin_ids:
         return await m.reply(
@@ -692,10 +708,15 @@ async def listadmin(_, m: Message):
     for uid in admin_ids:
         try:
             user = await _.get_users(uid)
-            name = user.mention(style="html")
+            # Mention the user (using @username if available)
+            if user.username:
+                mention = f"<a href='tg://user?id={uid}'>@{user.username}</a>"
+            else:
+                mention = f"<a href='tg://user?id={uid}'>Unknown</a>"
         except:
-            name = f"<a href='tg://user?id={uid}'>Unknown</a>"
-        text += f"{name}\nID: <code>{uid}</code>\n\n"
+            mention = f"<a href='tg://user?id={uid}'>Unknown</a>"
+
+        text += f"{mention}\nID: <code>{uid}</code>\n\n"
 
     await m.reply_photo(
         photo="https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
@@ -706,11 +727,11 @@ async def listadmin(_, m: Message):
         )
     )
 
-
 @bot_app.on_callback_query(filters.regex("close_msg"))
 async def close_msg_cb(_, cb):
     await cb.message.delete()
     await cb.answer()
+
     
 def is_sudo():
     return filters.create(lambda _, __, m: m.from_user and (m.from_user.id in cfg.SUDO or is_admin(m.from_user.id)))
