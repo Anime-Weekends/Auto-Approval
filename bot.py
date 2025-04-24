@@ -732,7 +732,7 @@ async def close_message(_, cb):
 #                   USER ID
 # ====================================================
 
-@bot_app.on_message(filters.private & filters.command("approvall"))
+@bot_app.on_message(filters.private & filters.command("approveall"))
 async def help_command(_, m: Message):
     help_text = (
         "<b>Help Menu</b>\n\n"
