@@ -185,7 +185,7 @@ async def start_command(_, m: Message):
     await m.reply_photo(
         random.choice(start_pics),
         caption = (
-            f"<b>Hᴇʏᴏ</b> <a href='tg://user?id={m.from_user.id}'>{m.from_user.first_name}</a>\n\n"
+            f"<pre><b>Hᴇʏᴏ</b> <a href='tg://user?id={m.from_user.id}'>{m.from_user.first_name}</a></pre>\n"
             f"<blockquote expandable><b>I'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ. ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴀɴᴅ ᴍᴀᴋᴇ ᴍᴇ ᴀɴ ᴀᴅᴍɪɴ ᴡɪᴛʜ ᴀᴅᴅ ᴍᴇᴍʙᴇʀs ᴘᴇʀᴍɪssɪᴏɴ ɪ'ʟʟ ʜᴀɴᴅʟᴇ ᴀᴘᴘʀᴏᴠᴀʟs ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ sᴏ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴛᴏ. ʟᴇᴛ ᴍᴇ ᴅᴏ ᴛʜᴇ ʙᴏʀɪɴɢ sᴛᴜғғ.</b></blockquote>\n"
             f"<blockquote><a href='http://t.me/Private_Auto_Approval_Bot?startchannel=true'>➜ Aᴅᴅ ᴛᴏ ᴄʜᴀɴɴᴇʟ</a></blockquote>"
         ), 
@@ -237,11 +237,11 @@ async def back_to_start(_, cq: CallbackQuery):
     await cq.message.edit_media(
         media=InputMediaPhoto(
             media="https://i.ibb.co/v6J0JM80/photo-2025-03-13-18-50-40-7481368571868610580.jpg",  # Your start image
-            caption=(
-                f"🍁 <b>Hello</b> <a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name}</a>!\n\n"
-                "I'm an auto-approve bot. Add me to your chat and promote me to admin "
-                "with <b>Add Members</b> permission."
-            ),
+            caption = (
+                f"<pre><b>Hᴇʏᴏ</b> <a href='tg://user?id={m.from_user.id}'>{m.from_user.first_name}</a></pre>\n"
+                f"<blockquote expandable><b>I'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ. ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴀɴᴅ ᴍᴀᴋᴇ ᴍᴇ ᴀɴ ᴀᴅᴍɪɴ ᴡɪᴛʜ ᴀᴅᴅ ᴍᴇᴍʙᴇʀs ᴘᴇʀᴍɪssɪᴏɴ ɪ'ʟʟ ʜᴀɴᴅʟᴇ ᴀᴘᴘʀᴏᴠᴀʟs ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ sᴏ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴛᴏ. ʟᴇᴛ ᴍᴇ ᴅᴏ ᴛʜᴇ ʙᴏʀɪɴɢ sᴛᴜғғ.</b></blockquote>\n"
+                f"<blockquote><a href='http://t.me/Private_Auto_Approval_Bot?startchannel=true'>➜ Aᴅᴅ ᴛᴏ ᴄʜᴀɴɴᴇʟ</a></blockquote>"
+            ), 
             parse_mode=ParseMode.HTML
         ),
         reply_markup=keyboard
@@ -314,11 +314,12 @@ async def chk_callback(_, cb: CallbackQuery):
     add_user(cb.from_user.id)
 
     await cb.message.edit_text(
-        f"🍁 <b>Hello</b> {cb.from_user.mention()}!\n\n"
-        "I'm an <b>auto-approve bot</b>. Add me to your chat and promote me to admin "
-        "with <b>Add Members</b> permission.",
+        f"<pre><b>Hᴇʏᴏ</b> <a href='tg://user?id={m.from_user.id}'>{m.from_user.first_name}</a></pre>\n"
+        f"<blockquote expandable><b>I'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ. ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴀɴᴅ ᴍᴀᴋᴇ ᴍᴇ ᴀɴ ᴀᴅᴍɪɴ ᴡɪᴛʜ ᴀᴅᴅ ᴍᴇᴍʙᴇʀs ᴘᴇʀᴍɪssɪᴏɴ ɪ'ʟʟ ʜᴀɴᴅʟᴇ ᴀᴘᴘʀᴏᴠᴀʟs ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ sᴏ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴛᴏ. ʟᴇᴛ ᴍᴇ ᴅᴏ ᴛʜᴇ ʙᴏʀɪɴɢ sᴛᴜғғ.</b></blockquote>\n"
+        f"<blockquote><a href='http://t.me/Private_Auto_Approval_Bot?startchannel=true'>➜ Aᴅᴅ ᴛᴏ ᴄʜᴀɴɴᴇʟ</a></blockquote>", 
         reply_markup=keyboard,
-        parse_mode=ParseMode.HTML
+        parse_mode=ParseMode.HTML, 
+        message_effect_id=5104841245755180586
     )
 
 # ====================================================
