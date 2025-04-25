@@ -111,7 +111,7 @@ from pyrogram.types import InputMediaPhoto
 
 @bot_app.on_message(filters.private & filters.command("start"))
 async def start_command(_, m: Message):
-    welcome_text = "<i>ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ <b>ʟᴜᴄʏ</b>.\nʜᴏᴘᴇ ʏᴏᴜ'ʀᴇ ᴅᴏɪɴɢ ᴡᴇʟʟ...</i>"
+    welcome_text = "<i><pre>ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ <b>HeHe</b>.\nʜᴏᴘᴇ ʏᴏᴜ'ʀᴇ ᴅᴏɪɴɢ ᴡᴇʟʟ...</pre></i>"
 
     stickers = [
         "CAACAgUAAxkBAAEOW3hoCf_Za5Dh_qsmeH4OKtJpOEDhggACNwoAApLnMFfso_6k-QJv-zYE",
@@ -126,7 +126,7 @@ async def start_command(_, m: Message):
 
     msg = await m.reply_text(welcome_text)
     await asyncio.sleep(0.2)
-    await msg.edit_text("<b><i>ꜱᴛᴀʀᴛɪɴɢ...</i></b>")
+    await msg.edit_text("<b><i><pre>Sᴛᴀʀᴛɪɴɢ...</pre></i></b>")
     await asyncio.sleep(0.1)
     await msg.delete()
 
@@ -164,7 +164,7 @@ async def start_command(_, m: Message):
         )
 
     # If all channels joined, you can continue your logic here...
-    await m.reply_text("You're all set! Enjoy the bot.")
+    await m.reply_text("<pre>You're all set! Enjoy the bot.</pre>")
     await asyncio.sleep(0.1)
     await msg.delete()
 
