@@ -165,8 +165,6 @@ async def start_command(_, m: Message):
 
     # If all channels joined, you can continue your logic here...
     await m.reply_text("<pre>You're all set! Enjoy the bot.</pre>")
-    await asyncio.sleep(0.1)
-    await msg.delete()
 
     add_user(m.from_user.id)
 
