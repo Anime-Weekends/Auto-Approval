@@ -186,7 +186,7 @@ async def start_command(_, m: Message):
         random.choice(start_pics),
         caption=(
             f"🍁 <b>Hello</b> <a href='tg://user?id={m.from_user.id}'>{m.from_user.first_name}</a> !\n\n"
-            "I'm an auto-approve bot. Add me to your chat and promote me to admin "
+            "<blockquote expandable>I'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ. ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴀɴᴅ ᴍᴀᴋᴇ ᴍᴇ ᴀɴ ᴀᴅᴍɪɴ ᴡɪᴛʜ "ᴀᴅᴅ ᴍᴇᴍʙᴇʀs" ᴘᴇʀᴍɪssɪᴏɴ ɪ'ʟʟ ʜᴀɴᴅʟᴇ ᴀᴘᴘʀᴏᴠᴀʟs ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ sᴏ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴛᴏ. ʟᴇᴛ ᴍᴇ ᴅᴏ ᴛʜᴇ ʙᴏʀɪɴɢ sᴛᴜғғ.</blockquote>"
             "with <b>Add Members</b> permission."
         ),
         reply_markup=keyboard,
