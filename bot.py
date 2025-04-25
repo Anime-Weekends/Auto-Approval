@@ -25,7 +25,7 @@ from database import is_sudo
 from pymongo import MongoClient
 
 # Your MongoDB connection and database setup here...
-from your_database_module import close_db_connection, reconnect_db
+from database import close_db_connection, reconnect_db
 
 
 import random
