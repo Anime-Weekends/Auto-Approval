@@ -255,19 +255,37 @@ async def close_message(_, cq: CallbackQuery):
 
 @bot_app.on_callback_query(filters.regex("chk"))
 async def chk_callback(_, cb: CallbackQuery):
-    try:
-        # Check if user is a member of the required channel
-        member = await bot_app.get_chat_member(cfg.CHID, cb.from_user.id)
-        if member.status not in ["member", "administrator", "creator"]:
-            raise Exception("User not in channel")
+    not_joined = []
 
-    except Exception as e:
-        return await cb.answer(
-            "Yᴏᴜ ʜᴀᴠᴇɴ'ᴛ ᴊᴏɪɴᴇᴅ ᴏᴜʀ ᴄʜᴀɴɴᴇʟ ʏᴇᴛ. ᴘʟᴇᴀsᴇ ᴊᴏɪɴ ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ!",
-            show_alert=True
+    # Check membership in all required channels
+    for ch_id in cfg.FORCE_SUB_CHANNELS:
+        try:
+            member = await bot_app.get_chat_member(ch_id, cb.from_user.id)
+            if member.status not in ["member", "administrator", "creator"]:
+                not_joined.append(ch_id)
+        except:
+            not_joined.append(ch_id)
+
+    if not_joined:
+        buttons = []
+        for ch_id in not_joined:
+            try:
+                invite = await bot_app.create_chat_invite_link(ch_id)
+                buttons.append([InlineKeyboardButton("Jᴏɪɴ ʜᴇʀᴇ", url=invite.invite_link)])
+            except:
+                pass
+
+        buttons.append([
+            InlineKeyboardButton("🔁 Rᴇᴄʜᴇᴄᴋ", callback_data="chk")
+        ])
+
+        return await cb.message.edit_caption(
+            caption="**<i>ᴘʟᴇᴀsᴇ ᴊᴏɪɴ ᴀʟʟ ᴛʜᴇ ʀᴇQᴜɪʀᴇᴅ ᴄʜᴀɴɴᴇʟs ᴛᴏ ᴄᴏɴᴛɪɴᴜᴇ.</i>**",
+            reply_markup=InlineKeyboardMarkup(buttons),
+            parse_mode=ParseMode.HTML
         )
 
-    # Create keyboard
+    # Passed check — continue with welcome
     keyboard = InlineKeyboardMarkup([
         [
             InlineKeyboardButton("Mᴀɪɴ ᴄʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),
@@ -278,11 +296,9 @@ async def chk_callback(_, cb: CallbackQuery):
         ]
     ])
 
-    # Log user in DB
     add_user(cb.from_user.id)
 
-    # Edit the message with bot intro
-    await cb.edit_message_text(
+    await cb.message.edit_text(
         f"🍁 <b>Hello</b> {cb.from_user.mention()}!\n\n"
         "I'm an <b>auto-approve bot</b>. Add me to your chat and promote me to admin "
         "with <b>Add Members</b> permission.",
