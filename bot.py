@@ -132,17 +132,27 @@ async def start_command(_, m: Message):
 
     await m.reply_sticker(random.choice(stickers))
 
-    try:
-        await bot_app.get_chat_member(cfg.CHID, m.from_user.id)
-    except:
+    # Unlimited force-sub check
+    not_joined = []
+    for ch_id in cfg.FORCE_SUB_CHANNELS:
         try:
-            invite_link = await bot_app.create_chat_invite_link(cfg.CHID)
+            member = await bot_app.get_chat_member(ch_id, m.from_user.id)
+            if member.status == "kicked":
+                not_joined.append(ch_id)
         except:
-            return await m.reply("**<blockquote>Mᴀᴋᴇ sᴜʀᴇ ɪ ᴀᴍ ᴀɴ ᴀᴅᴍɪɴ ɪɴ ʏᴏᴜʀ ᴄʜᴀɴɴᴇʟ</blockquote>**")
+            not_joined.append(ch_id)
 
-        button = InlineKeyboardMarkup([
-            [InlineKeyboardButton("Jᴏɪɴ ʜᴇʀᴇ", url=invite_link.invite_link)],
-            [InlineKeyboardButton("Rᴇғʀᴇsʜ", url="https://t.me/Private_Auto_Approval_Bot?start=start")]
+    if not_joined:
+        buttons = []
+        for ch_id in not_joined:
+            try:
+                invite = await bot_app.create_chat_invite_link(ch_id)
+                buttons.append([InlineKeyboardButton("Jᴏɪɴ ʜᴇʀᴇ", url=invite.invite_link)])
+            except:
+                pass
+
+        buttons.append([
+            InlineKeyboardButton("Rᴇғʀᴇsʜ", url=f"https://t.me/{cfg.BOT_USERNAME}?start=start")
         ])
 
         return await m.reply_photo(
