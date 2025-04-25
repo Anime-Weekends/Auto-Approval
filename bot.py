@@ -934,37 +934,31 @@ async def close_callback(client, callback_query):
 # ====================================================
 
 @bot_app.on_message(filters.command("totalapproved") & is_sudo())
-async def total_approved(_, message: Message):
+async def total_approved(client: Client, message: Message):
     try:
-        await message.chat.send_action(ChatAction.TYPING)
+        await client.send_chat_action(message.chat.id, ChatAction.TYPING)
 
-        # Info fetching animation
-        welcome_text = "<pre>Fᴇᴛᴄʜɪɴɢ ʏᴏᴜʀ ɪɴғᴏʀᴍᴀᴛɪᴏɴ... </pre>"
-        msg = await message.reply_text(welcome_text)
+        msg = await message.reply_text("<pre>Fᴇᴛᴄʜɪɴɢ ʏᴏᴜʀ ɪɴғᴏʀᴍᴀᴛɪᴏɴ... </pre>")
         await asyncio.sleep(0.2)
         await msg.edit_text("<b><i><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ...</pre></i></b>")
         await asyncio.sleep(0.1)
         await msg.delete()
 
-        # Send random sticker
         stickers = [
             "CAACAgUAAxkBAAEOXB5oCoNqWhB4frESNLfx8JgVJ688VAACBQ0AAudaGVWG3TppHeiJUjYE",
-            # Add more sticker file_ids if desired
         ]
         await message.reply_sticker(random.choice(stickers))
 
-        # Fetch approval data
-        total = get_total_approvals()
+        # MongoDB user count fetch (you must define this function correctly)
+        total = get_total_approvals()  # This should return an integer
 
-        # Inline buttons
         buttons = InlineKeyboardMarkup([
             [InlineKeyboardButton("🔗 View Stats", url="https://yourwebsite.com/stats")],
             [InlineKeyboardButton("✖️ Close", callback_data="close_msg")]
         ])
 
-        # Send final photo with buttons
         await message.reply_photo(
-            photo="https://telegra.ph/file/your-image-link.jpg",  # Replace with your actual image URL
+            photo="https://telegra.ph/file/your-image-link.jpg",
             caption=f"✅ <b>Total users approved by the bot:</b> <code>{total}</code>",
             parse_mode=ParseMode.HTML,
             reply_markup=buttons
