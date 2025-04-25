@@ -186,7 +186,7 @@ async def start_command(_, m: Message):
     await m.reply_photo(
         random.choice(start_pics),
         caption=(
-            f"🍁 <b>Hello</b> <a href='{user_link}'>{first_name}</a> !\n\n"
+            f"🍁 <b>Hello</b> <a href='tg://user?id={user.id}'>{user.first_name}</a> !\n\n"
             "I'm an auto-approve bot. Add me to your chat and promote me to admin "
             "with <b>Add Members</b> permission."
         ),
