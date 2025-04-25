@@ -176,7 +176,8 @@ async def start_command(_, m: Message):
             InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
         ],
         [
-            InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ ᴍᴇ ʙᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
+            InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ ᴍᴇ ʙᴀʙʏ ⤬", url="https://t.me/{cfg.BOT_USERNAME}?startchannel=true")
+            InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ ᴍᴇ ʙᴀʙʏ ⤬", url="https://t.me/{cfg.BOT_USERNAME}?startgroup=true")
         ],
         [
             InlineKeyboardButton("⧉ Aʙᴏᴜᴛ", callback_data="about")
