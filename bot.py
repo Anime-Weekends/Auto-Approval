@@ -230,7 +230,8 @@ async def back_to_start(_, cq: CallbackQuery):
             InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ ᴍᴇ ʙᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
         ],
         [
-            InlineKeyboardButton("⧉ Aʙᴏᴜᴛ", callback_data="about")
+            InlineKeyboardButton("⧉ Aʙᴏᴜᴛ", callback_data="about"), 
+            InlineKeyboardButton("⨉ Cʟᴏsᴇ", callback_data="close_str")
         ]
     ])
     await cq.message.edit_media(
@@ -302,8 +303,13 @@ async def chk_callback(_, cb: CallbackQuery):
         ],
         [
             InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ ᴍᴇ ʙᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
+        ],
+        [
+            InlineKeyboardButton("⧉ Aʙᴏᴜᴛ", callback_data="about"), 
+            InlineKeyboardButton("⨉ Cʟᴏsᴇ", callback_data="close_str")
         ]
     ])
+        
 
     add_user(cb.from_user.id)
 
