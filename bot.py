@@ -945,7 +945,7 @@ async def total_approved(client: Client, message: Message):
         await msg.delete()
 
         stickers = [
-            "CAACAgUAAxkBAAEOXB5oCoNqWhB4frESNLfx8JgVJ688VAACBQ0AAudaGVWG3TppHeiJUjYE",
+            "CAACAgEAAxkBAAEOXLxoC1jFIIc3ub3OvsQDhWYjiLNTSgAC1AQAAqDlqUU3lKAYVAHYIzYE",
         ]
         await message.reply_sticker(random.choice(stickers))
 
@@ -958,9 +958,10 @@ async def total_approved(client: Client, message: Message):
         ])
 
         await message.reply_photo(
-            photo="https://telegra.ph/file/your-image-link.jpg",
+            photo="https://i.ibb.co/B2GCLrg6/photo-2025-04-25-09-41-40-7497183689424502800.jpg",
             caption=f"✅ <b>Total users approved by the bot:</b> <code>{total}</code>",
             parse_mode=ParseMode.HTML,
+            message_effect_id=5046509860389126442, 
             reply_markup=buttons
         )
 
