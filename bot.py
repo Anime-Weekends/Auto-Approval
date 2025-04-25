@@ -130,11 +130,11 @@ async def start_command(_, m: Message):
     await bot_app.send_chat_action(m.chat.id, ChatAction.TYPING)
 
     msg = await m.reply_text(welcome_text)
-    await asyncio.sleep(0.4)
+    await asyncio.sleep(0.2)
 
     await bot_app.send_chat_action(m.chat.id, ChatAction.TYPING)
     await msg.edit_text("<b><i><pre>Sᴛᴀʀᴛɪɴɢ...</pre></i></b>")
-    await asyncio.sleep(0.3)
+    await asyncio.sleep(0.1)
 
     await msg.delete()
 
@@ -351,6 +351,7 @@ async def dbtool(_, m: Message):
     await msg.delete()
 
     await m.reply_sticker(random.choice(stickers))
+
 
     # Collect chat statistics
     total_users = all_users()
