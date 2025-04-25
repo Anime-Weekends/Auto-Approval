@@ -342,6 +342,9 @@ async def chk_callback(_, cb: CallbackQuery):
 
 @bot_app.on_message(filters.command("status") & is_sudo())
 async def dbtool(_, m: Message):
+
+    # Typing action
+    await bot_app.send_chat_action(m.chat.id, ChatAction.TYPING)
     # Animation sequence
     welcome_text = "<pre>Pʀᴇᴘᴀʀɪɴɢ sᴛᴀᴛᴜs ʀᴇᴘᴏʀᴛ...</pre>"
     msg = await m.reply_text(welcome_text)
@@ -350,6 +353,7 @@ async def dbtool(_, m: Message):
     await asyncio.sleep(0.1)
     await msg.delete()
 
+    await bot_app.send_chat_action(m.chat.id, ChatAction.CHOOSE_STICKER)
     await m.reply_sticker(random.choice(stickers))
 
 
