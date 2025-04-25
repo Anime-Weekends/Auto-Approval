@@ -132,7 +132,7 @@ async def start_command(_, m: Message):
 
     await m.reply_sticker(random.choice(stickers))
 
-    # Unlimited force-sub check
+    # Force-sub check
     not_joined = []
     for ch_id in cfg.FORCE_SUB_CHANNELS:
         try:
@@ -158,10 +158,13 @@ async def start_command(_, m: Message):
         return await m.reply_photo(
             photo=random.choice(start_pics),
             caption="<b><blockquote>Esᴛᴇᴇᴍᴇᴅ ɢᴜᴇsᴛ,</blockquote></b>\n<blockquote expandable>ᴀᴄᴄᴇss ᴛᴏ ᴍʏ sᴇʀᴠɪᴄᴇs...</blockquote>",
-            reply_markup=button,
+            reply_markup=InlineKeyboardMarkup(buttons),
             parse_mode=ParseMode.HTML,
             message_effect_id=5104841245755180586
         )
+
+    # If all channels joined, you can continue your logic here...
+    await m.reply_text("You're all set! Enjoy the bot.")
 
     add_user(m.from_user.id)
 
