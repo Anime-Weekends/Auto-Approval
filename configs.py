@@ -11,14 +11,12 @@ class Config:
     API_ID = int(os.getenv("API_ID", "28744454"))
     API_HASH = os.getenv("API_HASH", "debd37cef0ad1a1ce45d0be8e8c3c5e7")
     BOT_TOKEN = os.getenv("BOT_TOKEN", "7773900178:AAEQEQAXahfYAVsol1EUcwYPKa0Or2cPCdg")
-    
-    # Force Subscribe Channel ID (Ensure bot is admin)
-    CHID = int(os.getenv("CHID", "-1002410513772"))
+
     
     # Add your string session here
     STRING_SESSION = os.getenv("STRING_SESSION", "BQGcIrIAOh8-Sqw77vfX0IcZSH_BFbZUDCkRFeQfQfLKSMm2IB52qDSJepEwCp25OVYPgOVcH0-dZS2ImqlWJA8QLPL6v5XdGX7-1bun5CtY11nmBGTi4VANhtBJ4be8PeZsMzUDnLUFtoqCuoZm_xTszs6iySjUaHIHrvgV9MssqbcCJ_bScnTc1lyEHsX3SFSugL3Tw6V6LXgUqYN3EeASpt-Fanb-MQ6ObVoG8KazZZUyunsRSgR5JAqqz-wyvBAnFx7lelilMzLsmZRcmK1r1l9ub6zjpVhvQ0X8D1bcQu37Gz7_laxsKHrtJfhUwkIntdufk2zIy3mkJuYa3J459cg9dAAAAAF_OuMdAA")
 
-
+     # Force Subscribe Channel ID (Ensure bot is admin)
     FORCE_SUB_CHANNELS = list(map(int, os.getenv("FORCE_SUB_CHANNELS", "-1001234567890").split()))
     
     # Admin User IDs
