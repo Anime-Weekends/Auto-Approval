@@ -127,7 +127,7 @@ async def start_command(_, m: Message):
     fsub_pic = "https://i.ibb.co/v6J0JM80/photo-2025-03-13-18-50-40-7481368571868610580.jpg"
 
     # Show typing
-    await bot_app.send_chat_action(m.chat.id, "typing")
+    await bot_app.send_chat_action(m.chat.id, ChatAction.TYPING)
 
     # Fancy intro
     msg = await m.reply_text(welcome_text)
