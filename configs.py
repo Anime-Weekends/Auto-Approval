@@ -17,7 +17,7 @@ class Config:
     STRING_SESSION = os.getenv("STRING_SESSION", "BQGcIrIAOh8-Sqw77vfX0IcZSH_BFbZUDCkRFeQfQfLKSMm2IB52qDSJepEwCp25OVYPgOVcH0-dZS2ImqlWJA8QLPL6v5XdGX7-1bun5CtY11nmBGTi4VANhtBJ4be8PeZsMzUDnLUFtoqCuoZm_xTszs6iySjUaHIHrvgV9MssqbcCJ_bScnTc1lyEHsX3SFSugL3Tw6V6LXgUqYN3EeASpt-Fanb-MQ6ObVoG8KazZZUyunsRSgR5JAqqz-wyvBAnFx7lelilMzLsmZRcmK1r1l9ub6zjpVhvQ0X8D1bcQu37Gz7_laxsKHrtJfhUwkIntdufk2zIy3mkJuYa3J459cg9dAAAAAF_OuMdAA")
 
      # Force Subscribe Channel ID (Ensure bot is admin)
-    FORCE_SUB_CHANNELS = list(map(int, os.getenv("FORCE_SUB_CHANNELS", "-1001234567890").split()))
+    FORCE_SUB_CHANNELS = list(map(int, os.getenv("FORCE_SUB_CHANNELS", "-1002410513772 -1002296091847").split()))
     
     # Admin User IDs
     SUDO = list(map(int, os.getenv("SUDO", "5548954124 6429532957").split()))
