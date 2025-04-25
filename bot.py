@@ -157,7 +157,7 @@ async def start_command(_, m: Message):
 
         return await m.reply_photo(
             photo=random.choice(start_pics),
-            caption="<b><blockquote>Esᴛᴇᴇᴍᴇᴅ ɢᴜᴇsᴛ,</blockquote></b>\n<blockquote expandable>ᴀᴄᴄᴇss ᴛᴏ ᴍʏ sᴇʀᴠɪᴄᴇs...</blockquote>",
+            caption="<b><pre><a href='tg://user?id={m.from_user.id}'>{m.from_user.first_name}</a> Esᴛᴇᴇᴍᴇᴅ ɢᴜᴇsᴛ,</pre></b>\n<blockquote expandable>ᴀᴄᴄᴇss ᴛᴏ ᴍʏ sᴇʀᴠɪᴄᴇs ɪs ʀᴇsᴇʀᴠᴇᴅ ғᴏʀ ᴍᴇᴍʙᴇʀs ᴏғ ᴏᴜʀ ᴏғғɪᴄɪᴀʟ ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ ᴀɴ ᴇxᴄʟᴜsɪᴠᴇ ᴄɪʀᴄʟᴇ ᴡʜᴇʀᴇ ᴏɴʟʏ ᴛʜᴇ ᴅɪsᴛɪɴɢᴜɪsʜᴇᴅ sᴛᴀʏ ɪɴғᴏʀᴍᴇᴅ. ᴊᴏɪɴ ɴᴏᴡ ᴀɴᴅ sᴇᴄᴜʀᴇ ʏᴏᴜʀ ʀɪɢʜᴛғᴜʟ ᴘʟᴀᴄᴇ ᴀᴍᴏɴɢ ᴛʜᴇ ᴇʟɪᴛᴇ.</blockquote>",
             reply_markup=InlineKeyboardMarkup(buttons),
             parse_mode=ParseMode.HTML,
             message_effect_id=5104841245755180586
