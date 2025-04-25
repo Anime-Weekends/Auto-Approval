@@ -177,7 +177,8 @@ async def start_command(_, m: Message):
             InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ ᴍᴇ ʙᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
         ],
         [
-            InlineKeyboardButton("⧉ Aʙᴏᴜᴛ", callback_data="about")
+            InlineKeyboardButton("⧉ Aʙᴏᴜᴛ", callback_data="about"), 
+            InlineKeyboardButton("⨉ Cʟᴏsᴇ", callback_data="close_str")
         ]
     ])
 
@@ -247,6 +248,11 @@ async def back_to_start(_, cq: CallbackQuery):
 
 
 @bot_app.on_callback_query(filters.regex("close_msg"))
+async def close_message(_, cq: CallbackQuery):
+    await cq.answer()
+    await cq.message.delete()
+
+@bot_app.on_callback_query(filters.regex("close_str"))
 async def close_message(_, cq: CallbackQuery):
     await cq.answer()
     await cq.message.delete()
