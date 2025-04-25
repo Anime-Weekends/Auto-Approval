@@ -959,7 +959,7 @@ async def total_approved(client: Client, message: Message):
 
         await message.reply_photo(
             photo="https://i.ibb.co/B2GCLrg6/photo-2025-04-25-09-41-40-7497183689424502800.jpg",
-            caption=f"➥ <b>Total users approved by the bot :</b> <code>{total}</code>",
+            caption=f"<pre>➥ <b>Tᴏᴛᴀʟ ᴜsᴇʀs ᴀᴘᴘʀᴏᴠᴇᴅ ʙʏ ᴛʜᴇ ʙᴏᴛ :</b> <code>{total}</code></pre>",
             parse_mode=ParseMode.HTML,
             message_effect_id=5046509860389126442, 
             reply_markup=buttons
@@ -967,7 +967,7 @@ async def total_approved(client: Client, message: Message):
 
     except Exception as e:
         await message.reply(
-            f"⚠️ <b>Error:</b> <code>{str(e)}</code>",
+            f"⚠️ <b><pre>Error:</b> <code>{str(e)}</code></pre>",
             parse_mode=ParseMode.HTML
         )
 
@@ -981,7 +981,7 @@ async def restart_bot(client: Client, message: Message):
     
     # Send a message indicating bot restart
     msg = await message.reply(
-        text=f"<b><i><blockquote>⚠️ {client.name} ɢᴏɪɴɢ ᴛᴏ Rᴇsᴛᴀʀᴛ...</blockquote></i></b>"
+        text=f"<b><i><blockquote>⚠️ {client.name} Gᴏɪɴɢ ᴛᴏ Rᴇsᴛᴀʀᴛ...</blockquote></i></b>"
     )
     
     try:
