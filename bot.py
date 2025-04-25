@@ -126,19 +126,19 @@ async def start_command(_, m: Message):
 
     fsub_pic = "https://i.ibb.co/v6J0JM80/photo-2025-03-13-18-50-40-7481368571868610580.jpg"
 
-    # Show typing
+    # Typing action
     await bot_app.send_chat_action(m.chat.id, ChatAction.TYPING)
 
-    # Fancy intro
     msg = await m.reply_text(welcome_text)
     await asyncio.sleep(0.4)
 
-    await bot_app.send_chat_action(m.chat.id, "typing")
+    await bot_app.send_chat_action(m.chat.id, ChatAction.TYPING)
     await msg.edit_text("<b><i><pre>Sᴛᴀʀᴛɪɴɢ...</pre></i></b>")
     await asyncio.sleep(0.3)
 
     await msg.delete()
-    await bot_app.send_chat_action(m.chat.id, "choose_sticker")
+
+    await bot_app.send_chat_action(m.chat.id, ChatAction.CHOOSE_STICKER)
     await m.reply_sticker(random.choice(stickers))
 
     # Force-sub check
@@ -164,7 +164,7 @@ async def start_command(_, m: Message):
             InlineKeyboardButton("Rᴇғʀᴇsʜ", url=f"https://t.me/{cfg.BOT_USERNAME}?start=start")
         ])
 
-        await bot_app.send_chat_action(m.chat.id, "upload_photo")
+        await bot_app.send_chat_action(m.chat.id, ChatAction.UPLOAD_PHOTO)
         return await m.reply_photo(
             photo=fsub_pic,
             caption=(
