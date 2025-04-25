@@ -127,7 +127,7 @@ async def start_command(_, m: Message):
     msg = await m.reply_text(welcome_text)
     await asyncio.sleep(0.2)
     await msg.edit_text("<b><i>ꜱᴛᴀʀᴛɪɴɢ...</i></b>")
-    await asyncio.sleep(0.2)
+    await asyncio.sleep(0.1)
     await msg.delete()
 
     await m.reply_sticker(random.choice(stickers))
@@ -165,6 +165,8 @@ async def start_command(_, m: Message):
 
     # If all channels joined, you can continue your logic here...
     await m.reply_text("You're all set! Enjoy the bot.")
+    await asyncio.sleep(0.1)
+    await msg.delete()
 
     add_user(m.from_user.id)
 
