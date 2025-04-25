@@ -945,7 +945,7 @@ async def total_approved(client: Client, message: Message):
         await msg.delete()
 
         stickers = [
-            "CAACAgEAAxkBAAEOXLxoC1jFIIc3ub3OvsQDhWYjiLNTSgAC1AQAAqDlqUU3lKAYVAHYIzYE",
+            "CAACAgUAAxkBAAEOXBhoCoKZ76jevKX-Vc5v5SZhCeQAAXMAAh4KAALJrhlVZygbxFWWTLw2BA",
         ]
         await message.reply_sticker(random.choice(stickers))
 
@@ -953,13 +953,13 @@ async def total_approved(client: Client, message: Message):
         total = get_total_approvals()  # This should return an integer
 
         buttons = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔗 View Stats", url="https://yourwebsite.com/stats")],
-            [InlineKeyboardButton("✖️ Close", callback_data="close_msg")]
+            [InlineKeyboardButton("Dᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/RexySama")],
+            [InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_msg")]
         ])
 
         await message.reply_photo(
             photo="https://i.ibb.co/B2GCLrg6/photo-2025-04-25-09-41-40-7497183689424502800.jpg",
-            caption=f"✅ <b>Total users approved by the bot:</b> <code>{total}</code>",
+            caption=f"➥ <b>Total users approved by the bot :</b> <code>{total}</code>",
             parse_mode=ParseMode.HTML,
             message_effect_id=5046509860389126442, 
             reply_markup=buttons
