@@ -66,21 +66,19 @@ async def approve(_, m: Message):
     chat = m.chat
     user = m.from_user
     try:
-        # Ban Check for Channels
+        # Check if Channel is banned
         if is_banned_channel(chat.id):
-            await log_event(f"❌ Blocked Join from Banned Channel: {chat.title} (`{chat.id}`)")
-            return  # Don't approve members from banned channels
+            return  # Skip if banned channel
         
-        # Ban Check for Users
+        # Check if User is banned
         if is_banned_user(user.id):
-            await log_event(f"❌ Blocked Banned User: {user.first_name} (`{user.id}`) in {chat.title}")
-            return  # Don't approve banned users
+            return  # Skip if banned user
 
-        # Approve Normally
+        # Approve user join
         add_group(chat.id)
         await bot_app.approve_chat_join_request(chat.id, user.id)
 
-        # Inline buttons layout
+        # Inline Keyboard
         keyboard = InlineKeyboardMarkup(
             [
                 [InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz")],
@@ -91,6 +89,7 @@ async def approve(_, m: Message):
             ]
         )
 
+        # Welcome Caption
         caption = (
             f"<b><blockquote>Hᴇʏ sᴡᴇᴇᴛɪᴇ</b> <a href='tg://user?id={user.id}'>{user.first_name}</a> ⭐✨</blockquote>\n\n"
             f"<blockquote>Aᴄᴄᴇss ʜᴀs ʙᴇᴇɴ <b>Gʀᴀɴᴛᴇᴅ</b> sᴛᴇᴘ ɪɴᴛᴏ ᴛʜᴇ ᴘʀᴇsᴛɪɢɪᴏᴜs ʜᴀʟʟs ᴏғ "
@@ -98,6 +97,7 @@ async def approve(_, m: Message):
             f"<i><blockquote>Pʀᴇsᴇɴᴛᴇᴅ ᴡɪᴛʜ ʜᴏɴᴏʀ ʙʏ <a href='https://t.me/EmitingStars_Botz'>Eᴍɪᴛɪɴɢ sᴛᴀʀs</a></blockquote></i>"
         )
 
+        # Send welcome photo to user
         await bot_app.send_photo(
             user.id,
             "https://i.ibb.co/vxMhkZQD/photo-2025-04-23-20-40-27-7496611286248062984.jpg",
@@ -107,15 +107,31 @@ async def approve(_, m: Message):
             message_effect_id=5046509860389126442
         )
 
+        # Add user to database
         add_user(user.id)
 
-        await log_event(f"✅ Approved {user.first_name} (`{user.id}`) in {chat.title} (`{chat.id}`)")
+        # Check if it's a new channel
+        if chat.type in ("channel", "supergroup"):
+            # New channel added
+            await bot_app.send_photo(
+                LOG_CHANNEL_ID,
+                photo="https://i.ibb.co/1fjWR7Y/channel-added.jpg",   # <-- Channel image
+                caption=f"➕ <b>New Channel Added</b>\n\n<b>Title:</b> {chat.title}\n<b>ID:</b> `{chat.id}`\n<b>Invite Link:</b> {chat.invite_link or 'Not available'}",
+                parse_mode=ParseMode.HTML
+            )
+        else:
+            # New user joined
+            await bot_app.send_photo(
+                LOG_CHANNEL_ID,
+                photo="https://i.ibb.co/pXqzMjS/new-user.jpg",   # <-- New user image
+                caption=f"✅ <b>New User Joined</b>\n\n<b>Name:</b> {user.mention}\n<b>User ID:</b> `{user.id}`\n<b>Chat:</b> {chat.title} (`{chat.id}`)",
+                parse_mode=ParseMode.HTML
+            )
 
     except errors.PeerIdInvalid:
         print("User isn't a proper peer (possibly a group)")
     except Exception as err:
         print(str(err))
-
 
 # Callback query handler for the "⚡" button to show a popup message
 @bot_app.on_callback_query(filters.regex("popup_action"))
