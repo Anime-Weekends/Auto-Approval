@@ -520,7 +520,7 @@ async def close_bcast(_, cb):
 #               BROADCAST (FORWARD)
 # ====================================================
 
-broadcast_type = {}  # to store user choice: "forward" or "copy"
+broadcast_settings = {}  # to store settings: type, pin, autodelete
 canceled = False
 
 @bot_app.on_message(filters.command("forwardbroadcast") & is_sudo())
@@ -528,43 +528,103 @@ async def fcast_start(_, m: Message):
     global canceled
     canceled = False
 
-    # Ask user: Forward or Copy
+    broadcast_settings[m.from_user.id] = {"type": None, "pin": False, "autodelete": 0}
+
     await m.reply(
         "🔵 **Select broadcast type:**",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("🔁 Forward", callback_data="start_fcast_forward"),
-                    InlineKeyboardButton("📝 Copy", callback_data="start_fcast_copy"),
+                    InlineKeyboardButton("🔁 Forward", callback_data="select_type_forward"),
+                    InlineKeyboardButton("📝 Copy", callback_data="select_type_copy"),
                 ],
                 [InlineKeyboardButton("Cancel", callback_data="close_fcast")],
             ]
         )
     )
 
-@bot_app.on_callback_query(filters.regex("start_fcast_(forward|copy)"))
-async def fcast_main(_, cb):
-    global canceled
-    canceled = False
-    action = cb.data.split("_")[2]  # forward or copy
-    broadcast_type[cb.from_user.id] = action
+@bot_app.on_callback_query(filters.regex("select_type_(forward|copy)"))
+async def select_pin(_, cb):
+    action = cb.data.split("_")[2]
+    broadcast_settings[cb.from_user.id]["type"] = action
 
-    m = cb.message.reply_to_message
-    if not m:
-        await cb.answer("Reply to a message to broadcast!", show_alert=True)
-        return
-
-    lel = await cb.message.edit(
-        "`⚡️ Starting broadcast...`",
+    await cb.message.edit(
+        "📌 **Do you want to PIN the message after sending?**",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("Cancel", callback_data="cancel_fcast"),
-                    InlineKeyboardButton("Close", callback_data="close_fcast"),
-                ]
+                    InlineKeyboardButton("✅ Yes", callback_data="select_pin_yes"),
+                    InlineKeyboardButton("❌ No", callback_data="select_pin_no"),
+                ],
+                [InlineKeyboardButton("Cancel", callback_data="close_fcast")],
             ]
         )
     )
+
+@bot_app.on_callback_query(filters.regex("select_pin_(yes|no)"))
+async def select_autodelete(_, cb):
+    choice = cb.data.split("_")[2]
+    broadcast_settings[cb.from_user.id]["pin"] = (choice == "yes")
+
+    await cb.message.edit(
+        "⏰ **Do you want Auto-Delete after sending?**",
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton("✅ Yes", callback_data="select_autodelete_yes"),
+                    InlineKeyboardButton("❌ No", callback_data="select_autodelete_no"),
+                ],
+                [InlineKeyboardButton("Cancel", callback_data="close_fcast")],
+            ]
+        )
+    )
+
+@bot_app.on_callback_query(filters.regex("select_autodelete_(yes|no)"))
+async def ask_autodelete_time(_, cb):
+    choice = cb.data.split("_")[2]
+    if choice == "yes":
+        await cb.message.edit(
+            "⏳ **Send me the number of seconds to auto delete.**\n\nExample: `30` for 30 seconds.",
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton("Cancel", callback_data="close_fcast")]]
+            )
+        )
+    else:
+        broadcast_settings[cb.from_user.id]["autodelete"] = 0
+        await start_broadcast(cb)
+
+@bot_app.on_message(filters.text & filters.user(is_sudo()))
+async def receive_autodelete_time(_, m: Message):
+    if m.from_user.id not in broadcast_settings:
+        return  # ignore if not in broadcast flow
+
+    if broadcast_settings[m.from_user.id]["autodelete"] != 0:
+        return  # already set
+
+    try:
+        seconds = int(m.text.strip())
+        if seconds <= 0:
+            raise ValueError
+        broadcast_settings[m.from_user.id]["autodelete"] = seconds
+    except ValueError:
+        return await m.reply("❌ Please send a valid positive number for seconds.")
+
+    await start_broadcast(m)
+
+async def start_broadcast(m):
+    global canceled
+    canceled = False
+
+    user_id = m.from_user.id
+    settings = broadcast_settings.get(user_id)
+    if not settings:
+        return await m.reply("❌ Settings not found. Please start again.")
+
+    original_message = m.reply_to_message or m.reply_to_message
+    if not original_message:
+        return await m.reply("❌ Please reply to a message to broadcast.")
+
+    lel = await m.reply("`⚡️ Starting broadcast...`")
 
     total_users = users.count_documents({})
     if total_users == 0:
@@ -581,16 +641,28 @@ async def fcast_main(_, cb):
             break
 
         try:
-            if broadcast_type.get(cb.from_user.id) == "copy":
-                await m.copy(
+            sent = None
+            if settings["type"] == "copy":
+                sent = await original_message.copy(
                     chat_id=int(u["user_id"]),
-                    reply_markup=m.reply_markup
+                    reply_markup=original_message.reply_markup
                 )
             else:  # forward
-                await m.forward(
+                sent = await original_message.forward(
                     chat_id=int(u["user_id"])
                 )
+
+            if settings["pin"]:
+                try:
+                    await sent.pin(disable_notification=True)
+                except Exception as e:
+                    print(f"Cannot pin in {u['user_id']}: {e}")
+
+            if settings["autodelete"]:
+                asyncio.create_task(delete_later(sent, settings["autodelete"]))
+
             stats["success"] += 1
+
         except UserDeactivated:
             stats["deactivated"] += 1
             users.delete_one({"user_id": u["user_id"]})
@@ -631,25 +703,31 @@ async def fcast_main(_, cb):
 
     if canceled:
         await lel.edit(
-            "❌ Forward broadcast process has been canceled.",
+            "❌ Broadcast process has been canceled.",
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton("Close", callback_data="close_fcast")]]
             )
         )
-        return
-
-    final_bar = "●" * bar_length
-    await lel.edit(
-        f"✅ Broadcast completed!\n\n"
-        f"<code>[{final_bar}] 100%</code>\n\n"
-        f"✅ Successful: `{stats['success']}`\n"
-        f"❌ Failed: `{stats['failed']}`\n"
-        f"🚫 Blocked: `{stats['blocked']}`\n"
-        f"👻 Deactivated: `{stats['deactivated']}`",
-        reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("Close", callback_data="close_fcast")]]
+    else:
+        final_bar = "●" * bar_length
+        await lel.edit(
+            f"✅ Broadcast completed!\n\n"
+            f"<code>[{final_bar}] 100%</code>\n\n"
+            f"✅ Successful: `{stats['success']}`\n"
+            f"❌ Failed: `{stats['failed']}`\n"
+            f"🚫 Blocked: `{stats['blocked']}`\n"
+            f"👻 Deactivated: `{stats['deactivated']}`",
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton("Close", callback_data="close_fcast")]]
+            )
         )
-    )
+
+async def delete_later(msg: Message, seconds: int):
+    await asyncio.sleep(seconds)
+    try:
+        await msg.delete()
+    except:
+        pass
 
 @bot_app.on_callback_query(filters.regex("cancel_fcast"))
 async def cancel_fcast(_, cb):
