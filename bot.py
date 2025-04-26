@@ -742,16 +742,21 @@ async def accept_all(_, m: Message):
         batch_size = 50
         delay_seconds = 5
         approved = 0
+        skipped = 0
 
         for i in range(0, len(requests), batch_size):
             batch = requests[i:i + batch_size]
             for req in batch:
-                await user_app.approve_chat_join_request(chat_id, req.user.id)
-                approved += 1
+                try:
+                    await user_app.approve_chat_join_request(chat_id, req.user.id)
+                    approved += 1
+                except RPCError as e:
+                    skipped += 1
+                    print(f"Skipped user {req.user.id}: {e}")
             await asyncio.sleep(delay_seconds)
 
         await m.reply(
-            f"✅ Successfully approved  <b>{approved}</b> join request (s).",
+            f"<blockquote>✅ Approved: <b>{approved}</b> users\n⚠️ Skipped: <b>{skipped}</b> users</blockquote>",
             parse_mode=ParseMode.HTML,
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton("❌ Close", callback_data="close_msg")]]
@@ -764,14 +769,6 @@ async def accept_all(_, m: Message):
         await m.reply(f"⚠️ <b>Telegram Error:</b> <code>{err}</code>", parse_mode=ParseMode.HTML)
     except Exception as err:
         await m.reply(f"⚠️ <b>Unexpected Error:</b> <code>{err}</code>", parse_mode=ParseMode.HTML)
-
-@user_app.on_callback_query(filters.regex("close_msg"))
-async def close_message(_, cb):
-    try:
-        await cb.message.delete()
-    except Exception:
-        await cb.answer("Couldn't delete the message.", show_alert=True)
-
 
 # ====================================================
 #                   USER ID
