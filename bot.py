@@ -520,17 +520,14 @@ async def close_bcast(_, cb):
 #               BROADCAST (FORWARD)
 # ====================================================
 
-@bot_app.on_message(filters.command("fbroadcast") & is_sudo())
+@bot_app.on_message(filters.command("forwardbroadcast") & is_sudo())
 async def fcast(_, m: Message):
     global canceled
     canceled = False
 
-    # Typing action
-    await bot_app.send_chat_action(m.chat.id, ChatAction.TYPING)
-
     lel = await m.reply_photo(
         "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
-        caption="`⚡️ Processing...`",
+        caption="`⚡️ Preparing forward broadcast...`",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
@@ -542,76 +539,100 @@ async def fcast(_, m: Message):
     )
 
     total_users = users.count_documents({})
+    if total_users == 0:
+        return await lel.edit("No users found in the database.")
+
     stats = {"success": 0, "failed": 0, "deactivated": 0, "blocked": 0}
+    bar_length = 20
+    last_update_percentage = 0
+    update_interval = 0.05  # 5%
+    start_time = time.perf_counter()
 
     for idx, u in enumerate(users.find(), 1):
         if canceled:
+            percent = idx / total_users
+            final_bar = "●" * int(percent * bar_length) + "○" * (bar_length - int(percent * bar_length))
             await lel.edit(
-                "❌ Broadcast process has been canceled.",
+                f"❌ Forward broadcast canceled!\n\n"
+                f"<code>[{final_bar}] {int(percent * 100)}%</code>\n\n"
+                f"✅ Successful: `{stats['success']}`\n"
+                f"❌ Failed: `{stats['failed']}`\n"
+                f"🚫 Blocked: `{stats['blocked']}`\n"
+                f"👻 Deactivated: `{stats['deactivated']}`",
                 reply_markup=InlineKeyboardMarkup(
                     [[InlineKeyboardButton("Close", callback_data="close_fcast")]]
                 )
             )
-            break
-
-        progress = int((idx / total_users) * 100)
-        bars = int(progress / 5)
-        progress_bar = f"[{'█' * bars}{'—' * (20 - bars)}] {progress}%"
-
-        await lel.edit(
-            f"📣 Broadcasting...\n\n"
-            f"{progress_bar}\n\n"
-            f"✅ Success: `{stats['success']}` | ❌ Failed: `{stats['failed']}`\n"
-            f"👻 Deactivated: `{stats['deactivated']}` | 🚫 Blocked: `{stats['blocked']}`",
-            reply_markup=InlineKeyboardMarkup(
-                [[
-                    InlineKeyboardButton("Cancel", callback_data="cancel_fcast"),
-                    InlineKeyboardButton("Close", callback_data="close_fcast")
-                ]]
-            )
-        )
+            return
 
         try:
+            # Forward the message to the user
             await m.reply_to_message.forward(int(u["user_id"]))
             stats["success"] += 1
-        except FloodWait as e:
-            await asyncio.sleep(e.value)
-        except errors.InputUserDeactivated:
+        except UserDeactivated:
             stats["deactivated"] += 1
-            remove_user(u["user_id"])  # Remove deactivated user
-        except errors.UserIsBlocked:
+            users.delete_one({"user_id": u["user_id"]})
+        except UserBlocked:
             stats["blocked"] += 1
-        except Exception:
+        except Exception as e:
             stats["failed"] += 1
+            print(f"Error with user {u['user_id']}: {e}")
+
+        # Update progress
+        percent = idx / total_users
+        if percent - last_update_percentage >= update_interval or idx == 1:
+            num_blocks = int(percent * bar_length)
+            progress_bar = "●" * num_blocks + "○" * (bar_length - num_blocks)
+
+            elapsed = time.perf_counter() - start_time
+            eta_seconds = (elapsed / percent) - elapsed if percent else 0
+            eta = f"{int(eta_seconds)//60:02}:{int(eta_seconds)%60:02}"
+
+            # Update the message with the progress bar
+            await lel.edit(
+                f"📣 Forward broadcasting...\n\n"
+                f"<code>[{progress_bar}] {int(percent * 100)}%</code>\n"
+                f"⏳ ETA: `{eta}` minutes\n\n"
+                f"✅ Success: `{stats['success']}` | ❌ Failed: `{stats['failed']}`\n"
+                f"👻 Deactivated: `{stats['deactivated']}` | 🚫 Blocked: `{stats['blocked']}`",
+                reply_markup=InlineKeyboardMarkup(
+                    [[
+                        InlineKeyboardButton("Cancel", callback_data="cancel_fcast"),
+                        InlineKeyboardButton("Close", callback_data="close_fcast")
+                    ]]
+                )
+            )
+            last_update_percentage = percent
 
         await asyncio.sleep(0.1)
 
-    if not canceled:
-        await lel.edit(
-            f"✅ Broadcast finished!\n\n"
-            f"✅ Successful: `{stats['success']}`\n"
-            f"❌ Failed: `{stats['failed']}`\n"
-            f"👾 Blocked: `{stats['blocked']}`\n"
-            f"👻 Deactivated: `{stats['deactivated']}`",
-            reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("Close", callback_data="close_fcast")]]
-            )
-        )
-
-# === Cancel Button Callback ===
-@bot_app.on_callback_query(filters.regex("cancel_fcast"))
-async def cancel_fcast(_, cb):
-    global canceled
-    canceled = True
-    await cb.answer("Broadcast has been canceled.")
-    await cb.message.edit(
-        "❌ Broadcast process has been canceled.",
+    final_bar = "●" * bar_length
+    await lel.edit(
+        f"✅ Forward broadcast completed!\n\n"
+        f"<code>[{final_bar}] 100%</code>\n\n"
+        f"✅ Successful: `{stats['success']}`\n"
+        f"❌ Failed: `{stats['failed']}`\n"
+        f"🚫 Blocked: `{stats['blocked']}`\n"
+        f"👻 Deactivated: `{stats['deactivated']}`",
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("Close", callback_data="close_fcast")]]
         )
     )
 
-# === Close Button Callback ===
+
+@bot_app.on_callback_query(filters.regex("cancel_fcast"))
+async def cancel_fcast(_, cb):
+    global canceled
+    canceled = True
+    await cb.answer("Forward broadcast has been canceled.")
+    await cb.message.edit(
+        "❌ Forward broadcast process has been canceled.",
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("Close", callback_data="close_fcast")]]
+        )
+    )
+
+
 @bot_app.on_callback_query(filters.regex("close_fcast"))
 async def close_fcast(_, cb):
     await cb.message.delete()
