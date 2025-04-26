@@ -11,7 +11,7 @@ from pyrogram import filters, Client, errors, enums
 from pyrogram.errors import UserNotParticipant
 from pyrogram.errors.exceptions.flood_420 import FloodWait
 from pyrogram.enums import ChatMemberStatus, ParseMode
-from pyrogram.errors import UserDeactivated, UserBlocked
+from pyrogram.errors import UserDeactivated, UserIsBlocked as UserBlocked
 from pyrogram.errors import PeerIdInvalid
 from pyrogram.errors import RPCError
 from database import get_total_approvals
@@ -30,6 +30,7 @@ from database import close_db_connection, reconnect_db
 
 import random
 import asyncio
+import time
 import sys
 import os
 
@@ -403,18 +404,16 @@ stickers = [
 #                 BROADCAST (COPY)
 # ====================================================
 
+canceled = False
+
 @bot_app.on_message(filters.command("broadcast") & is_sudo())
 async def bcast(_, m: Message):
     global canceled
     canceled = False
 
-    # Typing action
-    await bot_app.send_chat_action(m.chat.id, ChatAction.TYPING)
-
-    # Sending the initial message with photo and inline buttons
     lel = await m.reply_photo(
         "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
-        caption="`⚡️ Processing...`",
+        caption="`⚡️ Preparing broadcast...`",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
@@ -425,47 +424,38 @@ async def bcast(_, m: Message):
         )
     )
 
-    # Get total number of users from the database
     total_users = users.count_documents({})
-    stats = {"success": 0, "failed": 0, "deactivated": 0, "blocked": 0}
+    if total_users == 0:
+        return await lel.edit("No users found in the database.")
 
-    # Loop through all users and broadcast the message
+    stats = {"success": 0, "failed": 0, "deactivated": 0, "blocked": 0}
+    bar_length = 20
+    last_update_percentage = 0
+    update_interval = 0.05  # 5%
+    start_time = time.perf_counter()
+
     for idx, u in enumerate(users.find(), 1):
         if canceled:
+            percent = idx / total_users
+            final_bar = "●" * int(percent * bar_length) + "○" * (bar_length - int(percent * bar_length))
             await lel.edit(
-                "❌ Broadcast process has been canceled.",
+                f"❌ Broadcast canceled!\n\n"
+                f"<code>[{final_bar}] {int(percent * 100)}%</code>\n\n"
+                f"✅ Successful: `{stats['success']}`\n"
+                f"❌ Failed: `{stats['failed']}`\n"
+                f"🚫 Blocked: `{stats['blocked']}`\n"
+                f"👻 Deactivated: `{stats['deactivated']}`",
                 reply_markup=InlineKeyboardMarkup(
                     [[InlineKeyboardButton("Close", callback_data="close_bcast")]]
                 )
             )
-            break
+            return
 
-        # Calculate progress for the broadcast
-        progress = int((idx / total_users) * 100)
-        bars = int(progress / 5)
-        progress_bar = f"[{'█' * bars}{'—' * (20 - bars)}] {progress}%"
-
-        # Update the user with the progress
-        await lel.edit(
-            f"📣 Broadcasting...\n\n"
-            f"{progress_bar}\n\n"
-            f"✅ Success: `{stats['success']}` | ❌ Failed: `{stats['failed']}`\n"
-            f"👻 Deactivated: `{stats['deactivated']}` | 🚫 Blocked: `{stats['blocked']}`",
-            reply_markup=InlineKeyboardMarkup(
-                [[
-                    InlineKeyboardButton("Cancel", callback_data="cancel_bcast"),
-                    InlineKeyboardButton("Close", callback_data="close_bcast")
-                ]]
-            )
-        )
-
-        # Try to forward the message to the user
         try:
             await m.reply_to_message.copy(int(u["user_id"]))
             stats["success"] += 1
         except UserDeactivated:
             stats["deactivated"] += 1
-            # Remove the user from the database if they are deactivated
             users.delete_one({"user_id": u["user_id"]})
         except UserBlocked:
             stats["blocked"] += 1
@@ -473,36 +463,54 @@ async def bcast(_, m: Message):
             stats["failed"] += 1
             print(f"Error with user {u['user_id']}: {e}")
 
-        # To prevent rate limiting, give some time between messages
+        # Update progress
+        percent = idx / total_users
+        if percent - last_update_percentage >= update_interval or idx == 1:
+            num_blocks = int(percent * bar_length)
+            progress_bar = "●" * num_blocks + "○" * (bar_length - num_blocks)
+
+            elapsed = time.perf_counter() - start_time
+            eta_seconds = (elapsed / percent) - elapsed if percent else 0
+            eta = f"{int(eta_seconds)//60:02}:{int(eta_seconds)%60:02}"
+
+            await lel.edit(
+                f"📣 Broadcasting...\n\n"
+                f"<code>[{progress_bar}] {int(percent * 100)}%</code>\n"
+                f"⏳ ETA: `{eta}` minutes\n\n"
+                f"✅ Success: `{stats['success']}` | ❌ Failed: `{stats['failed']}`\n"
+                f"👻 Deactivated: `{stats['deactivated']}` | 🚫 Blocked: `{stats['blocked']}`",
+                reply_markup=InlineKeyboardMarkup(
+                    [[
+                        InlineKeyboardButton("Cancel", callback_data="cancel_bcast"),
+                        InlineKeyboardButton("Close", callback_data="close_bcast")
+                    ]]
+                )
+            )
+            last_update_percentage = percent
+
         await asyncio.sleep(0.1)
 
-    # After the broadcast is done, update the user on the status
-    if not canceled:
-        await lel.edit(
-            f"✅ Broadcast finished!\n\n"
-            f"✅ Successful: `{stats['success']}`\n"
-            f"❌ Failed: `{stats['failed']}`\n"
-            f"👾 Blocked: `{stats['blocked']}`\n"
-            f"👻 Deactivated: `{stats['deactivated']}`",
-            reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("Close", callback_data="close_bcast")]]
-            )
-        )
-
-# === Cancel Button Callback ===
-@bot_app.on_callback_query(filters.regex("cancel_bcast"))
-async def cancel_bcast(_, cb):
-    global canceled
-    canceled = True
-    await cb.answer("Broadcast has been canceled.")
-    await cb.message.edit(
-        "❌ Broadcast process has been canceled.",
+    final_bar = "●" * bar_length
+    await lel.edit(
+        f"✅ Broadcast completed!\n\n"
+        f"<code>[{final_bar}] 100%</code>\n\n"
+        f"✅ Successful: `{stats['success']}`\n"
+        f"❌ Failed: `{stats['failed']}`\n"
+        f"🚫 Blocked: `{stats['blocked']}`\n"
+        f"👻 Deactivated: `{stats['deactivated']}`",
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("Close", callback_data="close_bcast")]]
         )
     )
 
-# === Close Button Callback ===
+
+@bot_app.on_callback_query(filters.regex("cancel_bcast"))
+async def cancel_bcast(_, cb):
+    global canceled
+    canceled = True
+    await cb.answer("Broadcast has been canceled.")
+
+
 @bot_app.on_callback_query(filters.regex("close_bcast"))
 async def close_bcast(_, cb):
     await cb.message.delete()
