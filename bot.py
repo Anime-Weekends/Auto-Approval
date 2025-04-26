@@ -26,7 +26,10 @@ from pymongo import MongoClient
 
 # Your MongoDB connection and database setup here...
 from database import close_db_connection, reconnect_db
-
+from database import (
+    is_user_banned, ban_user_db, unban_user_db, list_banned_users,
+    is_channel_banned, ban_channel_db, unban_channel_db, list_banned_channels
+)
 
 import random
 import asyncio
