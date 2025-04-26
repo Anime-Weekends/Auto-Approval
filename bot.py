@@ -59,38 +59,50 @@ async def approve(_, m: Message):
     chat = m.chat
     user = m.from_user
     try:
+        # Ban Check for Channels
+        if is_banned_channel(chat.id):
+            await log_event(f"❌ Blocked Join from Banned Channel: {chat.title} (`{chat.id}`)")
+            return  # Don't approve members from banned channels
+        
+        # Ban Check for Users
+        if is_banned_user(user.id):
+            await log_event(f"❌ Blocked Banned User: {user.first_name} (`{user.id}`) in {chat.title}")
+            return  # Don't approve banned users
+
+        # Approve Normally
         add_group(chat.id)
         await bot_app.approve_chat_join_request(chat.id, user.id)
-        
+
         # Inline buttons layout
         keyboard = InlineKeyboardMarkup(
             [
-                [InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz")],  # Button with callback
+                [InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz")],
                 [
-                    InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl"), 
+                    InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl"),
                     InlineKeyboardButton("Cʟɪᴄᴋ ʜᴇʀᴇ", callback_data="popup_action")
                 ]
             ]
         )
 
-        # Caption with user and chat links
         caption = (
-            f"<b><blockquote>Hᴇʏ sᴡᴇᴇᴛɪᴇ</b> <a href='tg://user?id={user.id}'>{user.first_name}</a>  ⭐✨</blockquote>\n\n"
+            f"<b><blockquote>Hᴇʏ sᴡᴇᴇᴛɪᴇ</b> <a href='tg://user?id={user.id}'>{user.first_name}</a> ⭐✨</blockquote>\n\n"
             f"<blockquote>Aᴄᴄᴇss ʜᴀs ʙᴇᴇɴ <b>Gʀᴀɴᴛᴇᴅ</b> sᴛᴇᴘ ɪɴᴛᴏ ᴛʜᴇ ᴘʀᴇsᴛɪɢɪᴏᴜs ʜᴀʟʟs ᴏғ "
             f"<a href='https://t.me/c/{str(chat.id)[4:]}'>{chat.title}</a></blockquote>\n"
             f"<i><blockquote>Pʀᴇsᴇɴᴛᴇᴅ ᴡɪᴛʜ ʜᴏɴᴏʀ ʙʏ <a href='https://t.me/EmitingStars_Botz'>Eᴍɪᴛɪɴɢ sᴛᴀʀs</a></blockquote></i>"
         )
-        
-        # Sending a photo with the message and buttons
+
         await bot_app.send_photo(
             user.id,
             "https://i.ibb.co/vxMhkZQD/photo-2025-04-23-20-40-27-7496611286248062984.jpg",
             caption=caption,
             reply_markup=keyboard,
             parse_mode=ParseMode.HTML,
-            message_effect_id=5046509860389126442 #🎉
+            message_effect_id=5046509860389126442
         )
+
         add_user(user.id)
+
+        await log_event(f"✅ Approved {user.first_name} (`{user.id}`) in {chat.title} (`{chat.id}`)")
 
     except errors.PeerIdInvalid:
         print("User isn't a proper peer (possibly a group)")
