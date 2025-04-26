@@ -934,6 +934,162 @@ async def total_approved(client: Client, message: Message):
             parse_mode=ParseMode.HTML
         )
 
+
+# ====================================================
+#                   BAN-NING SYSTEM
+# ====================================================
+
+# User Ban Commands
+
+@bot_app.on_message(filters.command("ban") & filters.user(cfg.SUDO))
+async def ban_user(_, m: Message):
+    args = m.command[1:]
+
+    if not args or not all(x.isdigit() for x in args):
+        return await m.reply(
+            "❌ Please provide valid user IDs to ban.\n\n<b><blockquote>EXAMPLES:</b>\n"
+            "/ban 123456789 — ban one user\n"
+            "/ban 123456789 987654321 — ban multiple users</blockquote>",
+            parse_mode=ParseMode.HTML,
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]])
+        )
+
+    banned = []
+    for user_id in args:
+        uid = int(user_id)
+        if not is_user_banned(uid):
+            ban_user_db(uid)
+            banned.append(uid)
+
+    if not banned:
+        return await m.reply("All provided users are already banned.")
+
+    banned_text = "\n".join([f"• <a href='tg://user?id={uid}'>{uid}</a>" for uid in banned])
+    await m.reply(
+        f"✅ Banned the following user(s):\n{banned_text}",
+        parse_mode=ParseMode.HTML,
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]])
+    )
+
+
+@bot_app.on_message(filters.command("unban") & filters.user(cfg.SUDO))
+async def unban_user(_, m: Message):
+    args = m.command[1:]
+
+    if not args or not all(x.isdigit() for x in args):
+        return await m.reply("❌ Please provide valid user IDs to unban.")
+
+    unbanned = []
+    for user_id in args:
+        uid = int(user_id)
+        if is_user_banned(uid):
+            unban_user_db(uid)
+            unbanned.append(uid)
+
+    if not unbanned:
+        return await m.reply("None of the provided users were banned.")
+
+    unbanned_text = "\n".join([f"• <a href='tg://user?id={uid}'>{uid}</a>" for uid in unbanned])
+    await m.reply(
+        f"✅ Unbanned the following user(s):\n{unbanned_text}",
+        parse_mode=ParseMode.HTML,
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]])
+    )
+
+
+@bot_app.on_message(filters.command("banlist") & filters.user(cfg.SUDO))
+async def list_banned_users_handler(_, m: Message):
+    banned_users = list_banned_users()
+
+    if not banned_users:
+        return await m.reply("No banned users found.")
+
+    text = "<b>🚫 Banned Users List:</b>\n\n"
+    for user_id in banned_users:
+        text += f"• <a href='tg://user?id={user_id}'>{user_id}</a>\n"
+
+    await m.reply(
+        text,
+        parse_mode=ParseMode.HTML,
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]])
+    )
+
+
+# Channel Ban Commands
+
+@bot_app.on_message(filters.command("chnlban") & filters.user(cfg.SUDO))
+async def ban_channel(_, m: Message):
+    args = m.command[1:]
+
+    if not args or not all(x.lstrip("-").isdigit() for x in args):
+        return await m.reply(
+            "❌ Please provide valid channel IDs to ban.\n\n<b><blockquote>EXAMPLES:</b>\n"
+            "/chnlban -1001234567890 — ban one channel\n"
+            "/chnlban -1001234567890 -1009876543210 — ban multiple channels</blockquote>",
+            parse_mode=ParseMode.HTML,
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]])
+        )
+
+    banned = []
+    for ch_id in args:
+        cid = int(ch_id)
+        if not is_channel_banned(cid):
+            ban_channel_db(cid)
+            banned.append(cid)
+
+    if not banned:
+        return await m.reply("All provided channels are already banned.")
+
+    banned_text = "\n".join([f"• <code>{cid}</code>" for cid in banned])
+    await m.reply(
+        f"✅ Banned the following channel(s):\n{banned_text}",
+        parse_mode=ParseMode.HTML,
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]])
+    )
+
+
+@bot_app.on_message(filters.command("unbanchnl") & filters.user(cfg.SUDO))
+async def unban_channel(_, m: Message):
+    args = m.command[1:]
+
+    if not args or not all(x.lstrip("-").isdigit() for x in args):
+        return await m.reply("❌ Please provide valid channel IDs to unban.")
+
+    unbanned = []
+    for ch_id in args:
+        cid = int(ch_id)
+        if is_channel_banned(cid):
+            unban_channel_db(cid)
+            unbanned.append(cid)
+
+    if not unbanned:
+        return await m.reply("None of the provided channels were banned.")
+
+    unbanned_text = "\n".join([f"• <code>{cid}</code>" for cid in unbanned])
+    await m.reply(
+        f"✅ Unbanned the following channel(s):\n{unbanned_text}",
+        parse_mode=ParseMode.HTML,
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]])
+    )
+
+
+@bot_app.on_message(filters.command("banchnlist") & filters.user(cfg.SUDO))
+async def list_banned_channels_handler(_, m: Message):
+    banned_channels = list_banned_channels()
+
+    if not banned_channels:
+        return await m.reply("No banned channels found.")
+
+    text = "<b>🚫 Banned Channels List:</b>\n\n"
+    for ch_id in banned_channels:
+        text += f"• <code>{ch_id}</code>\n"
+
+    await m.reply(
+        text,
+        parse_mode=ParseMode.HTML,
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]])
+    )
+
 # ====================================================
 #                   RESTART 
 # ====================================================
