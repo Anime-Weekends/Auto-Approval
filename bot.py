@@ -520,6 +520,7 @@ async def close_bcast(_, cb):
 #               BROADCAST (FORWARD)
 # ====================================================
 
+
 @bot_app.on_message(filters.command("forwardbroadcast") & is_sudo())
 async def fcast(_, m: Message):
     global canceled
@@ -566,8 +567,11 @@ async def fcast(_, m: Message):
             return
 
         try:
-            # Forward the message to the user
-            await m.reply_to_message.forward(int(u["user_id"]))
+            # Copy the message to the user (copy will retain media + buttons)
+            await m.reply_to_message.copy(
+                chat_id=int(u["user_id"]),
+                reply_markup=m.reply_to_message.reply_markup  # keep the original buttons
+            )
             stats["success"] += 1
         except UserDeactivated:
             stats["deactivated"] += 1
@@ -588,7 +592,7 @@ async def fcast(_, m: Message):
             eta_seconds = (elapsed / percent) - elapsed if percent else 0
             eta = f"{int(eta_seconds)//60:02}:{int(eta_seconds)%60:02}"
 
-            # Update the message with the progress bar
+            # Update progress bar
             await lel.edit(
                 f"📣 Forward broadcasting...\n\n"
                 f"<code>[{progress_bar}] {int(percent * 100)}%</code>\n"
@@ -637,7 +641,6 @@ async def cancel_fcast(_, cb):
 async def close_fcast(_, cb):
     await cb.message.delete()
     await cb.answer()
-
 # ====================================================
 #                    HELP CENTER
 # ====================================================
