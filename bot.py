@@ -522,10 +522,13 @@ async def close_bcast(_, cb):
 
 canceled = False
 
-@bot_app.on_message(filters.command("forwardbroadcast") & is_sudo())
+@bot_app.on_message(filters.command("fbroadcast") & is_sudo())
 async def bcast(_, m: Message):
     global canceled
     canceled = False
+
+    if not m.reply_to_message:
+        return await m.reply_text("❌ Please reply to a message to broadcast.")
 
     lel = await m.reply_photo(
         "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
@@ -539,9 +542,6 @@ async def bcast(_, m: Message):
             ]
         )
     )
-
-    if not m.reply_to_message:
-        return await lel.edit("❌ Please reply to a message to broadcast.")
 
     total_users = users.count_documents({})
     if total_users == 0:
@@ -571,7 +571,11 @@ async def bcast(_, m: Message):
             return
 
         try:
-            await m.reply_to_message.forward(int(u["user_id"]))
+            # Copy with original buttons
+            await m.reply_to_message.copy(
+                int(u["user_id"]),
+                reply_markup=m.reply_to_message.reply_markup
+            )
             stats["success"] += 1
         except UserDeactivated:
             stats["deactivated"] += 1
@@ -622,17 +626,18 @@ async def bcast(_, m: Message):
         )
     )
 
+
 @bot_app.on_callback_query(filters.regex("cancel_bcast"))
 async def cancel_bcast(_, cb):
     global canceled
     canceled = True
     await cb.answer("Broadcast has been canceled.")
 
+
 @bot_app.on_callback_query(filters.regex("close_bcast"))
 async def close_bcast(_, cb):
     await cb.message.delete()
     await cb.answer()
-
 
 # ====================================================
 #                    HELP CENTER
