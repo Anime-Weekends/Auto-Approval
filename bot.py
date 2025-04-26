@@ -520,20 +520,47 @@ async def close_bcast(_, cb):
 #               BROADCAST (FORWARD)
 # ====================================================
 
+broadcast_type = {}  # to store user choice: "forward" or "copy"
+canceled = False
 
 @bot_app.on_message(filters.command("forwardbroadcast") & is_sudo())
-async def fcast(_, m: Message):
+async def fcast_start(_, m: Message):
     global canceled
     canceled = False
 
-    lel = await m.reply_photo(
-        "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
-        caption="`⚡️ Preparing forward broadcast...`",
+    # Ask user: Forward or Copy
+    await m.reply(
+        "🔵 **Select broadcast type:**",
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton("🔁 Forward", callback_data="start_fcast_forward"),
+                    InlineKeyboardButton("📝 Copy", callback_data="start_fcast_copy"),
+                ],
+                [InlineKeyboardButton("Cancel", callback_data="close_fcast")],
+            ]
+        )
+    )
+
+@bot_app.on_callback_query(filters.regex("start_fcast_(forward|copy)"))
+async def fcast_main(_, cb):
+    global canceled
+    canceled = False
+    action = cb.data.split("_")[2]  # forward or copy
+    broadcast_type[cb.from_user.id] = action
+
+    m = cb.message.reply_to_message
+    if not m:
+        await cb.answer("Reply to a message to broadcast!", show_alert=True)
+        return
+
+    lel = await cb.message.edit(
+        "`⚡️ Starting broadcast...`",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
                     InlineKeyboardButton("Cancel", callback_data="cancel_fcast"),
-                    InlineKeyboardButton("Close", callback_data="close_fcast")
+                    InlineKeyboardButton("Close", callback_data="close_fcast"),
                 ]
             ]
         )
@@ -551,27 +578,18 @@ async def fcast(_, m: Message):
 
     for idx, u in enumerate(users.find(), 1):
         if canceled:
-            percent = idx / total_users
-            final_bar = "●" * int(percent * bar_length) + "○" * (bar_length - int(percent * bar_length))
-            await lel.edit(
-                f"❌ Forward broadcast canceled!\n\n"
-                f"<code>[{final_bar}] {int(percent * 100)}%</code>\n\n"
-                f"✅ Successful: `{stats['success']}`\n"
-                f"❌ Failed: `{stats['failed']}`\n"
-                f"🚫 Blocked: `{stats['blocked']}`\n"
-                f"👻 Deactivated: `{stats['deactivated']}`",
-                reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("Close", callback_data="close_fcast")]]
-                )
-            )
-            return
+            break
 
         try:
-            # Copy the message to the user (copy will retain media + buttons)
-            await m.reply_to_message.copy(
-                chat_id=int(u["user_id"]),
-                reply_markup=m.reply_to_message.reply_markup  # keep the original buttons
-            )
+            if broadcast_type.get(cb.from_user.id) == "copy":
+                await m.copy(
+                    chat_id=int(u["user_id"]),
+                    reply_markup=m.reply_markup
+                )
+            else:  # forward
+                await m.forward(
+                    chat_id=int(u["user_id"])
+                )
             stats["success"] += 1
         except UserDeactivated:
             stats["deactivated"] += 1
@@ -592,27 +610,37 @@ async def fcast(_, m: Message):
             eta_seconds = (elapsed / percent) - elapsed if percent else 0
             eta = f"{int(eta_seconds)//60:02}:{int(eta_seconds)%60:02}"
 
-            # Update progress bar
             await lel.edit(
-                f"📣 Forward broadcasting...\n\n"
+                f"📣 Broadcasting...\n\n"
                 f"<code>[{progress_bar}] {int(percent * 100)}%</code>\n"
                 f"⏳ ETA: `{eta}` minutes\n\n"
                 f"✅ Success: `{stats['success']}` | ❌ Failed: `{stats['failed']}`\n"
                 f"👻 Deactivated: `{stats['deactivated']}` | 🚫 Blocked: `{stats['blocked']}`",
                 reply_markup=InlineKeyboardMarkup(
-                    [[
-                        InlineKeyboardButton("Cancel", callback_data="cancel_fcast"),
-                        InlineKeyboardButton("Close", callback_data="close_fcast")
-                    ]]
+                    [
+                        [
+                            InlineKeyboardButton("Cancel", callback_data="cancel_fcast"),
+                            InlineKeyboardButton("Close", callback_data="close_fcast"),
+                        ]
+                    ]
                 )
             )
             last_update_percentage = percent
 
         await asyncio.sleep(0.1)
 
+    if canceled:
+        await lel.edit(
+            "❌ Forward broadcast process has been canceled.",
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton("Close", callback_data="close_fcast")]]
+            )
+        )
+        return
+
     final_bar = "●" * bar_length
     await lel.edit(
-        f"✅ Forward broadcast completed!\n\n"
+        f"✅ Broadcast completed!\n\n"
         f"<code>[{final_bar}] 100%</code>\n\n"
         f"✅ Successful: `{stats['success']}`\n"
         f"❌ Failed: `{stats['failed']}`\n"
@@ -623,24 +651,17 @@ async def fcast(_, m: Message):
         )
     )
 
-
 @bot_app.on_callback_query(filters.regex("cancel_fcast"))
 async def cancel_fcast(_, cb):
     global canceled
     canceled = True
-    await cb.answer("Forward broadcast has been canceled.")
-    await cb.message.edit(
-        "❌ Forward broadcast process has been canceled.",
-        reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("Close", callback_data="close_fcast")]]
-        )
-    )
-
+    await cb.answer("Broadcast has been canceled.")
 
 @bot_app.on_callback_query(filters.regex("close_fcast"))
 async def close_fcast(_, cb):
     await cb.message.delete()
     await cb.answer()
+
 # ====================================================
 #                    HELP CENTER
 # ====================================================
