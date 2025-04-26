@@ -520,111 +520,28 @@ async def close_bcast(_, cb):
 #               BROADCAST (FORWARD)
 # ====================================================
 
-broadcast_settings = {}  # to store settings: type, pin, autodelete
 canceled = False
 
 @bot_app.on_message(filters.command("forwardbroadcast") & is_sudo())
-async def fcast_start(_, m: Message):
+async def bcast(_, m: Message):
     global canceled
     canceled = False
 
-    broadcast_settings[m.from_user.id] = {"type": None, "pin": False, "autodelete": 0}
-
-    await m.reply(
-        "🔵 **Select broadcast type:**",
+    lel = await m.reply_photo(
+        "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
+        caption="`⚡️ Preparing broadcast...`",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("🔁 Forward", callback_data="select_type_forward"),
-                    InlineKeyboardButton("📝 Copy", callback_data="select_type_copy"),
-                ],
-                [InlineKeyboardButton("Cancel", callback_data="close_fcast")],
+                    InlineKeyboardButton("Cancel", callback_data="cancel_bcast"),
+                    InlineKeyboardButton("Close", callback_data="close_bcast")
+                ]
             ]
         )
     )
 
-@bot_app.on_callback_query(filters.regex("select_type_(forward|copy)"))
-async def select_pin(_, cb):
-    action = cb.data.split("_")[2]
-    broadcast_settings[cb.from_user.id]["type"] = action
-
-    await cb.message.edit(
-        "📌 **Do you want to PIN the message after sending?**",
-        reply_markup=InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton("✅ Yes", callback_data="select_pin_yes"),
-                    InlineKeyboardButton("❌ No", callback_data="select_pin_no"),
-                ],
-                [InlineKeyboardButton("Cancel", callback_data="close_fcast")],
-            ]
-        )
-    )
-
-@bot_app.on_callback_query(filters.regex("select_pin_(yes|no)"))
-async def select_autodelete(_, cb):
-    choice = cb.data.split("_")[2]
-    broadcast_settings[cb.from_user.id]["pin"] = (choice == "yes")
-
-    await cb.message.edit(
-        "⏰ **Do you want Auto-Delete after sending?**",
-        reply_markup=InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton("✅ Yes", callback_data="select_autodelete_yes"),
-                    InlineKeyboardButton("❌ No", callback_data="select_autodelete_no"),
-                ],
-                [InlineKeyboardButton("Cancel", callback_data="close_fcast")],
-            ]
-        )
-    )
-
-@bot_app.on_callback_query(filters.regex("select_autodelete_(yes|no)"))
-async def ask_autodelete_time(_, cb):
-    choice = cb.data.split("_")[2]
-    if choice == "yes":
-        await cb.message.edit(
-            "⏳ **Send me the number of seconds to auto delete.**\n\nExample: `30` for 30 seconds.",
-            reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("Cancel", callback_data="close_fcast")]]
-            )
-        )
-    else:
-        broadcast_settings[cb.from_user.id]["autodelete"] = 0
-        await start_broadcast(cb)
-
-@bot_app.on_message(filters.text & filters.user(is_sudo()))
-async def receive_autodelete_time(_, m: Message):
-    if m.from_user.id not in broadcast_settings:
-        return  # ignore if not in broadcast flow
-
-    if broadcast_settings[m.from_user.id]["autodelete"] != 0:
-        return  # already set
-
-    try:
-        seconds = int(m.text.strip())
-        if seconds <= 0:
-            raise ValueError
-        broadcast_settings[m.from_user.id]["autodelete"] = seconds
-    except ValueError:
-        return await m.reply("❌ Please send a valid positive number for seconds.")
-
-    await start_broadcast(m)
-
-async def start_broadcast(m):
-    global canceled
-    canceled = False
-
-    user_id = m.from_user.id
-    settings = broadcast_settings.get(user_id)
-    if not settings:
-        return await m.reply("❌ Settings not found. Please start again.")
-
-    original_message = m.reply_to_message or m.reply_to_message
-    if not original_message:
-        return await m.reply("❌ Please reply to a message to broadcast.")
-
-    lel = await m.reply("`⚡️ Starting broadcast...`")
+    if not m.reply_to_message:
+        return await lel.edit("❌ Please reply to a message to broadcast.")
 
     total_users = users.count_documents({})
     if total_users == 0:
@@ -638,31 +555,24 @@ async def start_broadcast(m):
 
     for idx, u in enumerate(users.find(), 1):
         if canceled:
-            break
+            percent = idx / total_users
+            final_bar = "●" * int(percent * bar_length) + "○" * (bar_length - int(percent * bar_length))
+            await lel.edit(
+                f"❌ Broadcast canceled!\n\n"
+                f"<code>[{final_bar}] {int(percent * 100)}%</code>\n\n"
+                f"✅ Successful: `{stats['success']}`\n"
+                f"❌ Failed: `{stats['failed']}`\n"
+                f"🚫 Blocked: `{stats['blocked']}`\n"
+                f"👻 Deactivated: `{stats['deactivated']}`",
+                reply_markup=InlineKeyboardMarkup(
+                    [[InlineKeyboardButton("Close", callback_data="close_bcast")]]
+                )
+            )
+            return
 
         try:
-            sent = None
-            if settings["type"] == "copy":
-                sent = await original_message.copy(
-                    chat_id=int(u["user_id"]),
-                    reply_markup=original_message.reply_markup
-                )
-            else:  # forward
-                sent = await original_message.forward(
-                    chat_id=int(u["user_id"])
-                )
-
-            if settings["pin"]:
-                try:
-                    await sent.pin(disable_notification=True)
-                except Exception as e:
-                    print(f"Cannot pin in {u['user_id']}: {e}")
-
-            if settings["autodelete"]:
-                asyncio.create_task(delete_later(sent, settings["autodelete"]))
-
+            await m.reply_to_message.forward(int(u["user_id"]))
             stats["success"] += 1
-
         except UserDeactivated:
             stats["deactivated"] += 1
             users.delete_one({"user_id": u["user_id"]})
@@ -689,56 +599,40 @@ async def start_broadcast(m):
                 f"✅ Success: `{stats['success']}` | ❌ Failed: `{stats['failed']}`\n"
                 f"👻 Deactivated: `{stats['deactivated']}` | 🚫 Blocked: `{stats['blocked']}`",
                 reply_markup=InlineKeyboardMarkup(
-                    [
-                        [
-                            InlineKeyboardButton("Cancel", callback_data="cancel_fcast"),
-                            InlineKeyboardButton("Close", callback_data="close_fcast"),
-                        ]
-                    ]
+                    [[
+                        InlineKeyboardButton("Cancel", callback_data="cancel_bcast"),
+                        InlineKeyboardButton("Close", callback_data="close_bcast")
+                    ]]
                 )
             )
             last_update_percentage = percent
 
         await asyncio.sleep(0.1)
 
-    if canceled:
-        await lel.edit(
-            "❌ Broadcast process has been canceled.",
-            reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("Close", callback_data="close_fcast")]]
-            )
+    final_bar = "●" * bar_length
+    await lel.edit(
+        f"✅ Broadcast completed!\n\n"
+        f"<code>[{final_bar}] 100%</code>\n\n"
+        f"✅ Successful: `{stats['success']}`\n"
+        f"❌ Failed: `{stats['failed']}`\n"
+        f"🚫 Blocked: `{stats['blocked']}`\n"
+        f"👻 Deactivated: `{stats['deactivated']}`",
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("Close", callback_data="close_bcast")]]
         )
-    else:
-        final_bar = "●" * bar_length
-        await lel.edit(
-            f"✅ Broadcast completed!\n\n"
-            f"<code>[{final_bar}] 100%</code>\n\n"
-            f"✅ Successful: `{stats['success']}`\n"
-            f"❌ Failed: `{stats['failed']}`\n"
-            f"🚫 Blocked: `{stats['blocked']}`\n"
-            f"👻 Deactivated: `{stats['deactivated']}`",
-            reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("Close", callback_data="close_fcast")]]
-            )
-        )
+    )
 
-async def delete_later(msg: Message, seconds: int):
-    await asyncio.sleep(seconds)
-    try:
-        await msg.delete()
-    except:
-        pass
-
-@bot_app.on_callback_query(filters.regex("cancel_fcast"))
-async def cancel_fcast(_, cb):
+@bot_app.on_callback_query(filters.regex("cancel_bcast"))
+async def cancel_bcast(_, cb):
     global canceled
     canceled = True
     await cb.answer("Broadcast has been canceled.")
 
-@bot_app.on_callback_query(filters.regex("close_fcast"))
-async def close_fcast(_, cb):
+@bot_app.on_callback_query(filters.regex("close_bcast"))
+async def close_bcast(_, cb):
     await cb.message.delete()
     await cb.answer()
+
 
 # ====================================================
 #                    HELP CENTER
