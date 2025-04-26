@@ -408,6 +408,9 @@ async def bcast(_, m: Message):
     global canceled
     canceled = False
 
+    # Typing action
+    await bot_app.send_chat_action(m.chat.id, ChatAction.TYPING)
+
     # Sending the initial message with photo and inline buttons
     lel = await m.reply_photo(
         "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
@@ -514,6 +517,9 @@ async def fcast(_, m: Message):
     global canceled
     canceled = False
 
+    # Typing action
+    await bot_app.send_chat_action(m.chat.id, ChatAction.TYPING)
+
     lel = await m.reply_photo(
         "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
         caption="`⚡️ Processing...`",
@@ -609,12 +615,18 @@ async def close_fcast(_, cb):
 
 @bot_app.on_message(filters.private & filters.command("help"))
 async def help_command(_, m: Message):
+
+    # Typing action
+    await bot_app.send_chat_action(m.chat.id, ChatAction.TYPING)
+    
     welcome_text = "<pre>Cʀᴇᴀᴛɪɴɢ ᴍᴇssᴀɢᴇ... </pre>"
     msg = await m.reply_text(welcome_text)
     await asyncio.sleep(0.2)
     await msg.edit_text("<b><i><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ...</pre></i></b>")
     await asyncio.sleep(0.1)
     await msg.delete()
+
+    await bot_app.send_chat_action(m.chat.id, ChatAction.CHOOSE_STICKER)
 
     # Random sticker from a predefined list
     stickers = [
@@ -860,6 +872,9 @@ async def close_message(_, cb):
 
 @bot_app.on_message(filters.private & filters.command("approveall"))
 async def help_command(_, m: Message):
+
+    # Typing action
+    await bot_app.send_chat_action(m.chat.id, ChatAction.TYPING)
     # Welcome animation
     welcome_text = "<pre>Hᴏʟᴅ ᴜᴘ, ᴄᴜᴛɪᴇ… ɴᴏᴛ sᴏ ғᴀsᴛ</pre>"
     msg = await m.reply_text(welcome_text)
@@ -867,6 +882,8 @@ async def help_command(_, m: Message):
     await msg.edit_text("<b><i><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ...</pre></i></b>")
     await asyncio.sleep(0.1)
     await msg.delete()
+
+    await bot_app.send_chat_action(m.chat.id, ChatAction.CHOOSE_STICKER)
 
     # Random sticker from a list
     stickers = [
@@ -920,6 +937,9 @@ async def help_close(_, cq: CallbackQuery):
 
 @bot_app.on_message(filters.command("myid") & filters.private)
 async def showid(client, message):
+
+    # Typing action
+    await bot_app.send_chat_action(m.chat.id, ChatAction.TYPING)
     # Animated status text
     welcome_text = "<pre>Fᴇᴛᴄʜɪɴɢ ʏᴏᴜʀ ɪɴғᴏʀᴍᴀᴛɪᴏɴ... </pre>"
     msg = await message.reply_text(welcome_text)
@@ -927,6 +947,8 @@ async def showid(client, message):
     await msg.edit_text("<b><i><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ...</pre></i></b>")
     await asyncio.sleep(0.1)
     await msg.delete()
+
+    await bot_app.send_chat_action(m.chat.id, ChatAction.CHOOSE_STICKER)
 
     # Random sticker from list
     stickers = [
@@ -976,6 +998,8 @@ async def total_approved(client: Client, message: Message):
         await asyncio.sleep(0.1)
         await msg.delete()
 
+        await bot_app.send_chat_action(m.chat.id, ChatAction.CHOOSE_STICKER)
+
         stickers = [
             "CAACAgUAAxkBAAEOXBhoCoKZ76jevKX-Vc5v5SZhCeQAAXMAAh4KAALJrhlVZygbxFWWTLw2BA",
         ]
@@ -1010,6 +1034,9 @@ async def total_approved(client: Client, message: Message):
 @bot_app.on_message(filters.command('restart') & is_sudo())
 async def restart_bot(client: Client, message: Message):
     print("Restarting bot...")
+
+    # Typing action
+    await bot_app.send_chat_action(m.chat.id, ChatAction.TYPING)
     
     # Send a message indicating bot restart
     msg = await message.reply(
