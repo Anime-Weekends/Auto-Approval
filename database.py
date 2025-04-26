@@ -15,6 +15,10 @@ logs = db['logs']  # For logging actions like /acceptall, /rejectall
 counters = db['command_counters']  # For tracking command usage count
 approvals = db['approvals']  # For tracking approved users
 
+# === New Collections for Banned Users and Banned Channels ===
+banned_users = db['banned_users']  # For tracking banned users
+banned_channels = db['banned_channels']  # For tracking banned channels 
+
 # === MongoDB Connection Management ===
 def close_db_connection():
     client.close()
@@ -120,3 +124,41 @@ def get_total_approvals():
 async def approve_and_log(bot, chat_id, user_id):
     await bot.approve_chat_join_request(chat_id, user_id)
     log_approval(user_id, chat_id)
+
+# === Banned Users ===
+banned_users = db['banned_users']
+
+def ban_user(user_id):
+    if not is_banned_user(user_id):
+        banned_users.insert_one({
+            "user_id": int(user_id),
+            "banned_at": datetime.utcnow().isoformat()
+        })
+
+def unban_user(user_id):
+    banned_users.delete_one({"user_id": int(user_id)})
+
+def is_banned_user(user_id):
+    return bool(banned_users.find_one({"user_id": int(user_id)}))
+
+def all_banned_users():
+    return [doc["user_id"] for doc in banned_users.find()]
+
+# === Banned Channels ===
+banned_channels = db['banned_channels']
+
+def ban_channel(chat_id):
+    if not is_banned_channel(chat_id):
+        banned_channels.insert_one({
+            "chat_id": int(chat_id),
+            "banned_at": datetime.utcnow().isoformat()
+        })
+
+def unban_channel(chat_id):
+    banned_channels.delete_one({"chat_id": int(chat_id)})
+
+def is_banned_channel(chat_id):
+    return bool(banned_channels.find_one({"chat_id": int(chat_id)}))
+
+def all_banned_channels():
+    return [doc["chat_id"] for doc in banned_channels.find()]
