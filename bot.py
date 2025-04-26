@@ -37,6 +37,10 @@ import time
 import sys
 import os
 
+from config import cfg
+
+LOG_CHANNEL_ID = cfg.LOG_CHANNEL_ID
+
 # Run as Bot (for inline buttons, messages, commands):
 bot_app = Client(
     "bot_session",
