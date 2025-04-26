@@ -739,24 +739,44 @@ async def accept_all(_, m: Message):
         chat_id = m.chat.id
         requests = [req async for req in user_app.get_chat_join_requests(chat_id)]
 
-        batch_size = 50
-        delay_seconds = 5
         approved = 0
         skipped = 0
+        total = len(requests)
+
+        # Send initial progress message
+        progress_message = await m.reply(
+            f"⏳ Starting to approve...\n✅ Approved: {approved}\n⚠️ Skipped: {skipped}\n📋 Total: {total}",
+            parse_mode=ParseMode.HTML
+        )
+
+        async def approve_user(req):
+            nonlocal approved, skipped
+            try:
+                await user_app.approve_chat_join_request(chat_id, req.user.id)
+                approved += 1
+            except RPCError as e:
+                if "USER_CHANNELS_TOO_MUCH" in str(e):
+                    skipped += 1
+                else:
+                    skipped += 1
+
+        batch_size = 20  # approve 20 users at once
+        delay_between_batches = 5  # seconds delay after each batch
 
         for i in range(0, len(requests), batch_size):
             batch = requests[i:i + batch_size]
-            for req in batch:
-                try:
-                    await user_app.approve_chat_join_request(chat_id, req.user.id)
-                    approved += 1
-                except RPCError as e:
-                    skipped += 1
-                    print(f"Skipped user {req.user.id}: {e}")
-            await asyncio.sleep(delay_seconds)
+            await asyncio.gather(*(approve_user(req) for req in batch))
+            await asyncio.sleep(delay_between_batches)  # wait after each batch
 
-        await m.reply(
-            f"<blockquote>✅ Approved: <b>{approved}</b> users\n⚠️ Skipped: <b>{skipped}</b> users</blockquote>",
+            # Update progress
+            await progress_message.edit_text(
+                f"⏳ Approving...\n\n✅ Approved: {approved}\n⚠️ Skipped: {skipped}\n📋 Total: {total}",
+                parse_mode=ParseMode.HTML
+            )
+
+        # Final update
+        await progress_message.edit_text(
+            f"<b>✅ All Done!</b>\n\n<b>Approved:</b> {approved}\n<b>Skipped:</b> {skipped}\n<b>Total:</b> {total}",
             parse_mode=ParseMode.HTML,
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton("❌ Close", callback_data="close_msg")]]
