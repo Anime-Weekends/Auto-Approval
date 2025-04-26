@@ -1,6 +1,5 @@
 from pymongo import MongoClient
 from datetime import datetime
-from pyrogram import filters
 from configs import cfg
 
 # === MongoDB Client Setup ===
@@ -126,8 +125,6 @@ async def approve_and_log(bot, chat_id, user_id):
     log_approval(user_id, chat_id)
 
 # === Banned Users ===
-banned_users = db['banned_users']
-
 def ban_user(user_id):
     if not is_banned_user(user_id):
         banned_users.insert_one({
@@ -145,8 +142,6 @@ def all_banned_users():
     return [doc["user_id"] for doc in banned_users.find()]
 
 # === Banned Channels ===
-banned_channels = db['banned_channels']
-
 def ban_channel(chat_id):
     if not is_banned_channel(chat_id):
         banned_channels.insert_one({
