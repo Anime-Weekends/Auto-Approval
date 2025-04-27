@@ -122,7 +122,17 @@ async def start_command(_, m: Message):
         "https://i.ibb.co/v6J0JM80/photo-2025-03-13-18-50-40-7481368571868610580.jpg"
     ]
 
-    fsub_pic = "https://i.ibb.co/v6J0JM80/photo-2025-03-13-18-50-40-7481368571868610580.jpg"
+    # Save user id
+    user_id = str(m.from_user.id)
+    try:
+        with open("users.txt", "r") as file:
+            users = file.read().splitlines()
+    except FileNotFoundError:
+        users = []
+
+    if user_id not in users:
+        with open("users.txt", "a") as file:
+            file.write(user_id + "\n")
 
     # Typing action
     await bot_app.send_chat_action(m.chat.id, ChatAction.TYPING)
@@ -138,6 +148,7 @@ async def start_command(_, m: Message):
 
     await bot_app.send_chat_action(m.chat.id, ChatAction.CHOOSE_STICKER)
     await m.reply_sticker(random.choice(stickers))
+
 
     # Force-sub check
     not_joined = []
