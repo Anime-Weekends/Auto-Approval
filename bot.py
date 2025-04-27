@@ -61,13 +61,17 @@ async def approve(_, m: Message):
     try:
         add_group(chat.id)
         await bot_app.approve_chat_join_request(chat.id, user.id)
-        
+
+        # --- FIX MISSING PART ---
+        log_approval(user.id, chat.id)  # Log approval into database
+        # -------------------------
+
         # Inline buttons layout
         keyboard = InlineKeyboardMarkup(
             [
-                [InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz")],  # Button with callback
+                [InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz")],
                 [
-                    InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl"), 
+                    InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl"),
                     InlineKeyboardButton("Cʟɪᴄᴋ ʜᴇʀᴇ", callback_data="popup_action")
                 ]
             ]
@@ -80,16 +84,16 @@ async def approve(_, m: Message):
             f"<a href='https://t.me/c/{str(chat.id)[4:]}'>{chat.title}</a></blockquote>\n"
             f"<i><blockquote>Pʀᴇsᴇɴᴛᴇᴅ ᴡɪᴛʜ ʜᴏɴᴏʀ ʙʏ <a href='https://t.me/EmitingStars_Botz'>Eᴍɪᴛɪɴɢ sᴛᴀʀs</a></blockquote></i>"
         )
-        
-        # Sending a photo with the message and buttons
+
         await bot_app.send_photo(
             user.id,
             "https://i.ibb.co/vxMhkZQD/photo-2025-04-23-20-40-27-7496611286248062984.jpg",
             caption=caption,
             reply_markup=keyboard,
             parse_mode=ParseMode.HTML,
-            message_effect_id=5046509860389126442 #🎉
+            message_effect_id=5046509860389126442
         )
+
         add_user(user.id)
 
     except errors.PeerIdInvalid:
