@@ -107,11 +107,12 @@ def is_sudo():
 
 # === Approvals Tracker ===
 def log_approval(user_id, chat_id):
-    approvals.insert_one({
-        "user_id": int(user_id),
-        "chat_id": int(chat_id),
-        "timestamp": datetime.utcnow()
-    })
+    if not approvals.find_one({"user_id": int(user_id), "chat_id": int(chat_id)}):
+        approvals.insert_one({
+            "user_id": int(user_id),
+            "chat_id": int(chat_id),
+            "timestamp": datetime.utcnow()
+        })
 
 def get_total_approvals():
     return approvals.count_documents({})
