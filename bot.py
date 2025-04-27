@@ -54,17 +54,17 @@ user_app = Client(
 #                   MAIN PROCESS
 # ====================================================
 
+from pyrogram.types import ChatJoinRequest
+
 @bot_app.on_chat_join_request(filters.group | filters.channel)
-async def approve(_, m: Message):
+async def approve(_, m: ChatJoinRequest):  # <<< Correct type
     chat = m.chat
     user = m.from_user
     try:
         add_group(chat.id)
         await bot_app.approve_chat_join_request(chat.id, user.id)
-
-        # --- FIX MISSING PART ---
-        log_approval(user.id, chat.id)  # Log approval into database
-        # -------------------------
+        log_approval(user.id, chat.id)
+        add_user(user.id)
 
         # Inline buttons layout
         keyboard = InlineKeyboardMarkup(
@@ -77,7 +77,6 @@ async def approve(_, m: Message):
             ]
         )
 
-        # Caption with user and chat links
         caption = (
             f"<b><blockquote>Hᴇʏ sᴡᴇᴇᴛɪᴇ</b> <a href='tg://user?id={user.id}'>{user.first_name}</a>  ⭐✨</blockquote>\n\n"
             f"<blockquote>Aᴄᴄᴇss ʜᴀs ʙᴇᴇɴ <b>Gʀᴀɴᴛᴇᴅ</b> sᴛᴇᴘ ɪɴᴛᴏ ᴛʜᴇ ᴘʀᴇsᴛɪɢɪᴏᴜs ʜᴀʟʟs ᴏғ "
@@ -85,21 +84,20 @@ async def approve(_, m: Message):
             f"<i><blockquote>Pʀᴇsᴇɴᴛᴇᴅ ᴡɪᴛʜ ʜᴏɴᴏʀ ʙʏ <a href='https://t.me/EmitingStars_Botz'>Eᴍɪᴛɪɴɢ sᴛᴀʀs</a></blockquote></i>"
         )
 
-        await bot_app.send_photo(
-            user.id,
-            "https://i.ibb.co/vxMhkZQD/photo-2025-04-23-20-40-27-7496611286248062984.jpg",
-            caption=caption,
-            reply_markup=keyboard,
-            parse_mode=ParseMode.HTML,
-            message_effect_id=5046509860389126442
-        )
+        try:
+            await bot_app.send_photo(
+                user.id,
+                "https://i.ibb.co/vxMhkZQD/photo-2025-04-23-20-40-27-7496611286248062984.jpg",
+                caption=caption,
+                reply_markup=keyboard,
+                parse_mode=ParseMode.HTML,
+                message_effect_id=5046509860389126442
+            )
+        except Exception as e:
+            print(f"Failed to send DM to user {user.id}: {e}")
 
-        add_user(user.id)
-
-    except errors.PeerIdInvalid:
-        print("User isn't a proper peer (possibly a group)")
     except Exception as err:
-        print(str(err))
+        print(f"Error approving user {user.id}: {err}")
 
 
 # Callback query handler for the "⚡" button to show a popup message
