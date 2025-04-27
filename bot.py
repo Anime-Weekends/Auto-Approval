@@ -219,7 +219,7 @@ async def about_callback(_, cq: CallbackQuery):
         media=InputMediaPhoto(
             media="https://i.ibb.co/1GPZ0bgd/photo-2025-04-27-00-48-03-7497788399344943120.jpg",  # Your about image
             caption=(
-                "<b>Sᴀʏ ʏᴇs <a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name}</a>, ɪ’ᴍ ᴀʟʟ ʏᴏᴜʀs.</b>\n\n"
+                f"<b>Sᴀʏ ʏᴇs <a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name}</a>, ɪ’ᴍ ᴀʟʟ ʏᴏᴜʀs.</b>\n\n"
                 "A sleek auto-approval bot for Telegram.\n"
                 "Created to simplify managing join requests.\n"
                 "Fast, aesthetic, and private.\n\n"
