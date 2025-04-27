@@ -23,7 +23,6 @@ from configs import cfg
 from database import datetime
 from database import is_sudo
 from pymongo import MongoClient
-from configs import SUDO
 
 # Your MongoDB connection and database setup here...
 from database import close_db_connection, reconnect_db
@@ -966,41 +965,34 @@ async def total_approved(client: Client, message: Message):
 #                   RESTART 
 # ====================================================
 
-@bot_app.on_message(filters.command('restart') & is_sudo())
+@Bot_app.on_message(filters.command('restart') & is_sudo())
 async def restart_bot(client: Client, message: Message):
     print("Restarting bot...")
-
-    await bot_app.send_chat_action(message.chat.id, ChatAction.TYPING)
-
+    
+    # Send a message indicating bot restart
     msg = await message.reply(
-        text=f"<b><i><blockquote>⚠️ {client.name} Gᴏɪɴɢ ᴛᴏ Rᴇsᴛᴀʀᴛ...</blockquote></i></b>"
+        text=f"<b><i><blockquote>⚠️ {client.name} ɢᴏɪɴɢ ᴛᴏ Rᴇsᴛᴀʀᴛ...</blockquote></i></b>"
     )
-
+    
     try:
-        # Notify all SUDO users
-        for user_id in SUDO:
-            try:
-                await bot_app.send_message(
-                    int(user_id),
-                    "<blockquote>🤖 Bot Restarted ♻️</blockquote>"
-                )
-            except Exception as e:
-                print(f"Failed to notify {user_id}: {e}")
-
+        # Close the database connection before restarting
         close_db_connection()
 
+        # Wait for 6 seconds before restarting
         await asyncio.sleep(6)
         await msg.delete()
 
+        # Restart the bot by executing the same script
         args = [sys.executable, sys.argv[0]]
         os.execl(sys.executable, *args)
-
+        
     except Exception as e:
         print(f"Error occurred while restarting the bot: {e}")
         await msg.edit_text(
             f"<b><i>! Eʀʀᴏʀ, Cᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ sᴏʟᴠᴇ ᴛʜᴇ ɪssᴜᴇs @JeffySama</i></b>\n"
             f"<blockquote expandable><b>Rᴇᴀsᴏɴ:</b> {e}</blockquote>"
         )
+
     # Once restarted, reconnect to the database
     reconnect_db()
         
