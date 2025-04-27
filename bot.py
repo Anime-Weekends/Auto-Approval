@@ -23,6 +23,7 @@ from configs import cfg
 from database import datetime
 from database import is_sudo
 from pymongo import MongoClient
+from config import SUDO
 
 # Your MongoDB connection and database setup here...
 from database import close_db_connection, reconnect_db
