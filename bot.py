@@ -217,7 +217,7 @@ async def about_callback(_, cq: CallbackQuery):
     ])
     await cq.message.edit_media(
         media=InputMediaPhoto(
-            media="https://i.ibb.co/vxMhkZQD/photo-2025-04-23-20-40-27-7496611286248062984.jpg",  # Your about image
+            media="https://i.ibb.co/1GPZ0bgd/photo-2025-04-27-00-48-03-7497788399344943120.jpg",  # Your about image
             caption=(
                 "<b>About ʟᴜᴄʏ</b>\n\n"
                 "A sleek auto-approval bot for Telegram.\n"
