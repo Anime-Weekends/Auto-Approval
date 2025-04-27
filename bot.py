@@ -926,27 +926,43 @@ async def total_approved(client: Client, message: Message):
     try:
         await client.send_chat_action(message.chat.id, ChatAction.TYPING)
 
-        msg = await message.reply_text("<pre>Fᴇᴛᴄʜɪɴɢ ʏᴏᴜʀ ɪɴғᴏʀᴍᴀᴛɪᴏɴ...</pre>", parse_mode=ParseMode.HTML)
+        # Step 1: Initial message
+        msg = await message.reply_text(
+            "<pre>Fᴇᴛᴄʜɪɴɢ ʏᴏᴜʀ ɪɴғᴏʀᴍᴀᴛɪᴏɴ...</pre>",
+            parse_mode=ParseMode.HTML
+        )
+
         await asyncio.sleep(0.2)
-        await msg.edit_text("<b><i><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ...</pre></i></b>", parse_mode=ParseMode.HTML)
+
+        # Step 2: Editing message
+        await msg.edit_text(
+            "<b><i><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ...</pre></i></b>",
+            parse_mode=ParseMode.HTML
+        )
+
         await asyncio.sleep(0.1)
+
+        # Step 3: Delete message
         await msg.delete()
 
         await client.send_chat_action(message.chat.id, ChatAction.CHOOSE_STICKER)
 
+        # Step 4: Send random sticker
         stickers = [
             "CAACAgUAAxkBAAEOXBhoCoKZ76jevKX-Vc5v5SZhCeQAAXMAAh4KAALJrhlVZygbxFWWTLw2BA",
         ]
         await message.reply_sticker(random.choice(stickers))
 
-        # Fetch total approved users
-        total = get_total_approvals()  # Ensure this function returns an integer
+        # Step 5: Fetch total approved users
+        total = get_total_approvals()  # Should return an integer
 
+        # Step 6: Build buttons
         buttons = InlineKeyboardMarkup([
             [InlineKeyboardButton("Dᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/RexySama")],
             [InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_msg")]
         ])
 
+        # Step 7: Send photo with total
         await message.reply_photo(
             photo="https://i.ibb.co/B2GCLrg6/photo-2025-04-25-09-41-40-7497183689424502800.jpg",
             caption=f"<pre>➥ <b>Tᴏᴛᴀʟ ᴜsᴇʀs ᴀᴘᴘʀᴏᴠᴇᴅ ʙʏ ᴛʜᴇ ʙᴏᴛ :</b> <code>{total}</code></pre>",
