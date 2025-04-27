@@ -229,13 +229,15 @@ async def about_callback(_, cq: CallbackQuery):
     ])
     await cq.message.edit_media(
         media=InputMediaPhoto(
-            media="https://i.ibb.co/1GPZ0bgd/photo-2025-04-27-00-48-03-7497788399344943120.jpg",  # Your about image
+            media="https://i.ibb.co/1GPZ0bgd/photo-2025-04-27-00-48-03-7497788399344943120.jpg",
             caption=(
                 f"<b>Sᴀʏ ʏᴇs <a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name}</a>, ɪ’ᴍ ᴀʟʟ ʏᴏᴜʀs.</b>\n\n"
-                "A sleek auto-approval bot for Telegram.\n"
-                "Created to simplify managing join requests.\n"
-                "Fast, aesthetic, and private.\n\n"
-                "<i>Made with love by the team.</i>"
+                "<b>◈ Oᴡɴᴇʀ:</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
+                "◈ <b>Dᴇᴠᴇʟᴏᴘᴇʀ:</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
+                "◈ <b>Mᴀɪɴ Cʜᴀɴɴᴇʟ:</b> <a href='https://t.me/Anime_Weekends'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
+                "◈ <b>Kᴅʀᴀᴍᴀ Cʜᴀɴɴᴇʟ:</b> <a href='https://t.me/Kdrama_Weekends'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
+                "◈ <b>Eᴍɪɴᴇɴᴄᴇ Sᴏᴄɪᴇᴛʏ:</b> <a href='https://t.me/Eminence_Society'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
+                "◈ <b>Oᴡɴᴇʀ:</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>"
             ),
             parse_mode=ParseMode.HTML
         ),
