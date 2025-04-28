@@ -1027,15 +1027,13 @@ async def addme_command(client: Client, message: Message):
     gen_msg = await message.reply_text("<b><pre>Gᴇɴ ᴍᴇssᴀɢᴇ... ᴏʜ, ᴅᴏ ʏᴏᴜ ᴋɴᴏᴡ ᴡʜᴀᴛ ɪ'ᴍ ᴛʜɪɴᴋɪɴɢ ?</pre></b>", parse_mode=ParseMode.HTML)
 
     await asyncio.sleep(0.5)
-    
+
     # Now update the message to show "Done sending"
     await gen_msg.edit_text("<b><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ... ᴡᴏʏᴏᴜ ʜɪᴛ ᴍʏ ᴍɪɴᴅ, ɴᴏᴡ ?</pre></b>")
 
     # Send the sticker after the "Done sending" message
     sticker_id = "CAACAgUAAxkBAAEOXBhoCoKZ76jevKX-Vc5v5SZhCeQAAXMAAh4KAALJrhlVZygbxFWWTLw2BA"
     await message.reply_sticker(sticker=sticker_id)
-
-    await asyncio.sleep(0.5)
 
     # Send the main add options
     await send_addme_menu(message)
