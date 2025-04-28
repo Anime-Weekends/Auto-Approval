@@ -124,6 +124,8 @@ async def start_command(_, m: Message):
         "https://i.ibb.co/v6J0JM80/photo-2025-03-13-18-50-40-7481368571868610580.jpg"
     ]
 
+    fsub_pic = "https://i.ibb.co/v6J0JM80/photo-2025-03-13-18-50-40-7481368571868610580.jpg"
+
     # Save user id
     user_id = str(m.from_user.id)
     try:
