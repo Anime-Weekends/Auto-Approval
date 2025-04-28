@@ -54,7 +54,8 @@ user_app = Client(
 #                   MAIN PROCESS
 # ====================================================
 
-from pyrogram.types import ChatJoinRequest, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
+from pyrogram.types import ChatJoinRequest, InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.enums import ParseMode
 
 @bot_app.on_chat_join_request(filters.group | filters.channel)
 async def approve(_, m: ChatJoinRequest):
