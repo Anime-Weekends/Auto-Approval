@@ -1057,7 +1057,8 @@ async def send_addme_menu(message_or_query):
             media=InputMediaPhoto(
                 media=photo_url,
                 caption="<b><blockquote>Wʜᴇʀᴇ ᴅᴏ ʏᴏᴜ ᴅʀᴇᴀᴍ ᴏғ ᴘʟᴀᴄɪɴɢ ᴍᴇ... ɪɴ ᴛʜᴇ ᴄᴏʀɴᴇʀs ᴏғ ʏᴏᴜʀ ʜᴇᴀʀᴛ ᴡʜᴇʀᴇ ɴᴏ ᴏɴᴇ ᴇʟsᴇ ᴄᴀɴ ᴛᴏᴜᴄʜ, ᴏʀ ɪɴ ʏᴏᴜʀ ᴀʀᴍꜱ ᴡʜᴇʀᴇ ᴇᴠᴇʀʏ ʙᴇᴀᴛ ᴏғ ʏᴏᴜʀ ʜᴇᴀʀᴛ ᴡʜɪsᴘᴇʀs ᴍʏ ɴᴀᴍᴇ ?</blockquote></b>\n<pre><b>Cʜᴏᴏsᴇ ᴀɴ ᴏᴘᴛɪᴏɴ ʙᴇʟᴏᴡ :</b></pre>",
-                parse_mode=ParseMode.HTML
+                parse_mode=ParseMode.HTML, 
+                message_effect_id=5046509860389126442
             ),
             reply_markup=buttons
         )
@@ -1107,7 +1108,7 @@ async def add_group_callback(client: Client, callback_query: CallbackQuery):
     await callback_query.message.edit_media(
         media=InputMediaPhoto(
             media=photo_url,
-            caption="➕ To add me to your <b>Group</b>, click the button below:",
+            caption="<blockquote>Aᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴀɴᴅ ᴡᴀᴛᴄʜ ᴍᴇ ᴀᴘᴘʀᴏᴠᴇ ᴛʜᴇ ʙᴇꜱᴛ ᴘᴇᴏᴘʟᴇ ᴛᴏ ꜰɪᴛ ᴏᴜʀ ᴠɪʙᴇ... ʙᴜᴛ ʀᴇᴍᴇᴍʙᴇʀ, ɴᴏ ᴏɴᴇ ꜰɪᴛꜱ ʟɪᴋᴇ ᴍᴇ.</blockquote>",
             parse_mode=ParseMode.HTML
         ),
         reply_markup=buttons
