@@ -1018,150 +1018,109 @@ async def restart_bot(client: Client, message: Message):
 #                   ADD ME
 # ====================================================
 
-from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from pyrogram.enums import ParseMode, ChatAction
-import asyncio
-
 @bot_app.on_message(filters.command("addme") & filters.private)
-async def addme_command(client, message):
-    # Simulate typing action faster
+async def addme_command(client: Client, message: Message):
     await client.send_chat_action(message.chat.id, ChatAction.TYPING)
-    await asyncio.sleep(0.5)  # Faster typing simulation
+    await asyncio.sleep(0.5)
 
-    progress_msg = await message.reply_text(
-        "<b>[░░░░░░░░░░]</b> 0%",
-        parse_mode=ParseMode.HTML
-    )
+    # Remove progress bar and instead send "Gen message"
+    gen_msg = await message.reply_text("<b>Gen message...</b>", parse_mode=ParseMode.HTML)
+
+    await asyncio.sleep(0.5)
     
-    await asyncio.sleep(0.2)
-
-    # Simulate uploading a photo (adds more life)
-    await client.send_chat_action(message.chat.id, ChatAction.UPLOAD_PHOTO)
-    await asyncio.sleep(0.5)
-
-    # Animated loading bar (faster transitions)
-    loading_bars = [
-        ("[▓░░░░░░░░░]", "10%"),
-        ("[▓▓░░░░░░░░]", "20%"),
-        ("[▓▓▓░░░░░░░]", "30%"),
-        ("[▓▓▓▓░░░░░░]", "40%"),
-        ("[▓▓▓▓▓░░░░░]", "50%"),
-        ("[▓▓▓▓▓▓░░░░]", "60%"),
-        ("[▓▓▓▓▓▓▓░░░]", "70%"),
-        ("[▓▓▓▓▓▓▓▓░░]", "80%"),
-        ("[▓▓▓▓▓▓▓▓▓░]", "90%"),
-        ("[▓▓▓▓▓▓▓▓▓▓]", "100%")
-    ]
-
-    for bar, percent in loading_bars:
-        await progress_msg.edit_text(f"<b>{bar}</b> {percent}")
-        await asyncio.sleep(0.2)
+    # Send a sticker
+    sticker_id = "CAACAgUAAxkBAAEOXBhoCoKZ76jevKX-Vc5v5SZhCeQAAXMAAh4KAALJrhlVZygbxFWWTLw2BA"
+    await message.reply_sticker(sticker=sticker_id)
 
     await asyncio.sleep(0.5)
-    await progress_msg.edit_text("<b>✅ Completed!</b>")
-    await asyncio.sleep(0.7)
-    await progress_msg.delete()
 
-    # Send Sticker after the progress bar
-    sticker_url = "CAACAgUAAxkBAAEOXBhoCoKZ76jevKX-Vc5v5SZhCeQAAXMAAh4KAALJrhlVZygbxFWWTLw2BA"  # Replace with your sticker URL
-    await message.reply_sticker(sticker=sticker_url)
+    # Now update the message to show "Done sending"
+    await gen_msg.edit_text("<b>✅ Done sending!</b>")
 
-    # After loading finishes, show beautiful options
+    # Send the main add options
+    await send_addme_menu(message)
+
+async def send_addme_menu(message_or_query):
     photo_url = "https://i.ibb.co/YzFqHky/photo-2025-04-15-09-14-30-7493465832589099024.jpg"
     buttons = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("➕ Add me in Channel", callback_data="add_channel"),
-            InlineKeyboardButton("➕ Add me in Group", callback_data="add_group")
+            InlineKeyboardButton("➕ Add me to Channel", callback_data="add_channel"),
+            InlineKeyboardButton("➕ Add me to Group", callback_data="add_group")
         ],
         [
             InlineKeyboardButton("❌ Close", callback_data="close")
         ]
     ])
-
-    await message.reply_photo(
-        photo=photo_url,
-        caption="<b>Where would you like to add me?</b>\n\nChoose an option below:",
-        reply_markup=buttons,
-        parse_mode=ParseMode.HTML
-    )
+    if isinstance(message_or_query, CallbackQuery):
+        await message_or_query.message.edit_media(
+            media=InputMediaPhoto(
+                media=photo_url,
+                caption="<b>Where would you like to add me?</b>\n\nChoose an option below:",
+                parse_mode=ParseMode.HTML
+            ),
+            reply_markup=buttons
+        )
+    else:
+        await message_or_query.reply_photo(
+            photo=photo_url,
+            caption="<b>Where would you like to add me?</b>\n\nChoose an option below:",
+            reply_markup=buttons,
+            parse_mode=ParseMode.HTML
+        )
 
 @bot_app.on_callback_query(filters.regex("add_channel"))
-async def add_channel_callback(client, callback_query):
-    # Send processing message
-    processing_msg = await callback_query.message.reply_text(
-        "⏳ Processing... Please wait.",
-        parse_mode=ParseMode.HTML
-    )
-    
-    await asyncio.sleep(1)  # Simulate some processing time
-
-    # Now send the actual add channel message
-    photo_url = "https://i.ibb.co/YzFqHky/photo-2025-04-15-09-14-30-7493465832589099024.jpg"  # Image for Channel
+async def add_channel_callback(client: Client, callback_query: CallbackQuery):
+    await callback_query.answer()
+    photo_url = "https://i.ibb.co/YzFqHky/photo-2025-04-15-09-14-30-7493465832589099024.jpg"
     buttons = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("➕ Click Here to Add to Channel", url="https://t.me/YourBotUsername?startchannel=true")
+            InlineKeyboardButton("➕ Add to Channel", url="https://t.me/YourBotUsername?startchannel=true")
         ],
         [
             InlineKeyboardButton("🔙 Back", callback_data="addme_back"),
             InlineKeyboardButton("❌ Close", callback_data="close")
         ]
     ])
-    
-    await processing_msg.delete()  # Remove processing message
-    
-    await callback_query.message.edit_text(
-        "➕ To add me to your **Channel**, click the button below:",
-        reply_markup=buttons,
-        parse_mode=ParseMode.MARKDOWN
+    await callback_query.message.edit_media(
+        media=InputMediaPhoto(
+            media=photo_url,
+            caption="➕ To add me to your <b>Channel</b>, click the button below:",
+            parse_mode=ParseMode.HTML
+        ),
+        reply_markup=buttons
     )
-    
-    # Send the channel image
-    await callback_query.message.reply_photo(photo=photo_url)
 
 @bot_app.on_callback_query(filters.regex("add_group"))
-async def add_group_callback(client, callback_query):
-    # Send processing message
-    processing_msg = await callback_query.message.reply_text(
-        "⏳ Processing... Please wait.",
-        parse_mode=ParseMode.HTML
-    )
-    
-    await asyncio.sleep(1)  # Simulate some processing time
-
-    # Now send the actual add group message
-    photo_url = "https://i.ibb.co/YzFqHky/photo-2025-04-15-09-14-30-7493465832589099024.jpg"  # Image for Group
+async def add_group_callback(client: Client, callback_query: CallbackQuery):
+    await callback_query.answer()
+    photo_url = "https://i.ibb.co/YzFqHky/photo-2025-04-15-09-14-30-7493465832589099024.jpg"
     buttons = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("➕ Click Here to Add to Group", url="https://t.me/YourBotUsername?startgroup=true")
+            InlineKeyboardButton("➕ Add to Group", url="https://t.me/YourBotUsername?startgroup=true")
         ],
         [
             InlineKeyboardButton("🔙 Back", callback_data="addme_back"),
             InlineKeyboardButton("❌ Close", callback_data="close")
         ]
     ])
-    
-    await processing_msg.delete()  # Remove processing message
-    
-    await callback_query.message.edit_text(
-        "➕ To add me to your **Group**, click the button below:",
-        reply_markup=buttons,
-        parse_mode=ParseMode.MARKDOWN
+    await callback_query.message.edit_media(
+        media=InputMediaPhoto(
+            media=photo_url,
+            caption="➕ To add me to your <b>Group</b>, click the button below:",
+            parse_mode=ParseMode.HTML
+        ),
+        reply_markup=buttons
     )
-    
-    # Send the group image
-    await callback_query.message.reply_photo(photo=photo_url)
 
 @bot_app.on_callback_query(filters.regex("close"))
-async def close_callback(client, callback_query):
-    await callback_query.message.delete()
+async def close_callback(client: Client, callback_query: CallbackQuery):
     await callback_query.answer()
+    await callback_query.message.delete()
 
 @bot_app.on_callback_query(filters.regex("addme_back"))
-async def back_callback(client, callback_query):
+async def back_callback(client: Client, callback_query: CallbackQuery):
     await callback_query.answer()
-    # Redirect back to the "Where would you like to add me?" options
-    await addme_command(client, callback_query.message)
+    await send_addme_menu(callback_query)
         
 # ====================================================
 #                    BOT START
