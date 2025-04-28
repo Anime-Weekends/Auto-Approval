@@ -1029,7 +1029,7 @@ async def addme_command(client: Client, message: Message):
     await asyncio.sleep(0.5)
     
     # Now update the message to show "Done sending"
-    await gen_msg.edit_text("<b>✅ Done sending!</b>")
+    await gen_msg.edit_text("<b><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ... ᴡᴏʏᴏᴜ ʜɪᴛ ᴍʏ ᴍɪɴᴅ, ɴᴏᴡ ?</pre></b>")
 
     # Send the sticker after the "Done sending" message
     sticker_id = "CAACAgUAAxkBAAEOXBhoCoKZ76jevKX-Vc5v5SZhCeQAAXMAAh4KAALJrhlVZygbxFWWTLw2BA"
