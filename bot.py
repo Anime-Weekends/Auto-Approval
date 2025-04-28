@@ -879,6 +879,12 @@ async def help_close(_, cq: CallbackQuery):
 #                   USER ID
 # ====================================================
 
+# import random
+# import asyncio
+# from pyrogram import Client, filters
+# from pyrogram.types import ChatAction, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
+
+# Assuming the user_data_store dictionary is defined and initialized somewhere else
 user_data_store = {}
 
 @bot_app.on_message(filters.command("myid") & filters.private)
@@ -891,7 +897,8 @@ async def showid(client, message):
     msg = await message.reply_text(welcome_text)
     
     await asyncio.sleep(0.5)
-    await msg.edit_text("<b><i><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ...</pre></i></b>")
+    done_text = "<b><i><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ...</pre></i></b>"
+    await msg.edit_text(done_text)  # Only edit if the message content is different.
     
     await asyncio.sleep(0.2)
     await msg.delete()
