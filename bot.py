@@ -1028,14 +1028,14 @@ async def addme_command(client: Client, message: Message):
 
     await asyncio.sleep(0.5)
     
-    # Send a sticker
+    # Now update the message to show "Done sending"
+    await gen_msg.edit_text("<b>✅ Done sending!</b>")
+
+    # Send the sticker after the "Done sending" message
     sticker_id = "CAACAgUAAxkBAAEOXBhoCoKZ76jevKX-Vc5v5SZhCeQAAXMAAh4KAALJrhlVZygbxFWWTLw2BA"
     await message.reply_sticker(sticker=sticker_id)
 
     await asyncio.sleep(0.5)
-
-    # Now update the message to show "Done sending"
-    await gen_msg.edit_text("<b>✅ Done sending!</b>")
 
     # Send the main add options
     await send_addme_menu(message)
@@ -1048,7 +1048,8 @@ async def send_addme_menu(message_or_query):
             InlineKeyboardButton("➕ Add me to Group", callback_data="add_group")
         ],
         [
-            InlineKeyboardButton("❌ Close", callback_data="close")
+            InlineKeyboardButton("Dᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/RexySama"), 
+            InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close")
         ]
     ])
     if isinstance(message_or_query, CallbackQuery):
@@ -1077,8 +1078,8 @@ async def add_channel_callback(client: Client, callback_query: CallbackQuery):
             InlineKeyboardButton("➕ Add to Channel", url="https://t.me/YourBotUsername?startchannel=true")
         ],
         [
-            InlineKeyboardButton("🔙 Back", callback_data="addme_back"),
-            InlineKeyboardButton("❌ Close", callback_data="close")
+            InlineKeyboardButton("« Bᴀᴄᴋ", callback_data="addme_back"),
+            InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close")
         ]
     ])
     await callback_query.message.edit_media(
@@ -1099,8 +1100,8 @@ async def add_group_callback(client: Client, callback_query: CallbackQuery):
             InlineKeyboardButton("➕ Add to Group", url="https://t.me/YourBotUsername?startgroup=true")
         ],
         [
-            InlineKeyboardButton("🔙 Back", callback_data="addme_back"),
-            InlineKeyboardButton("❌ Close", callback_data="close")
+            InlineKeyboardButton("« Bᴀᴄᴋ", callback_data="addme_back"),
+            InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close")
         ]
     ])
     await callback_query.message.edit_media(
