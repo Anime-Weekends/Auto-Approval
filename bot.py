@@ -1018,6 +1018,11 @@ async def restart_bot(client: Client, message: Message):
 #                   ADD ME
 # ====================================================
 
+from pyrogram import Client, filters
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.enums import ParseMode, ChatAction
+import asyncio
+
 @bot_app.on_message(filters.command("addme") & filters.private)
 async def addme_command(client, message):
     # Simulate typing action faster
@@ -1092,6 +1097,7 @@ async def add_channel_callback(client, callback_query):
     await asyncio.sleep(1)  # Simulate some processing time
 
     # Now send the actual add channel message
+    photo_url = "https://i.ibb.co/YzFqHky/photo-2025-04-15-09-14-30-7493465832589099024.jpg"  # Image for Channel
     buttons = InlineKeyboardMarkup([
         [
             InlineKeyboardButton("➕ Click Here to Add to Channel", url="https://t.me/YourBotUsername?startchannel=true")
@@ -1109,6 +1115,9 @@ async def add_channel_callback(client, callback_query):
         reply_markup=buttons,
         parse_mode=ParseMode.MARKDOWN
     )
+    
+    # Send the channel image
+    await callback_query.message.reply_photo(photo=photo_url)
 
 @bot_app.on_callback_query(filters.regex("add_group"))
 async def add_group_callback(client, callback_query):
@@ -1121,6 +1130,7 @@ async def add_group_callback(client, callback_query):
     await asyncio.sleep(1)  # Simulate some processing time
 
     # Now send the actual add group message
+    photo_url = "https://i.ibb.co/YzFqHky/photo-2025-04-15-09-14-30-7493465832589099024.jpg"  # Image for Group
     buttons = InlineKeyboardMarkup([
         [
             InlineKeyboardButton("➕ Click Here to Add to Group", url="https://t.me/YourBotUsername?startgroup=true")
@@ -1138,6 +1148,9 @@ async def add_group_callback(client, callback_query):
         reply_markup=buttons,
         parse_mode=ParseMode.MARKDOWN
     )
+    
+    # Send the group image
+    await callback_query.message.reply_photo(photo=photo_url)
 
 @bot_app.on_callback_query(filters.regex("close"))
 async def close_callback(client, callback_query):
