@@ -1013,6 +1013,91 @@ async def restart_bot(client: Client, message: Message):
 
     # Once restarted, reconnect to the database
     reconnect_db()
+
+# ====================================================
+#                   ADD ME
+# ====================================================
+
+@bot_app.on_message(filters.command("addme") & filters.private)
+async def addme_command(client, message):
+    # Simulate typing first
+    await client.send_chat_action(message.chat.id, ChatAction.TYPING)
+    await asyncio.sleep(1.5)
+
+    progress_msg = await message.reply_text(
+        "<b>[░░░░░░░░░░]</b> 0%",
+        parse_mode=ParseMode.HTML
+    )
+    await asyncio.sleep(0.4)
+
+    # Now simulate uploading a photo (adds more life)
+    await client.send_chat_action(message.chat.id, ChatAction.UPLOAD_PHOTO)
+    await asyncio.sleep(1)
+
+    # Ultra-premium animated moving loading bar
+    loading_bars = [
+        ("[▓░░░░░░░░░]", "10%"),
+        ("[▓▓░░░░░░░░]", "20%"),
+        ("[▓▓▓░░░░░░░]", "30%"),
+        ("[▓▓▓▓░░░░░░]", "40%"),
+        ("[▓▓▓▓▓░░░░░]", "50%"),
+        ("[▓▓▓▓▓▓░░░░]", "60%"),
+        ("[▓▓▓▓▓▓▓░░░]", "70%"),
+        ("[▓▓▓▓▓▓▓▓░░]", "80%"),
+        ("[▓▓▓▓▓▓▓▓▓░]", "90%"),
+        ("[▓▓▓▓▓▓▓▓▓▓]", "100%")
+    ]
+
+    for bar, percent in loading_bars:
+        await progress_msg.edit_text(f"<b>{bar}</b> {percent}")
+        await asyncio.sleep(0.3)
+
+    await asyncio.sleep(0.5)
+    await progress_msg.edit_text("<b>✅ Completed!</b>")
+    await asyncio.sleep(0.7)
+    await progress_msg.delete()
+
+    # After loading finishes, show beautiful options
+    photo_url = "https://i.ibb.co/YzFqHky/photo-2025-04-15-09-14-30-7493465832589099024.jpg"
+    buttons = InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("➕ Add me in Channel", callback_data="add_channel"),
+            InlineKeyboardButton("➕ Add me in Group", callback_data="add_group")
+        ],
+        [
+            InlineKeyboardButton("❌ Close", callback_data="close")
+        ]
+    ])
+
+    await message.reply_photo(
+        photo=photo_url,
+        caption="<b>Where would you like to add me?</b>\n\nChoose an option below:",
+        reply_markup=buttons,
+        parse_mode=ParseMode.HTML
+    )
+
+@bot_app.on_callback_query(filters.regex("add_channel"))
+async def add_channel_callback(client, callback_query):
+    await callback_query.answer()
+    await callback_query.message.edit_text(
+        "➕ To add me to your **Channel**, [Click Here](https://t.me/YourBotUsername?startchannel=true)",
+        disable_web_page_preview=True,
+        parse_mode=ParseMode.MARKDOWN
+    )
+
+@bot_app.on_callback_query(filters.regex("add_group"))
+async def add_group_callback(client, callback_query):
+    await callback_query.answer()
+    await callback_query.message.edit_text(
+        "➕ To add me to your **Group**, [Click Here](https://t.me/YourBotUsername?startgroup=true)",
+        disable_web_page_preview=True,
+        parse_mode=ParseMode.MARKDOWN
+    )
+
+@bot_app.on_callback_query(filters.regex("close"))
+async def close_callback(client, callback_query):
+    await callback_query.message.delete()
+    await callback_query.answer()
         
 # ====================================================
 #                    BOT START
