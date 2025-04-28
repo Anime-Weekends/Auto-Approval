@@ -92,7 +92,8 @@ async def approve(_, m):
                 photo="https://i.ibb.co/vxMhkZQD/photo-2025-04-23-20-40-27-7496611286248062984.jpg",
                 caption=caption,
                 reply_markup=keyboard,
-                parse_mode=ParseMode.HTML
+                parse_mode=ParseMode.HTML, 
+                message_effect_id=5046509860389126442
             )
             print(f"Message sent to user {user.id} in PM.")
 
@@ -206,7 +207,7 @@ async def start_command(_, m: Message):
             InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
         ],
         [
-            InlineKeyboardButton("⤬ Dᴇᴠᴇʟᴏᴘᴇʀ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
+            InlineKeyboardButton("⤬ Dᴇᴠᴇʟᴏᴘᴇʀ ⤬", url="http://t.me/RexySama")
         ],
         [
             InlineKeyboardButton("Aʙᴏᴜᴛ", callback_data="about"), 
@@ -242,14 +243,14 @@ async def about_callback(_, cq: CallbackQuery):
                 f"<b><blockquote>Sᴀʏ ʏᴇs <a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name}</a>, ɪ’ᴍ ᴀʟʟ ʏᴏᴜʀs.</blockquote></b>\n"
                 "<b><blockquote expandable>◈ Oᴡɴᴇʀ:</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
                 "◈ <b>Dᴇᴠᴇʟᴏᴘᴇʀ:</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
-                "◈ <b>Mᴀɪɴ Cʜᴀɴɴᴇʟ:</b> <a href='https://t.me/Anime_Weekends'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
-                "◈ <b>Kᴅʀᴀᴍᴀ Cʜᴀɴɴᴇʟ:</b> <a href='https://t.me/Kdrama_Weekends'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
-                "◈ <b>Eᴍɪɴᴇɴᴄᴇ Sᴏᴄɪᴇᴛʏ:</b> <a href='https://t.me/Eminence_Society'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
-                "◈ <b>Oᴡɴᴇʀ:</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a></blockquote>"
+                "◈ <b>Mᴀɪɴ Cʜᴀɴɴᴇʟ:</b> <a href='https://t.me/EmitingStars_Botz'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
+                "◈ <b>Kᴅʀᴀᴍᴀ Cʜᴀɴɴᴇʟ:</b> <a href=''>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
+                "◈ <b>Eᴍɪɴᴇɴᴄᴇ Sᴏᴄɪᴇᴛʏ:</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>"
             ),
             parse_mode=ParseMode.HTML
         ),
-        reply_markup=about_markup
+        reply_markup=about_markup, 
+        message_effect_id=5046509860389126442
     )
 
 @bot_app.on_callback_query(filters.regex("start_again"))
@@ -261,7 +262,7 @@ async def back_to_start(_, cq: CallbackQuery):
             InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
         ],
         [
-            InlineKeyboardButton("⤬ Dᴇᴠᴇʟᴏᴘᴇʀ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
+            InlineKeyboardButton("⤬ Dᴇᴠᴇʟᴏᴘᴇʀ ⤬", url="http://t.me/RexySama")
         ],
         [
             InlineKeyboardButton("Aʙᴏᴜᴛ", callback_data="about"), 
@@ -336,7 +337,7 @@ async def chk_callback(_, cb: CallbackQuery):
             InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
         ],
         [
-            InlineKeyboardButton("⤬ Dᴇᴠᴇʟᴏᴘᴇʀ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
+            InlineKeyboardButton("⤬ Dᴇᴠᴇʟᴏᴘᴇʀ ⤬", url="http://t.me/RexySama")
         ],
         [
             InlineKeyboardButton("⧉ Aʙᴏᴜᴛ", callback_data="about"), 
