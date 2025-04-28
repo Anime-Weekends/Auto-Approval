@@ -240,12 +240,12 @@ async def about_callback(_, cq: CallbackQuery):
         media=InputMediaPhoto(
             media="https://i.ibb.co/n8DKHRbn/photo-2025-04-28-16-38-45-7498404439389110276.jpg",
             caption=(
-                f"<b><blockquote>Sᴀʏ ʏᴇs <a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name}</a>, ɪ’ᴍ ᴀʟʟ ʏᴏᴜʀs.</blockquote></b>\n"
-                "<b><blockquote expandable>◈ Oᴡɴᴇʀ:</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
-                "◈ <b>Dᴇᴠᴇʟᴏᴘᴇʀ:</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
-                "◈ <b>Mᴀɪɴ Cʜᴀɴɴᴇʟ:</b> <a href='https://t.me/EmitingStars_Botz'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
-                "◈ <b>Kᴅʀᴀᴍᴀ Cʜᴀɴɴᴇʟ:</b> <a href=''>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
-                "◈ <b>Eᴍɪɴᴇɴᴄᴇ Sᴏᴄɪᴇᴛʏ:</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>"
+                f"<b><blockquote>Sᴀʏ ʏᴇs  <a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name}</a>  ɪ’ᴍ ᴀʟʟ ʏᴏᴜʀs.</blockquote></b>\n"
+                "<b><blockquote expandable>◈ Oᴡɴᴇʀ :</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
+                "◈ <b>Dᴇᴠᴇʟᴏᴘᴇʀ :</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
+                "◈ <b>Mᴀɪɴ Cʜᴀɴɴᴇʟ :</b> <a href='https://t.me/EmitingStars_Botz'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
+                "◈ <b>Sᴜᴘᴘᴏʀᴛ Cʜᴀɴɴᴇʟ :</b> <a href='https://t.me/+HZuPVe0l-F1mM2Jl'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
+                "◈ <b>Sᴏᴜʀᴄᴇ ᴄᴏᴅᴇ :</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>"
             ),
             parse_mode=ParseMode.HTML
         ),
