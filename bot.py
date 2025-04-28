@@ -206,7 +206,7 @@ async def start_command(_, m: Message):
             InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
         ],
         [
-            InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ ᴍᴇ ʙᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
+            InlineKeyboardButton("⤬ Dᴇᴠᴇʟᴏᴘᴇʀ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
         ],
         [
             InlineKeyboardButton("Aʙᴏᴜᴛ", callback_data="about"), 
@@ -237,15 +237,15 @@ async def about_callback(_, cq: CallbackQuery):
     ])
     await cq.message.edit_media(
         media=InputMediaPhoto(
-            media="https://i.ibb.co/1GPZ0bgd/photo-2025-04-27-00-48-03-7497788399344943120.jpg",
+            media="https://i.ibb.co/n8DKHRbn/photo-2025-04-28-16-38-45-7498404439389110276.jpg",
             caption=(
-                f"<b>Sᴀʏ ʏᴇs <a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name}</a>, ɪ’ᴍ ᴀʟʟ ʏᴏᴜʀs.</b>\n\n"
-                "<b>◈ Oᴡɴᴇʀ:</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
+                f"<b><blockquote>Sᴀʏ ʏᴇs <a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name}</a>, ɪ’ᴍ ᴀʟʟ ʏᴏᴜʀs.</blockquote></b>\n"
+                "<b><blockquote expandable>◈ Oᴡɴᴇʀ:</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
                 "◈ <b>Dᴇᴠᴇʟᴏᴘᴇʀ:</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
                 "◈ <b>Mᴀɪɴ Cʜᴀɴɴᴇʟ:</b> <a href='https://t.me/Anime_Weekends'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
                 "◈ <b>Kᴅʀᴀᴍᴀ Cʜᴀɴɴᴇʟ:</b> <a href='https://t.me/Kdrama_Weekends'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
                 "◈ <b>Eᴍɪɴᴇɴᴄᴇ Sᴏᴄɪᴇᴛʏ:</b> <a href='https://t.me/Eminence_Society'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
-                "◈ <b>Oᴡɴᴇʀ:</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>"
+                "◈ <b>Oᴡɴᴇʀ:</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a></blockquote>"
             ),
             parse_mode=ParseMode.HTML
         ),
@@ -261,7 +261,7 @@ async def back_to_start(_, cq: CallbackQuery):
             InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
         ],
         [
-            InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ ᴍᴇ ʙᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
+            InlineKeyboardButton("⤬ Dᴇᴠᴇʟᴏᴘᴇʀ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
         ],
         [
             InlineKeyboardButton("Aʙᴏᴜᴛ", callback_data="about"), 
@@ -336,7 +336,7 @@ async def chk_callback(_, cb: CallbackQuery):
             InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")
         ],
         [
-            InlineKeyboardButton("⤬ Kɪᴅɴᴀᴘᴘ ᴍᴇ ʙᴀʙʏ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
+            InlineKeyboardButton("⤬ Dᴇᴠᴇʟᴏᴘᴇʀ ⤬", url="http://t.me/Private_Auto_Approval_Bot?startchannel=true")
         ],
         [
             InlineKeyboardButton("⧉ Aʙᴏᴜᴛ", callback_data="about"), 
