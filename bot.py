@@ -245,7 +245,7 @@ async def about_callback(_, cq: CallbackQuery):
                 "◈ <b>Dᴇᴠᴇʟᴏᴘᴇʀ :</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
                 "◈ <b>Mᴀɪɴ Cʜᴀɴɴᴇʟ :</b> <a href='https://t.me/EmitingStars_Botz'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
                 "◈ <b>Sᴜᴘᴘᴏʀᴛ Cʜᴀɴɴᴇʟ :</b> <a href='https://t.me/+HZuPVe0l-F1mM2Jl'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
-                "◈ <b>Sᴏᴜʀᴄᴇ ᴄᴏᴅᴇ :</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>"
+                "◈ <b>Sᴏᴜʀᴄᴇ ᴄᴏᴅᴇ :</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a></blockquote>"
             ),
             parse_mode=ParseMode.HTML
         ),
@@ -431,8 +431,8 @@ async def bcast(_, m: Message):
     canceled = False
 
     lel = await m.reply_photo(
-        "https://i.ibb.co/F9JM2pq/photo-2025-03-13-19-25-04-7481377376551567376.jpg",
-        caption="`⚡️ Preparing broadcast...`",
+        "https://i.ibb.co/9m1Rqmv8/photo-2025-04-28-17-06-26-7498411556149919760.jpg",
+        caption="<pre>Pʀᴇᴘᴀʀɪɴɢ ʙʀᴏᴀᴅᴄᴀsᴛ...</pre>",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
