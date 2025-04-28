@@ -54,10 +54,10 @@ user_app = Client(
 #                   MAIN PROCESS
 # ====================================================
 
-from pyrogram.types import ChatJoinRequest
+from pyrogram.types import ChatJoinRequest, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 
 @bot_app.on_chat_join_request(filters.group | filters.channel)
-async def approve(_, m: ChatJoinRequest):  # <<< Correct type
+async def approve(_, m: ChatJoinRequest):
     chat = m.chat
     user = m.from_user
     try:
@@ -66,39 +66,34 @@ async def approve(_, m: ChatJoinRequest):  # <<< Correct type
         log_approval(user.id, chat.id)
         add_user(user.id)
 
-        # Inline buttons layout
-        keyboard = InlineKeyboardMarkup(
+        # Inline buttons
+        keyboard = InlineKeyboardMarkup([
+            [InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz")],
             [
-                [InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz")],
-                [
-                    InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl"),
-                    InlineKeyboardButton("Cʟɪᴄᴋ ʜᴇʀᴇ", callback_data="popup_action")
-                ]
+                InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl"),
+                InlineKeyboardButton("Cʟɪᴄᴋ ʜᴇʀᴇ", callback_data="popup_action")
             ]
-        )
+        ])
 
         caption = (
             f"<b><blockquote>Hᴇʏ sᴡᴇᴇᴛɪᴇ</b> <a href='tg://user?id={user.id}'>{user.first_name}</a>  ⭐✨</blockquote>\n\n"
-            f"<blockquote>Aᴄᴄᴇss ʜᴀs ʙᴇᴇɴ <b>Gʀᴀɴᴛᴇᴅ</b> sᴛᴇᴘ ɪɴᴛᴏ ᴛʜᴇ ᴘʀᴇsᴛɪɢɪᴏᴜs ʜᴀʟʟs ᴏғ "
-            f"<a href='https://t.me/c/{str(chat.id)[4:]}'>{chat.title}</a></blockquote>\n"
-            f"<i><blockquote>Pʀᴇsᴇɴᴛᴇᴅ ᴡɪᴛʜ ʜᴏɴᴏʀ ʙʏ <a href='https://t.me/EmitingStars_Botz'>Eᴍɪᴛɪɴɢ sᴛᴀʀs</a></blockquote></i>"
+            f"<blockquote>Aᴄᴄᴇss ʜᴀs ʙᴇᴇɴ <b>Gʀᴀɴᴛᴇᴅ</b> — ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ "
+            f"<a href='https://t.me/c/{str(chat.id)[4:]}'>{chat.title}</a>!</blockquote>\n"
+            f"<i><blockquote>Pʀᴇsᴇɴᴛᴇᴅ ʙʏ <a href='https://t.me/EmitingStars_Botz'>Eᴍɪᴛɪɴɢ sᴛᴀʀs</a></blockquote></i>"
         )
 
-        try:
-            await bot_app.send_photo(
-                user.id,
-                "https://i.ibb.co/vxMhkZQD/photo-2025-04-23-20-40-27-7496611286248062984.jpg",
-                caption=caption,
-                reply_markup=keyboard,
-                parse_mode=ParseMode.HTML,
-                message_effect_id=5046509860389126442
-            )
-        except Exception as e:
-            print(f"Failed to send DM to user {user.id}: {e}")
+        # Send welcome message to the user (not to the group/channel)
+        await bot_app.send_photo(
+            user.id,  # <-- sending to the user, not the group
+            "https://i.ibb.co/vxMhkZQD/photo-2025-04-23-20-40-27-7496611286248062984.jpg",
+            caption=caption,
+            reply_markup=keyboard,
+            parse_mode=ParseMode.HTML,
+            message_effect_id=5046509860389126442
+        )
 
     except Exception as err:
         print(f"Error approving user {user.id}: {err}")
-
 
 # Callback query handler for the "⚡" button to show a popup message
 @bot_app.on_callback_query(filters.regex("popup_action"))
