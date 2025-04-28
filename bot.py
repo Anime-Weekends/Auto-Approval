@@ -415,8 +415,7 @@ async def close_stats(_, cb: CallbackQuery):
     await cb.answer("Closed!", show_alert=True)
 
 stickers = [
-        "CAACAgUAAxkBAAEOW3hoCf_Za5Dh_qsmeH4OKtJpOEDhggACNwoAApLnMFfso_6k-QJv-zYE",
-        "CAACAgUAAxkBAAEOW3poCf_m_FMYs55gjI312AJxgvItxAACzQsAAhjwMVePhvS36tzPHzYE"
+        "CAACAgUAAxkBAAEOXBhoCoKZ76jevKX-Vc5v5SZhCeQAAXMAAh4KAALJrhlVZygbxFWWTLw2BA",
     ]
     
 # ====================================================
@@ -830,7 +829,7 @@ async def help_command(_, m: Message):
 
     # Random sticker from a list
     stickers = [
-        "CAACAgUAAxkBAAEOXBpoCoLgW4BDYySk2CEv2av7Hw9bHwACjAkAArIJGVUWyBghZ-dV-zYE",
+        "CAACAgUAAxkBAAEOXBhoCoKZ76jevKX-Vc5v5SZhCeQAAXMAAh4KAALJrhlVZygbxFWWTLw2BA",
         # Add more sticker file_ids here
     ]
     await m.reply_sticker(random.choice(stickers))
@@ -890,7 +889,7 @@ async def showid(client, message):
 
     # Random sticker from list
     stickers = [
-        "CAACAgUAAxkBAAEOXB5oCoNqWhB4frESNLfx8JgVJ688VAACBQ0AAudaGVWG3TppHeiJUjYE",
+        "CAACAgUAAxkBAAEOXBhoCoKZ76jevKX-Vc5v5SZhCeQAAXMAAh4KAALJrhlVZygbxFWWTLw2BA",
         # Add more stickers if you want variety
     ]
     await message.reply_sticker(random.choice(stickers))
