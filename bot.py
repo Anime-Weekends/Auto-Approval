@@ -1024,7 +1024,7 @@ async def addme_command(client: Client, message: Message):
     await asyncio.sleep(0.5)
 
     # Remove progress bar and instead send "Gen message"
-    gen_msg = await message.reply_text("<b>Gen message...</b>", parse_mode=ParseMode.HTML)
+    gen_msg = await message.reply_text("<b><pre>Gᴇɴ ᴍᴇssᴀɢᴇ... ᴏʜ, ᴅᴏ ʏᴏᴜ ᴋɴᴏᴡ ᴡʜᴀᴛ ɪ'ᴍ ᴛʜɪɴᴋɪɴɢ ?</pre></b>", parse_mode=ParseMode.HTML)
 
     await asyncio.sleep(0.5)
     
@@ -1065,9 +1065,10 @@ async def send_addme_menu(message_or_query):
     else:
         await message_or_query.reply_photo(
             photo=photo_url,
-            caption="<b>Where would you like to add me?</b>\n\nChoose an option below:",
+            caption="<b><blockquote>Wʜᴇʀᴇ ᴅᴏ ʏᴏᴜ ᴅʀᴇᴀᴍ ᴏғ ᴘʟᴀᴄɪɴɢ ᴍᴇ... ɪɴ ᴛʜᴇ ᴄᴏʀɴᴇʀs ᴏғ ʏᴏᴜʀ ʜᴇᴀʀᴛ ᴡʜᴇʀᴇ ɴᴏ ᴏɴᴇ ᴇʟsᴇ ᴄᴀɴ ᴛᴏᴜᴄʜ, ᴏʀ ɪɴ ʏᴏᴜʀ ᴀʀᴍꜱ ᴡʜᴇʀᴇ ᴇᴠᴇʀʏ ʙᴇᴀᴛ ᴏғ ʏᴏᴜʀ ʜᴇᴀʀᴛ ᴡʜɪsᴘᴇʀs ᴍʏ ɴᴀᴍᴇ ?</blockquote></b>\n<pre><b>Cʜᴏᴏsᴇ ᴀɴ ᴏᴘᴛɪᴏɴ ʙᴇʟᴏᴡ :</b></pre>",
             reply_markup=buttons,
             parse_mode=ParseMode.HTML
+
         )
 
 @bot_app.on_callback_query(filters.regex("add_channel"))
