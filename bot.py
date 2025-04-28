@@ -1085,7 +1085,7 @@ async def add_channel_callback(client: Client, callback_query: CallbackQuery):
     await callback_query.message.edit_media(
         media=InputMediaPhoto(
             media=photo_url,
-            caption="➕ To add me to your <b>Channel</b>, click the button below:",
+            caption="<blockquote>Aᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ <b>ᴄʜᴀɴɴᴇʟ</b> ᴀɴᴅ ʟᴇᴛ ᴍᴇ ᴘᴀɪɴᴛ ʏᴏᴜʀ ᴅᴀʏs ᴡɪᴛʜ ᴀ ꜱᴘᴀʀᴋ ᴏғ ᴍʏ ᴘʀᴇꜱᴇɴᴄᴇ... ᴊᴜꜱᴛ ᴄʟɪᴄᴋ ᴛʜᴇ ʙᴜᴛᴛᴏɴ ʙᴇʟᴏᴡ.</blockquote>",
             parse_mode=ParseMode.HTML
         ),
         reply_markup=buttons
