@@ -58,22 +58,19 @@ from pyrogram.types import ChatJoinRequest, InlineKeyboardButton, InlineKeyboard
 from pyrogram.enums import ParseMode
 
 @bot_app.on_chat_join_request(filters.group | filters.channel)
-async def approve(_, m: ChatJoinRequest):
+async def approve(_, m):
     chat = m.chat
     user = m.from_user
 
     try:
         print(f"Approving user {user.id} in chat {chat.id}")
-        
-        # Add group and user to database
+
         add_group(chat.id)
         add_user(user.id)
 
-        # Approve the join request
-        await bot_app.approve_chat_join_request(chat.id, user.id)
+        await _.approve_chat_join_request(chat.id, user.id)
         log_approval(user.id, chat.id)
 
-        # Inline buttons
         keyboard = InlineKeyboardMarkup([
             [InlineKeyboardButton("Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz")],
             [
@@ -83,32 +80,34 @@ async def approve(_, m: ChatJoinRequest):
         ])
 
         caption = (
-            f"<b><blockquote>Hᴇʏ sᴡᴇᴇᴛɪᴇ</b> <a href='tg://user?id={user.id}'>{user.first_name}</a>  ⭐✨</blockquote>\n\n"
+            f"<b><blockquote>Hᴇʏ sᴡᴇᴇᴛɪᴇ</b> <a href='tg://user?id={user.id}'>{user.first_name}</a> ⭐✨</blockquote>\n\n"
             f"<blockquote>Aᴄᴄᴇss ʜᴀs ʙᴇᴇɴ <b>Gʀᴀɴᴛᴇᴅ</b> — ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ "
             f"<a href='https://t.me/c/{str(chat.id)[4:]}'>{chat.title}</a>!</blockquote>\n"
-            f"<i><blockquote>Pʀᴇsᴇɴᴛᴇᴅ ʙʏ <a href='https://t.me/EmitingStars_Botz'>Eᴍɪᴛɪɴɢ sᴛᴀʀs</a></blockquote></i>"
+            f"<i><blockquote>Pʀᴇsᴇɴᴛᴇᴅ ʙʏ <a href='https://t.me/EmitingStars_Botz'>Eᴍɪᴛɪɴɢ Sᴛᴀʀs</a></blockquote></i>"
         )
 
-        # Send welcome message to the user
-        print(f"Sending welcome message to {user.id}")
-        await bot_app.send_photo(
-            user.id,  # <-- sending to the user, not the group
-            "https://i.ibb.co/vxMhkZQD/photo-2025-04-23-20-40-27-7496611286248062984.jpg",
-            caption=caption,
-            reply_markup=keyboard,
-            parse_mode=ParseMode.HTML
-        )
-        print(f"Welcome message sent to {user.id}")
+        try:
+            await _.send_photo(
+                user.id,
+                photo="https://i.ibb.co/vxMhkZQD/photo-2025-04-23-20-40-27-7496611286248062984.jpg",
+                caption=caption,
+                reply_markup=keyboard,
+                parse_mode=ParseMode.HTML
+            )
+            print(f"Message sent to user {user.id} in PM.")
+
+        except Exception as e:
+            print(f"Failed to send PM to user {user.id}: {e}")
+            # Do NOTHING if sending PM fails
+            pass
 
     except Exception as err:
         print(f"Error approving user {user.id}: {err}")
 
-# Callback query handler for the "⚡" button to show a popup message
 @bot_app.on_callback_query(filters.regex("popup_action"))
 async def popup_action(_, cb: CallbackQuery):
-    # This sends the popup-style alert when the "⚡" button is clicked
     await cb.answer(
-        "Iғ ɪ ᴄʀᴏssᴇᴅ ɢᴀʟᴀxɪᴇs ᴀɴᴅ ʙᴇɴᴛ ᴛɪᴍᴇ ᴊᴜsᴛ ᴛᴏ ғɪɴᴅ ʏᴏᴜ, ɪᴛ’ᴅ sᴛɪʟʟ ʙᴇ ᴡᴏʀᴛʜ ᴇᴠᴇʀʏ sᴜᴘᴇʀɴᴏᴠᴀ—ʙᴇᴄᴀᴜsᴇ ɪɴ ᴀʟʟ ᴛʜᴇ ᴍᴜʟᴛɪᴠᴇʀsᴇs, ʏᴏᴜ'ʀᴇ ᴛʜᴇ ᴏɴʟʏ ᴄᴏɴsᴛᴀɴᴛ ᴍʏ ʜᴇᴀʀᴛ ᴏʀʙɪᴛs.",
+        "Iғ ɪ ᴄʀᴏssᴇᴅ ɢᴀʟᴀxɪᴇs ᴀɴᴅ ʙᴇɴᴛ ᴛɪᴍᴇ ᴊᴜsᴛ ᴛᴏ ғɪɴᴅ ʏᴏᴜ, ɪᴛ’ᴅ sᴛɪʟʟ ʙᴇ ᴡᴏʀᴛʜ ᴇᴠᴇʀʏ sᴜᴘᴇʀɴᴏᴠᴀ...",
         show_alert=True
     )
 
