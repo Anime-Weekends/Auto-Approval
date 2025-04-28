@@ -249,8 +249,7 @@ async def about_callback(_, cq: CallbackQuery):
             ),
             parse_mode=ParseMode.HTML
         ),
-        reply_markup=about_markup, 
-        message_effect_id=5046509860389126442
+        reply_markup=about_markup
     )
 
 @bot_app.on_callback_query(filters.regex("start_again"))
