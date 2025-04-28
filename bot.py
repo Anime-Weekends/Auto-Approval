@@ -26,6 +26,7 @@ from pymongo import MongoClient
 
 # Your MongoDB connection and database setup here...
 from database import close_db_connection, reconnect_db
+from datetime import datetime
 
 
 import random
@@ -878,32 +879,67 @@ async def help_close(_, cq: CallbackQuery):
 #                   USER ID
 # ====================================================
 
+user_data_store = {}
+
 @bot_app.on_message(filters.command("myid") & filters.private)
 async def showid(client, message):
-
-    # Typing action
-    await bot_app.send_chat_action(m.chat.id, ChatAction.TYPING)
+    # Typing action to indicate bot is working
+    await bot_app.send_chat_action(message.chat.id, ChatAction.TYPING)
+    
     # Animated status text
     welcome_text = "<pre>Fᴇᴛᴄʜɪɴɢ ʏᴏᴜʀ ɪɴғᴏʀᴍᴀᴛɪᴏɴ... </pre>"
     msg = await message.reply_text(welcome_text)
-    await asyncio.sleep(0.2)
+    
+    await asyncio.sleep(0.5)
     await msg.edit_text("<b><i><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ...</pre></i></b>")
-    await asyncio.sleep(0.1)
+    
+    await asyncio.sleep(0.2)
     await msg.delete()
 
-    await bot_app.send_chat_action(m.chat.id, ChatAction.CHOOSE_STICKER)
+    # Sending sticker action to engage with user
+    await bot_app.send_chat_action(message.chat.id, ChatAction.CHOOSE_STICKER)
 
-    # Random sticker from list
+    # Random sticker from a list
     stickers = [
-        "CAACAgUAAxkBAAEOXB5oCoNqWhB4frESNLfx8JgVJ688VAACBQ0AAudaGVWG3TppHeiJUjYE",
-        # Add more if you want variety
+        "CAACAgUAAxkBAAEOXBhoCoKZ76jevKX-Vc5v5SZhCeQAAXMAAh4KAALJrhlVZygbxFWWTLw2BA",
+        # Add more stickers here
     ]
     await message.reply_sticker(random.choice(stickers))
 
-    # User ID display
+    # User ID and additional information
     user_id = message.chat.id
-    photo_url = "https://i.ibb.co/YzFqHky/photo-2025-04-15-09-14-30-7493465832589099024.jpg"
+    first_name = message.chat.first_name
+    last_name = message.chat.last_name if message.chat.last_name else "N/A"
+    username = message.chat.username if message.chat.username else "N/A"
+    
+    # Get the join date using get_chat_member() method
+    chat_member = await client.get_chat_member(message.chat.id, user_id)
+    date_joined = chat_member.date  # This will return the date the user joined the chat
+    user_since = date_joined.strftime("%Y-%m-%d %H:%M:%S")
 
+    # Simulating the retrieval of old names and usernames (replace with actual data storage mechanism)
+    old_usernames = user_data_store.get(user_id, {}).get("usernames", [])[:5]
+    old_names = user_data_store.get(user_id, {}).get("names", [])[:5]
+
+    # Store the current name and username for future use
+    if user_id not in user_data_store:
+        user_data_store[user_id] = {"usernames": [], "names": []}
+
+    if username not in user_data_store[user_id]["usernames"]:
+        user_data_store[user_id]["usernames"].insert(0, username)
+
+    if first_name and last_name:
+        full_name = f"{first_name} {last_name}"
+    else:
+        full_name = first_name or last_name
+
+    if full_name not in user_data_store[user_id]["names"]:
+        user_data_store[user_id]["names"].insert(0, full_name)
+
+    # Profile picture URL
+    photo_url = "https://i.ibb.co/B2GCLrg6/photo-2025-04-25-09-41-40-7497183689424502800.jpg"
+
+    # Inline buttons for user interaction
     buttons = InlineKeyboardMarkup([
         [
             InlineKeyboardButton("Dᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/RexySama"),
@@ -911,20 +947,32 @@ async def showid(client, message):
         ]
     ])
 
+    # Building the user info caption with clickable name
+    user_profile_link = f"<a href='tg://user?id={user_id}'>Click here to visit profile</a>"
+
+    caption = f"<b>Your user ID is:</b> <code>{user_id}</code>\n\n" \
+              f"<b>Full Name:</b> {full_name} ({user_profile_link})\n" \
+              f"<b>First Name:</b> {first_name}\n" \
+              f"<b>Last Name:</b> {last_name}\n" \
+              f"<b>Username:</b> @{username}\n" \
+              f"<b>Joined At:</b> {user_since}\n\n" \
+              f"<b>Old Usernames (Last 5):</b>\n" + "\n".join([f"- @{uname}" for uname in old_usernames]) + \
+              f"\n\n<b>Old Names (Last 5):</b>\n" + "\n".join([f"- {name}" for name in old_names]) + \
+              "\n\n<i>Feel free to click on any button below!</i>"
+
+    # Send the photo with all information
     await message.reply_photo(
         photo=photo_url,
-        caption=f"<b>Your user ID is:</b> <code>{user_id}</code>",
+        caption=caption,
         reply_markup=buttons,
         quote=True,
-        parse_mode=ParseMode.HTML, 
-        message_effect_id=5046509860389126442
+        parse_mode=ParseMode.HTML
     )
 
 @bot_app.on_callback_query(filters.regex("close"))
 async def close_callback(client, callback_query):
     await callback_query.message.delete()
     await callback_query.answer()
-
 
 # ====================================================
 #                   TOTAL APPROVED
