@@ -571,7 +571,7 @@ async def help_command(_, m: Message):
     ])
 
     await m.reply_photo(
-        "https://i.ibb.co/n88kgW8r/photo-2025-04-24-10-49-04-7496829977392840720.jpg",
+        "https://i.ibb.co/GQhtSDGH/photo-2025-04-28-21-39-52-7498482058038083600.jpg",
         caption=(
             "<blockquote>𝗨𝗦𝗘𝗥 𝗚𝗨𝗜𝗗𝗘</blockquote>\n"
             "<blockquote expandable>➥ Kɪɴᴅʟʏ ᴀᴅᴅ ᴛʜɪs ʙᴏᴛ ᴛᴏ ʏᴏᴜʀ ᴇsᴛᴇᴇᴍᴇᴅ ᴄʜᴀɴɴᴇʟ, ᴀɴᴅ ɪᴛ ᴡɪʟʟ ɢʀᴀᴄᴇғᴜʟʟʏ ʙᴇɢɪɴ ᴀᴘᴘʀᴏᴠɪɴɢ ᴀʟʟ ɴᴇᴡ ᴍᴇᴍʙᴇʀs ᴡɪᴛʜ ᴇғғɪᴄɪᴇɴᴄʏ ᴀɴᴅ ᴄᴀʀᴇ.</blockquote>\n"
@@ -731,7 +731,7 @@ async def listadmin(_, m: Message):
             admin_list += f"<b><blockquote>ɪᴅ: <code>{id}</code>\n<i>ᴜɴᴀʙʟᴇ ᴛᴏ ʟᴏᴀᴅ ᴏᴛʜᴇʀ ᴅᴇᴛᴀɪʟs..</i></blockquote></b>\n\n"
 
     await m.reply_photo(
-        photo="https://i.ibb.co/nsfh7ytW/photo-2025-04-24-18-47-51-7496953350328418324.jpg",
+        photo="https://i.ibb.co/SDVMgVRk/photo-2025-04-28-21-39-52-7498482040858214428.jpg",
         caption=f"<b>🤖 𝗕𝗢𝗧 𝗔𝗗𝗠𝗜𝗡𝗦 𝗟𝗜𝗦𝗧 :</b>\n\n{admin_list}",
         parse_mode=ParseMode.HTML,
         message_effect_id=5046509860389126442, 
@@ -842,7 +842,7 @@ async def help_command(_, m: Message):
         "<b><blockquote>➥ Sᴛᴇᴘ 3 :</b> Sᴇɴᴅ ᴛʜᴇ /acceptall ᴄᴏᴍᴍᴀɴᴅ ɪɴ ʏᴏᴜʀ ᴄʜᴀɴɴᴇʟ ᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ᴀʟʟ ᴘᴇɴᴅɪɴɢ ʀᴇǫᴜᴇsᴛs. ᴏɴᴄᴇ ᴅᴏɴᴇ, ʀᴇᴍᴏᴠᴇ ᴛʜɪs ɪᴅ ғʀᴏᴍ ʏᴏᴜʀ ᴄʜᴀɴɴᴇʟ.</blockquote>"
     )
 
-    image_url = "https://i.ibb.co/xSG8wZJD/photo-2025-04-24-11-20-18-7496838026161553424.jpg"
+    image_url = "https://i.ibb.co/sv5mMnvt/photo-2025-04-28-21-39-52-7498482075217952784.jpg"
 
     buttons = InlineKeyboardMarkup([
         [InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url="https://t.me/+HZuPVe0l-F1mM2Jl")],
@@ -897,7 +897,7 @@ async def showid(client, message):
 
     # User ID display
     user_id = message.chat.id
-    photo_url = "https://i.ibb.co/YzFqHky/photo-2025-04-15-09-14-30-7493465832589099024.jpg"
+    photo_url = "https://i.ibb.co/Kj5gSwWG/photo-2025-04-28-21-39-52-7498482032268279812.jpg"
 
     buttons = InlineKeyboardMarkup([
         [
@@ -908,10 +908,11 @@ async def showid(client, message):
 
     await message.reply_photo(
         photo=photo_url,
-        caption=f"<b>Your user ID is:</b> <code>{user_id}</code>",
+        caption=f"<b><blockquote>Your user ID is :</b> <code>{user_id}</code></blockquote>",
         reply_markup=buttons,
         quote=True,
-        parse_mode=ParseMode.HTML
+        parse_mode=ParseMode.HTML, 
+        message_effect_id=5046509860389126442
     )
 
 @bot_app.on_callback_query(filters.regex("close"))
