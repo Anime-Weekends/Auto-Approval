@@ -1064,7 +1064,7 @@ async def addme_command(client, message):
     await progress_msg.delete()
 
     # Send Sticker after the progress bar
-    sticker_url = "https://t.me/addstickers/YOUR_STICKER_URL"  # Replace with your sticker URL
+    sticker_url = "CAACAgUAAxkBAAEOXBhoCoKZ76jevKX-Vc5v5SZhCeQAAXMAAh4KAALJrhlVZygbxFWWTLw2BA"  # Replace with your sticker URL
     await message.reply_sticker(sticker=sticker_url)
 
     # After loading finishes, show beautiful options
