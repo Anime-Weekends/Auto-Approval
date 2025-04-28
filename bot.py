@@ -339,8 +339,8 @@ async def chk_callback(_, cb: CallbackQuery):
             InlineKeyboardButton("⤬ Dᴇᴠᴇʟᴏᴘᴇʀ ⤬", url="http://t.me/RexySama")
         ],
         [
-            InlineKeyboardButton("⧉ Aʙᴏᴜᴛ", callback_data="about"), 
-            InlineKeyboardButton("⨉ Cʟᴏsᴇ", callback_data="close_str")
+            InlineKeyboardButton("Aʙᴏᴜᴛ", callback_data="about"), 
+            InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_str")
         ]
     ])
         
