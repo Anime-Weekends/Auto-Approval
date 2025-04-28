@@ -1041,7 +1041,7 @@ async def addme_command(client: Client, message: Message):
     await send_addme_menu(message)
 
 async def send_addme_menu(message_or_query):
-    photo_url = "https://i.ibb.co/YzFqHky/photo-2025-04-15-09-14-30-7493465832589099024.jpg"
+    photo_url = "https://i.ibb.co/BVbbLy8C/photo-2025-04-28-20-15-29-7498460273963958292.jpg"
     buttons = InlineKeyboardMarkup([
         [
             InlineKeyboardButton("➕ Add me to Channel", callback_data="add_channel"),
@@ -1072,7 +1072,7 @@ async def send_addme_menu(message_or_query):
 @bot_app.on_callback_query(filters.regex("add_channel"))
 async def add_channel_callback(client: Client, callback_query: CallbackQuery):
     await callback_query.answer()
-    photo_url = "https://i.ibb.co/YzFqHky/photo-2025-04-15-09-14-30-7493465832589099024.jpg"
+    photo_url = "https://i.ibb.co/TMpqf7kV/photo-2025-04-28-19-28-49-7498448256645464084.jpg"
     buttons = InlineKeyboardMarkup([
         [
             InlineKeyboardButton("➕ Add to Channel", url="https://t.me/YourBotUsername?startchannel=true")
@@ -1094,7 +1094,7 @@ async def add_channel_callback(client: Client, callback_query: CallbackQuery):
 @bot_app.on_callback_query(filters.regex("add_group"))
 async def add_group_callback(client: Client, callback_query: CallbackQuery):
     await callback_query.answer()
-    photo_url = "https://i.ibb.co/YzFqHky/photo-2025-04-15-09-14-30-7493465832589099024.jpg"
+    photo_url = "https://i.ibb.co/hRgKXFsq/photo-2025-04-28-19-28-57-7498448286710235152.jpg"
     buttons = InlineKeyboardMarkup([
         [
             InlineKeyboardButton("➕ Add to Group", url="https://t.me/YourBotUsername?startgroup=true")
