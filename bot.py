@@ -17,7 +17,7 @@ from pyrogram.errors import RPCError
 from database import get_total_approvals
 from pyrogram.enums import ChatAction
 
-from database import add_user, add_group, all_users, all_groups, users, remove_user
+from database import add_user, add_group, all_users, all_groups, users, remove_user, log_approval
 from database import add_admin_db, remove_admin_db, list_admins_db, is_admin
 from configs import cfg
 from database import datetime
@@ -61,11 +61,17 @@ from pyrogram.enums import ParseMode
 async def approve(_, m: ChatJoinRequest):
     chat = m.chat
     user = m.from_user
+
     try:
+        print(f"Approving user {user.id} in chat {chat.id}")
+        
+        # Add group and user to database
         add_group(chat.id)
+        add_user(user.id)
+
+        # Approve the join request
         await bot_app.approve_chat_join_request(chat.id, user.id)
         log_approval(user.id, chat.id)
-        add_user(user.id)
 
         # Inline buttons
         keyboard = InlineKeyboardMarkup([
@@ -83,15 +89,16 @@ async def approve(_, m: ChatJoinRequest):
             f"<i><blockquote>Pʀᴇsᴇɴᴛᴇᴅ ʙʏ <a href='https://t.me/EmitingStars_Botz'>Eᴍɪᴛɪɴɢ sᴛᴀʀs</a></blockquote></i>"
         )
 
-        # Send welcome message to the user (not to the group/channel)
+        # Send welcome message to the user
+        print(f"Sending welcome message to {user.id}")
         await bot_app.send_photo(
             user.id,  # <-- sending to the user, not the group
             "https://i.ibb.co/vxMhkZQD/photo-2025-04-23-20-40-27-7496611286248062984.jpg",
             caption=caption,
             reply_markup=keyboard,
-            parse_mode=ParseMode.HTML,
-            message_effect_id=5046509860389126442
+            parse_mode=ParseMode.HTML
         )
+        print(f"Welcome message sent to {user.id}")
 
     except Exception as err:
         print(f"Error approving user {user.id}: {err}")
@@ -100,8 +107,11 @@ async def approve(_, m: ChatJoinRequest):
 @bot_app.on_callback_query(filters.regex("popup_action"))
 async def popup_action(_, cb: CallbackQuery):
     # This sends the popup-style alert when the "⚡" button is clicked
-    await cb.answer("Iғ ɪ ᴄʀᴏssᴇᴅ ɢᴀʟᴀxɪᴇs ᴀɴᴅ ʙᴇɴᴛ ᴛɪᴍᴇ ᴊᴜsᴛ ᴛᴏ ғɪɴᴅ ʏᴏᴜ, ɪᴛ’ᴅ sᴛɪʟʟ ʙᴇ ᴡᴏʀᴛʜ ᴇᴠᴇʀʏ sᴜᴘᴇʀɴᴏᴠᴀ—ʙᴇᴄᴀᴜsᴇ ɪɴ ᴀʟʟ ᴛʜᴇ ᴍᴜʟᴛɪᴠᴇʀsᴇs, ʏᴏᴜ'ʀᴇ ᴛʜᴇ ᴏɴʟʏ ᴄᴏɴsᴛᴀɴᴛ ᴍʏ ʜᴇᴀʀᴛ ᴏʀʙɪᴛs.", show_alert=True)
-    
+    await cb.answer(
+        "Iғ ɪ ᴄʀᴏssᴇᴅ ɢᴀʟᴀxɪᴇs ᴀɴᴅ ʙᴇɴᴛ ᴛɪᴍᴇ ᴊᴜsᴛ ᴛᴏ ғɪɴᴅ ʏᴏᴜ, ɪᴛ’ᴅ sᴛɪʟʟ ʙᴇ ᴡᴏʀᴛʜ ᴇᴠᴇʀʏ sᴜᴘᴇʀɴᴏᴠᴀ—ʙᴇᴄᴀᴜsᴇ ɪɴ ᴀʟʟ ᴛʜᴇ ᴍᴜʟᴛɪᴠᴇʀsᴇs, ʏᴏᴜ'ʀᴇ ᴛʜᴇ ᴏɴʟʏ ᴄᴏɴsᴛᴀɴᴛ ᴍʏ ʜᴇᴀʀᴛ ᴏʀʙɪᴛs.",
+        show_alert=True
+    )
+
 # ====================================================
 #                      START
 # ====================================================
