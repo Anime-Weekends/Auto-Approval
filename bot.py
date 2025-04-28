@@ -1075,7 +1075,7 @@ async def add_channel_callback(client: Client, callback_query: CallbackQuery):
     photo_url = "https://i.ibb.co/TMpqf7kV/photo-2025-04-28-19-28-49-7498448256645464084.jpg"
     buttons = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("➕ Add to Channel", url="https://t.me/YourBotUsername?startchannel=true")
+            InlineKeyboardButton("「  Aᴅᴅ ᴛᴏ ᴄʜᴀɴɴᴇʟ  」", url="https://t.me/YourBotUsername?startchannel=true")
         ],
         [
             InlineKeyboardButton("« Bᴀᴄᴋ", callback_data="addme_back"),
@@ -1097,7 +1097,7 @@ async def add_group_callback(client: Client, callback_query: CallbackQuery):
     photo_url = "https://i.ibb.co/hRgKXFsq/photo-2025-04-28-19-28-57-7498448286710235152.jpg"
     buttons = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("➕ Add to Group", url="https://t.me/YourBotUsername?startgroup=true")
+            InlineKeyboardButton("「  Aᴅᴅ ᴛᴏ ɢʀᴏᴜᴘ  」", url="https://t.me/YourBotUsername?startgroup=true")
         ],
         [
             InlineKeyboardButton("« Bᴀᴄᴋ", callback_data="addme_back"),
