@@ -1,10 +1,10 @@
-from pymongo import MongoClient
+from pymongo import MongoClient, errors
 from datetime import datetime
 from pyrogram import filters
 from configs import cfg
 
 # === MongoDB Client Setup ===
-client = MongoClient(cfg.MONGO_URI)
+client = MongoClient(cfg.MONGO_URI, serverSelectionTimeoutMS=5000)
 
 # === Database & Collections ===
 db = client['main']
@@ -18,14 +18,17 @@ approvals = db['approvals']  # For tracking approved users
 # === MongoDB Connection Management ===
 def close_db_connection():
     """Close the MongoDB connection."""
-    client.close()
-    print("MongoDB connection closed.")
+    try:
+        client.close()
+        print("MongoDB connection closed.")
+    except errors.PyMongoError as e:
+        print(f"Error closing MongoDB connection: {e}")
 
 def reconnect_db():
     """Re-establish the MongoDB connection."""
     global client, db, users, groups, admins, logs, counters, approvals
     try:
-        client = MongoClient(cfg.MONGO_URI)
+        client = MongoClient(cfg.MONGO_URI, serverSelectionTimeoutMS=5000)
         db = client['main']
         users = db['users']
         groups = db['groups']
@@ -44,20 +47,26 @@ def already_db(user_id):
 
 def add_user(user_id):
     """Add a new user to the database."""
-    if not already_db(user_id):
-        users.insert_one({
-            "user_id": user_id,
-            "joined_at": datetime.utcnow()
-        })
+    try:
+        if not already_db(user_id):
+            users.insert_one({
+                "user_id": user_id,
+                "joined_at": datetime.utcnow()
+            })
+    except errors.PyMongoError as e:
+        print(f"Error adding user {user_id}: {e}")
 
 def remove_user(user_id):
     """Remove a user from the database."""
-    if already_db(user_id):
-        users.delete_one({"user_id": user_id})
+    try:
+        if already_db(user_id):
+            users.delete_one({"user_id": user_id})
+    except errors.PyMongoError as e:
+        print(f"Error removing user {user_id}: {e}")
 
 def all_users():
     """Return the count of all users in the database."""
-    return users.estimated_document_count()  # Faster count for larger collections
+    return users.estimated_document_count()
 
 # === Groups ===
 def already_dbg(chat_id):
@@ -66,29 +75,38 @@ def already_dbg(chat_id):
 
 def add_group(chat_id):
     """Add a new group to the database."""
-    if not already_dbg(chat_id):
-        groups.insert_one({
-            "chat_id": chat_id,
-            "joined_at": datetime.utcnow()
-        })
+    try:
+        if not already_dbg(chat_id):
+            groups.insert_one({
+                "chat_id": chat_id,
+                "joined_at": datetime.utcnow()
+            })
+    except errors.PyMongoError as e:
+        print(f"Error adding group {chat_id}: {e}")
 
 def all_groups():
     """Return the count of all groups in the database."""
-    return groups.estimated_document_count()  # Faster count for larger collections
+    return groups.estimated_document_count()
 
 # === Admins ===
 def is_admin(user_id):
     """Check if a user is an admin."""
-    return bool(admins.find_one({"user_id": user_id}))  # Use int for consistency
+    return bool(admins.find_one({"user_id": user_id}))
 
 def add_admin_db(user_id):
     """Add a user as an admin to the database."""
-    if not is_admin(user_id):
-        admins.insert_one({"user_id": user_id})
+    try:
+        if not is_admin(user_id):
+            admins.insert_one({"user_id": user_id})
+    except errors.PyMongoError as e:
+        print(f"Error adding admin {user_id}: {e}")
 
 def remove_admin_db(user_id):
     """Remove a user from the admin list in the database."""
-    admins.delete_one({"user_id": user_id})
+    try:
+        admins.delete_one({"user_id": user_id})
+    except errors.PyMongoError as e:
+        print(f"Error removing admin {user_id}: {e}")
 
 def list_admins_db():
     """Return a list of all admin user IDs."""
@@ -97,21 +115,27 @@ def list_admins_db():
 # === Logging Actions ===
 def log_action(user_id, chat_id, action_type):
     """Log an action performed by a user in a group."""
-    logs.insert_one({
-        "user_id": user_id,
-        "chat_id": chat_id,
-        "action": action_type,
-        "timestamp": datetime.utcnow()
-    })
+    try:
+        logs.insert_one({
+            "user_id": user_id,
+            "chat_id": chat_id,
+            "action": action_type,
+            "timestamp": datetime.utcnow()
+        })
+    except errors.PyMongoError as e:
+        print(f"Error logging action for user {user_id} in group {chat_id}: {e}")
 
 # === Command Counter ===
 def increment_command_count(command_name):
     """Increment the count for a specific command."""
-    counters.update_one(
-        {"command": command_name},
-        {"$inc": {"count": 1}},
-        upsert=True
-    )
+    try:
+        counters.update_one(
+            {"command": command_name},
+            {"$inc": {"count": 1}},
+            upsert=True
+        )
+    except errors.PyMongoError as e:
+        print(f"Error incrementing count for command {command_name}: {e}")
 
 def get_command_count(command_name):
     """Get the count of a specific command."""
@@ -128,12 +152,15 @@ def is_sudo():
 # === Approvals Tracker ===
 def log_approval(user_id, chat_id):
     """Log a user approval in a group."""
-    if not approvals.find_one({"user_id": user_id, "chat_id": chat_id}):
-        approvals.insert_one({
-            "user_id": user_id,
-            "chat_id": chat_id,
-            "timestamp": datetime.utcnow()
-        })
+    try:
+        if not approvals.find_one({"user_id": user_id, "chat_id": chat_id}):
+            approvals.insert_one({
+                "user_id": user_id,
+                "chat_id": chat_id,
+                "timestamp": datetime.utcnow()
+            })
+    except errors.PyMongoError as e:
+        print(f"Error logging approval for user {user_id} in group {chat_id}: {e}")
 
 def get_total_approvals():
     """Return the total number of approvals."""
@@ -148,11 +175,15 @@ async def approve_and_log(bot, chat_id, user_id):
 # === Ensure Indexes ===
 def create_indexes():
     """Ensure that indexes are created for commonly queried fields."""
-    users.create_index("user_id")  # Index on user_id for fast lookups
-    groups.create_index("chat_id")  # Index on chat_id for fast lookups
-    admins.create_index("user_id")  # Index on user_id for admin lookups
-    logs.create_index([("user_id", 1), ("chat_id", 1)])  # Compound index for user_id and chat_id
-    approvals.create_index([("user_id", 1), ("chat_id", 1)])  # Compound index for user_id and chat_id
+    try:
+        users.create_index("user_id")  # Index on user_id for fast lookups
+        groups.create_index("chat_id")  # Index on chat_id for fast lookups
+        admins.create_index("user_id")  # Index on user_id for admin lookups
+        logs.create_index([("user_id", 1), ("chat_id", 1)])  # Compound index for user_id and chat_id
+        approvals.create_index([("user_id", 1), ("chat_id", 1)])  # Compound index for user_id and chat_id
+        print("Indexes created.")
+    except errors.PyMongoError as e:
+        print(f"Error creating indexes: {e}")
 
 # Call `create_indexes` when the bot starts to ensure indexes exist
 create_indexes()
