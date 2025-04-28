@@ -89,7 +89,7 @@ async def approve(_, m):
         try:
             await _.send_photo(
                 user.id,
-                photo="https://i.ibb.co/vxMhkZQD/photo-2025-04-23-20-40-27-7496611286248062984.jpg",
+                photo="https://i.ibb.co/kVrCBtyF/photo-2025-04-28-21-31-37-7498479919144370200.jpg",
                 caption=caption,
                 reply_markup=keyboard,
                 parse_mode=ParseMode.HTML, 
@@ -402,7 +402,7 @@ async def dbtool(_, m: Message):
     )
 
     await m.reply_photo(
-        photo="https://i.ibb.co/gbbYfsXt/photo-2025-04-24-11-50-49-7496845877361770512.jpg",
+        photo="https://i.ibb.co/8LGYrGzn/photo-2025-04-28-21-31-38-7498479936324239364.jpg",
         caption=caption,
         reply_markup=keyboard,
         parse_mode=ParseMode.HTML,
@@ -966,7 +966,7 @@ async def total_approved(client: Client, message: Message):
 
         # Step 7: Send photo with total
         await message.reply_photo(
-            photo="https://i.ibb.co/B2GCLrg6/photo-2025-04-25-09-41-40-7497183689424502800.jpg",
+            photo="https://i.ibb.co/CK3nKw6r/photo-2025-04-28-21-31-37-7498479901964501008.jpg",
             caption=f"<pre>➥ <b>Tᴏᴛᴀʟ ᴜsᴇʀs ᴀᴘᴘʀᴏᴠᴇᴅ ʙʏ ᴛʜᴇ ʙᴏᴛ :</b> <code>{total}</code></pre>",
             parse_mode=ParseMode.HTML,
             message_effect_id=5046509860389126442,
