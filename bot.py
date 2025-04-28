@@ -1044,8 +1044,8 @@ async def send_addme_menu(message_or_query):
     photo_url = "https://i.ibb.co/BVbbLy8C/photo-2025-04-28-20-15-29-7498460273963958292.jpg"
     buttons = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("➕ Add me to Channel", callback_data="add_channel"),
-            InlineKeyboardButton("➕ Add me to Group", callback_data="add_group")
+            InlineKeyboardButton("➕ Aᴅᴅ ᴍᴇ ᴛᴏ ᴄʜᴀɴɴᴇʟ", callback_data="add_channel"),
+            InlineKeyboardButton("➕ Aᴅᴅ ᴍᴇ ᴛᴏ ɢʀᴏᴜᴘ", callback_data="add_group")
         ],
         [
             InlineKeyboardButton("Dᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/RexySama"), 
@@ -1056,7 +1056,7 @@ async def send_addme_menu(message_or_query):
         await message_or_query.message.edit_media(
             media=InputMediaPhoto(
                 media=photo_url,
-                caption="<b>Where would you like to add me?</b>\n\nChoose an option below:",
+                caption="<b><pre>Wʜᴇʀᴇ ᴡᴏᴜʟᴅ ʏᴏᴜ ʟɪᴋᴇ ᴛᴏ ᴀᴅᴅ ᴍᴇ ?</pre></b>\n<pre>Cʜᴏᴏsᴇ ᴀɴ ᴏᴘᴛɪᴏɴ ʙᴇʟᴏᴡ :</pre>",
                 parse_mode=ParseMode.HTML
             ),
             reply_markup=buttons
