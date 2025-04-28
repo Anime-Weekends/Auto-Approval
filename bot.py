@@ -436,8 +436,8 @@ async def bcast(_, m: Message):
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("Cancel", callback_data="cancel_bcast"),
-                    InlineKeyboardButton("Close", callback_data="close_bcast")
+                    InlineKeyboardButton("Cᴀɴᴄᴇʟ", callback_data="cancel_bcast"),
+                    InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_bcast")
                 ]
             ]
         )
@@ -465,7 +465,7 @@ async def bcast(_, m: Message):
                 f"🚫 Blocked: `{stats['blocked']}`\n"
                 f"👻 Deactivated: `{stats['deactivated']}`",
                 reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("Close", callback_data="close_bcast")]]
+                    [[InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_bcast")]]
                 )
             )
             return
@@ -500,8 +500,8 @@ async def bcast(_, m: Message):
                 f"👻 Deactivated: `{stats['deactivated']}` | 🚫 Blocked: `{stats['blocked']}`",
                 reply_markup=InlineKeyboardMarkup(
                     [[
-                        InlineKeyboardButton("Cancel", callback_data="cancel_bcast"),
-                        InlineKeyboardButton("Close", callback_data="close_bcast")
+                        InlineKeyboardButton("Cᴀɴᴄᴇʟ", callback_data="cancel_bcast"),
+                        InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_bcast")
                     ]]
                 )
             )
@@ -518,7 +518,7 @@ async def bcast(_, m: Message):
         f"🚫 Blocked: `{stats['blocked']}`\n"
         f"👻 Deactivated: `{stats['deactivated']}`",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("Close", callback_data="close_bcast")]]
+            [[InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_bcast")]]
         )
     )
 
