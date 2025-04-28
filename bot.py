@@ -1023,19 +1023,29 @@ async def addme_command(client: Client, message: Message):
     await client.send_chat_action(message.chat.id, ChatAction.TYPING)
     await asyncio.sleep(0.5)
 
-    # Remove progress bar and instead send "Gen message"
-    gen_msg = await message.reply_text("<b><pre>Gᴇɴ ᴍᴇssᴀɢᴇ... ᴏʜ, ᴅᴏ ʏᴏᴜ ᴋɴᴏᴡ ᴡʜᴀᴛ ɪ'ᴍ ᴛʜɪɴᴋɪɴɢ ?</pre></b>", parse_mode=ParseMode.HTML)
+    # Send "Gen message" text
+    gen_msg = await message.reply_text(
+        "<b><pre>Gᴇɴ ᴍᴇssᴀɢᴇ... ᴏʜ, ᴅᴏ ʏᴏᴜ ᴋɴᴏᴡ ᴡʜᴀᴛ ɪ'ᴍ ᴛʜɪɴᴋɪɴɢ ?</pre></b>",
+        parse_mode=ParseMode.HTML
+    )
 
     await asyncio.sleep(0.5)
 
-    # Now update the message to show "Done sending"
-    await gen_msg.edit_text("<b><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ... ᴡᴏʏᴏᴜ ʜɪᴛ ᴍʏ ᴍɪɴᴅ, ɴᴏᴡ ?</pre></b>")
+    # Edit the message to "Done sending"
+    await gen_msg.edit_text(
+        "<b><pre>Dᴏɴᴇ sᴇɴᴅɪɴɢ... ᴡᴏʏᴏᴜ ʜɪᴛ ᴍʏ ᴍɪɴᴅ, ɴᴏᴡ ?</pre></b>",
+        parse_mode=ParseMode.HTML
+    )
 
-    # Send the sticker after the "Done sending" message
+    await asyncio.sleep(0.5)
+
+    # Send the sticker
     sticker_id = "CAACAgUAAxkBAAEOXBhoCoKZ76jevKX-Vc5v5SZhCeQAAXMAAh4KAALJrhlVZygbxFWWTLw2BA"
     await message.reply_sticker(sticker=sticker_id)
 
-    # Send the main add options
+    await asyncio.sleep(0.5)
+
+    # Send the add-me menu
     await send_addme_menu(message)
 
 async def send_addme_menu(message_or_query):
