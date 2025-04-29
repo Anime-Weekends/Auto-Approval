@@ -1082,8 +1082,7 @@ async def send_addme_menu(message_or_query):
             photo=photo_url,
             caption=caption,
             reply_markup=buttons,
-            parse_mode=ParseMode.HTML, 
-            message_effect_id=5046509860389126442
+            parse_mode=ParseMode.HTML
         )
 
 @bot_app.on_callback_query(filters.regex("add_channel"))
