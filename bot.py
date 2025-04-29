@@ -82,7 +82,7 @@ async def approve(_, m):
         caption = (
             f"<b><blockquote>Hᴇʏ sᴡᴇᴇᴛɪᴇ</b> <a href='tg://user?id={user.id}'>{user.first_name}</a> ⭐✨</blockquote>\n\n"
             f"<blockquote>Aᴄᴄᴇss ʜᴀs ʙᴇᴇɴ <b>Gʀᴀɴᴛᴇᴅ</b> — ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ "
-            f"<a href='https://t.me/c/{str(chat.id)[4:]}'>{chat.title}</a>!</blockquote>\n"
+            f"<a href='https://t.me/c/{str(chat.id)[4:]}'>{chat.title}</a> !</blockquote>\n"
             f"<i><blockquote>Pʀᴇsᴇɴᴛᴇᴅ ʙʏ <a href='https://t.me/EmitingStars_Botz'>Eᴍɪᴛɪɴɢ Sᴛᴀʀs</a></blockquote></i>"
         )
 
@@ -120,7 +120,7 @@ from pyrogram.types import InputMediaPhoto
 
 @bot_app.on_message(filters.private & filters.command("start"))
 async def start_command(_, m: Message):
-    welcome_text = "<i><pre>ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ <b>HeHe</b>.\nʜᴏᴘᴇ ʏᴏᴜ'ʀᴇ ᴅᴏɪɴɢ ᴡᴇʟʟ...</pre></i>"
+    welcome_text = "<i><pre>Wᴇʟᴄᴏᴍᴇ, ʙᴀʙʏ… ɪ’ᴠᴇ ʙᴇᴇɴ ᴄʀᴀᴠɪɴɢ ʏᴏᴜʀ ᴘʀᴇsᴇɴᴄᴇ ғᴇᴇʟs ᴘᴇʀғᴇᴄᴛ ɴᴏᴡ ᴛʜᴀᴛ ʏᴏᴜ’ʀᴇ ʜᴇʀᴇ.</pre></i>"
 
     stickers = [
         "CAACAgUAAxkBAAEOXBhoCoKZ76jevKX-Vc5v5SZhCeQAAXMAAh4KAALJrhlVZygbxFWWTLw2BA"
@@ -197,7 +197,7 @@ async def start_command(_, m: Message):
         )
 
     # If all channels joined, you can continue your logic here...
-    await m.reply_text("<pre>You're all set! Enjoy the bot.</pre>")
+    await m.reply_text("<pre></pre>")
 
     add_user(m.from_user.id)
 
