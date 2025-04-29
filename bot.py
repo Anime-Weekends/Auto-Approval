@@ -301,35 +301,46 @@ async def close_message(_, cq: CallbackQuery):
 async def chk_callback(_, cb: CallbackQuery):
     not_joined = []
 
-    # Check membership in all required channels
+    # Check user membership in all required channels
     for ch_id in cfg.FORCE_SUB_CHANNELS:
         try:
             member = await bot_app.get_chat_member(ch_id, cb.from_user.id)
             if member.status not in ["member", "administrator", "creator"]:
                 not_joined.append(ch_id)
-        except:
+        except Exception:
             not_joined.append(ch_id)
 
+    # If user hasn't joined all required channels
     if not_joined:
         buttons = []
         for ch_id in not_joined:
             try:
                 invite = await bot_app.create_chat_invite_link(ch_id)
                 buttons.append([InlineKeyboardButton("Jᴏɪɴ ʜᴇʀᴇ", url=invite.invite_link)])
-            except:
-                pass
+            except Exception:
+                continue
 
         buttons.append([
             InlineKeyboardButton("🔁 Rᴇᴄʜᴇᴄᴋ", callback_data="chk")
         ])
 
-        return await cb.message.edit_caption(
-            caption="**<i>ᴘʟᴇᴀsᴇ ᴊᴏɪɴ ᴀʟʟ ᴛʜᴇ ʀᴇQᴜɪʀᴇᴅ ᴄʜᴀɴɴᴇʟs ᴛᴏ ᴄᴏɴᴛɪɴᴜᴇ.</i>**",
-            reply_markup=InlineKeyboardMarkup(buttons),
-            parse_mode=ParseMode.HTML
-        )
+        try:
+            await cb.message.edit_caption(
+                caption="**<i>ᴘʟᴇᴀsᴇ ᴊᴏɪɴ ᴀʟʟ ᴛʜᴇ ʀᴇQᴜɪʀᴇᴅ ᴄʜᴀɴɴᴇʟs ᴛᴏ ᴄᴏɴᴛɪɴᴜᴇ.</i>**",
+                reply_markup=InlineKeyboardMarkup(buttons),
+                parse_mode=ParseMode.HTML
+            )
+        except Exception:
+            await cb.message.edit_text(
+                "**<i>ᴘʟᴇᴀsᴇ ᴊᴏɪɴ ᴀʟʟ ᴛʜᴇ ʀᴇQᴜɪʀᴇᴅ ᴄʜᴀɴɴᴇʟs ᴛᴏ ᴄᴏɴᴛɪɴᴜᴇ.</i>**",
+                reply_markup=InlineKeyboardMarkup(buttons),
+                parse_mode=ParseMode.HTML
+            )
+        return
 
-    # Passed check — continue with welcome
+    # Passed check: add user and send welcome
+    add_user(cb.from_user.id)
+
     keyboard = InlineKeyboardMarkup([
         [
             InlineKeyboardButton("Mᴀɪɴ ᴄʜᴀɴɴᴇʟ", url="https://t.me/EmitingStars_Botz"),
@@ -343,18 +354,28 @@ async def chk_callback(_, cb: CallbackQuery):
             InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_str")
         ]
     ])
-        
 
-    add_user(cb.from_user.id)
-
-    await cb.message.edit_text(
+    text = (
         f"<pre><b>Hᴇʏᴏ</b> <a href='tg://user?id={cb.from_user.id}'>{cb.from_user.first_name}</a></pre>\n"
-        f"<blockquote expandable><b>I'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ. ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴀɴᴅ ᴍᴀᴋᴇ ᴍᴇ ᴀɴ ᴀᴅᴍɪɴ ᴡɪᴛʜ ᴀᴅᴅ ᴍᴇᴍʙᴇʀs ᴘᴇʀᴍɪssɪᴏɴ ɪ'ʟʟ ʜᴀɴᴅʟᴇ ᴀᴘᴘʀᴏᴠᴀʟs ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ sᴏ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴛᴏ. ʟᴇᴛ ᴍᴇ ᴅᴏ ᴛʜᴇ ʙᴏʀɪɴɢ sᴛᴜғғ.</b></blockquote>\n"
-        f"<blockquote><a href='http://t.me/Private_Auto_Approval_Bot?startchannel=true'>➜ Aᴅᴅ ᴛᴏ ᴄʜᴀɴɴᴇʟ</a></blockquote>", 
-        reply_markup=keyboard,
-        parse_mode=ParseMode.HTML, 
-        message_effect_id=5104841245755180586
+        f"<blockquote expandable><b>I'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ. "
+        f"Aᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴀɴᴅ ᴍᴀᴋᴇ ᴍᴇ ᴀɴ ᴀᴅᴍɪɴ "
+        f"ᴡɪᴛʜ ᴀᴅᴅ ᴍᴇᴍʙᴇʀs ᴘᴇʀᴍɪssɪᴏɴ. "
+        f"I'ʟʟ ʜᴀɴᴅʟᴇ ᴀᴘᴘʀᴏᴠᴀʟs ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ.</b></blockquote>\n"
+        f"<blockquote><a href='http://t.me/Private_Auto_Approval_Bot?startchannel=true'>➜ Aᴅᴅ ᴛᴏ ᴄʜᴀɴɴᴇʟ</a></blockquote>"
     )
+
+    try:
+        await cb.message.edit_text(
+            text=text,
+            reply_markup=keyboard,
+            parse_mode=ParseMode.HTML
+        )
+    except Exception:
+        await cb.message.reply(
+            text=text,
+            reply_markup=keyboard,
+            parse_mode=ParseMode.HTML
+        )
 
 # ====================================================
 #                      INFO CMD
