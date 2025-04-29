@@ -457,12 +457,12 @@ async def bcast(_, m: Message):
             percent = idx / total_users
             final_bar = "●" * int(percent * bar_length) + "○" * (bar_length - int(percent * bar_length))
             await lel.edit(
-                f"<blockquote>➥ Broadcast canceled!</blockquote>\n\n"
+                f"<blockquote>➥ Bʀᴏᴀᴅᴄᴀsᴛ ᴄᴀɴᴄᴇʟᴇᴅ!</blockquote>\n\n"
                 f"<pre><code>[{final_bar}] {int(percent * 100)}%</code></pre>\n\n"
-                f"<blockquote>❏ Successful: `{stats['success']}`\n"
-                f"❏ Failed: `{stats['failed']}`\n"
-                f"❏ Blocked: `{stats['blocked']}`\n"
-                f"❏ Deactivated: `{stats['deactivated']}`</blockquote>",
+                f"<blockquote>❏ Sᴜᴄᴄᴇssғᴜʟ : `{stats['success']}`\n"
+                f"❏ Fᴀɪʟᴇᴅ : `{stats['failed']}`\n"
+                f"❏ Bʟᴏᴄᴋᴇᴅ : `{stats['blocked']}`\n"
+                f"❏ ᴅᴇᴀᴄᴛɪᴠᴀᴛᴇᴅ : `{stats['deactivated']}`</blockquote>",
                 reply_markup=InlineKeyboardMarkup(
                     [[InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_bcast")]]
                 )
@@ -492,11 +492,11 @@ async def bcast(_, m: Message):
             eta = f"{int(eta_seconds)//60:02}:{int(eta_seconds)%60:02}"
 
             await lel.edit(
-                f"<blockquote>➥ Broadcasting...</blockquote>\n\n"
+                f"<blockquote>➥ Bʀᴏᴀᴅᴄᴀsᴛɪɴɢ...</blockquote>\n\n"
                 f"<pre><code>[{progress_bar}] {int(percent * 100)}%</code>\n"
-                f"❏ ETA: `{eta}` minutes</pre>\n\n"
-                f"<blockquote>❏ Success: `{stats['success']}` | ❏ Failed: `{stats['failed']}`\n"
-                f"❏ Deactivated: `{stats['deactivated']}` | ❏ Blocked: `{stats['blocked']}`</blockquote>",
+                f"❏ Eᴛᴀ : `{eta}` ᴍɪɴᴜᴛᴇs</pre>\n\n"
+                f"<blockquote>❏ Sᴜᴄᴄᴇssғᴜʟ : `{stats['success']}` | ❏ Fᴀɪʟᴇᴅ : `{stats['failed']}`\n"
+                f"❏ Dᴇᴀᴄᴛɪᴠᴀᴛᴇᴅ: `{stats['deactivated']}` | ❏ Bʟᴏᴄᴋᴇᴅ : `{stats['blocked']}`</blockquote>",
                 reply_markup=InlineKeyboardMarkup(
                     [[
                         InlineKeyboardButton("Cᴀɴᴄᴇʟ", callback_data="cancel_bcast"),
@@ -510,12 +510,12 @@ async def bcast(_, m: Message):
 
     final_bar = "●" * bar_length
     await lel.edit(
-        f"<blockquote>➥ Broadcast completed!</blockquote>\n\n"
+        f"<blockquote>➥ Bʀᴏᴀᴅᴄᴀsᴛ ᴄᴏᴍᴘʟᴇᴛᴇᴅ</blockquote>\n\n"
         f"<pre><code>[{final_bar}] 100%</code></pre>\n\n"
-        f"<blockquote>❏ Successful: `{stats['success']}`\n"
-        f"❏ Failed: `{stats['failed']}`\n"
-        f"❏ Blocked: `{stats['blocked']}`\n"
-        f"❏ Deactivated: `{stats['deactivated']}`</blockquote>",
+        f"<blockquote>❏ Sᴜᴄᴄᴇssғᴜʟ : `{stats['success']}`\n"
+        f"❏ Fᴀɪʟᴇᴅ : `{stats['failed']}`\n"
+        f"❏ Bʟᴏᴄᴋᴇᴅ : `{stats['blocked']}`\n"
+        f"❏ Dᴇᴀᴄᴛɪᴠᴀᴛᴇᴅ : `{stats['deactivated']}`</blockquote>",
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_bcast")]]
         )
@@ -526,7 +526,7 @@ async def bcast(_, m: Message):
 async def cancel_bcast(_, cb):
     global canceled
     canceled = True
-    await cb.answer("Broadcast has been canceled.")
+    await cb.answer("Bʀᴏᴀᴅᴄᴀsᴛ ʜᴀs ʙᴇᴇɴ ᴄᴀɴᴄᴇʟᴇᴅ.")
 
 
 @bot_app.on_callback_query(filters.regex("close_bcast"))
