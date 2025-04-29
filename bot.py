@@ -116,6 +116,8 @@ async def popup_action(_, cb: CallbackQuery):
 #                      START
 # ====================================================
 
+from pyrogram.types import InputMediaPhoto
+
 @bot_app.on_message(filters.private & filters.command("start"))
 async def start_command(_, m: Message):
     welcome_text = "<i><blockquote>Wᴇʟᴄᴏᴍᴇ, ʙᴀʙʏ… ɪ’ᴠᴇ ʙᴇᴇɴ ᴄʀᴀᴠɪɴɢ ʏᴏᴜʀ ᴘʀᴇsᴇɴᴄᴇ ғᴇᴇʟs ᴘᴇʀғᴇᴄᴛ ɴᴏᴡ ᴛʜᴀᴛ ʏᴏᴜ’ʀᴇ ʜᴇʀᴇ.</blockquote></i>"
