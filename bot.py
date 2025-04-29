@@ -1051,14 +1051,13 @@ async def addme_command(client: Client, message: Message):
     await send_addme_menu(message)
 
 async def send_addme_menu(message_or_query):
-    photo_url = "https://i.ibb.co/BVbbLy8C/photo-2025-04-28-20-15-29-7498460273963958292.jpg"
+    photo_url = "https://i.ibb.co/PzQBGF5d/photo-2025-04-29-09-11-07-7498660153151979536.jpg"
     buttons = InlineKeyboardMarkup([
         [
             InlineKeyboardButton("➕ Aᴅᴅ ᴍᴇ ᴛᴏ ᴄʜᴀɴɴᴇʟ", callback_data="add_channel"),
             InlineKeyboardButton("➕ Aᴅᴅ ᴍᴇ ᴛᴏ ɢʀᴏᴜᴘ", callback_data="add_group")
         ],
         [
-            InlineKeyboardButton("Dᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/RexySama"), 
             InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close")
         ]
     ])
@@ -1073,7 +1072,8 @@ async def send_addme_menu(message_or_query):
             media=InputMediaPhoto(
                 media=photo_url,
                 caption=caption,
-                parse_mode=ParseMode.HTML
+                parse_mode=ParseMode.HTML, 
+                message_effect_id=5046509860389126442
             ),
             reply_markup=buttons
         )
@@ -1082,7 +1082,8 @@ async def send_addme_menu(message_or_query):
             photo=photo_url,
             caption=caption,
             reply_markup=buttons,
-            parse_mode=ParseMode.HTML
+            parse_mode=ParseMode.HTML, 
+            message_effect_id=5046509860389126442
         )
 
 @bot_app.on_callback_query(filters.regex("add_channel"))
@@ -1091,7 +1092,7 @@ async def add_channel_callback(client: Client, callback_query: CallbackQuery):
     photo_url = "https://i.ibb.co/TMpqf7kV/photo-2025-04-28-19-28-49-7498448256645464084.jpg"
     buttons = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("「  Aᴅᴅ ᴛᴏ ᴄʜᴀɴɴᴇʟ  」", url="https://t.me/YourBotUsername?startchannel=true")
+            InlineKeyboardButton("「  Aᴅᴅ ᴛᴏ ᴄʜᴀɴɴᴇʟ  」", url="https://t.me/Private_Auto_Approval_Bot?startchannel=true")
         ],
         [
             InlineKeyboardButton("« Bᴀᴄᴋ", callback_data="addme_back"),
@@ -1113,7 +1114,7 @@ async def add_group_callback(client: Client, callback_query: CallbackQuery):
     photo_url = "https://i.ibb.co/hRgKXFsq/photo-2025-04-28-19-28-57-7498448286710235152.jpg"
     buttons = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("「  Aᴅᴅ ᴛᴏ ɢʀᴏᴜᴘ  」", url="https://t.me/YourBotUsername?startgroup=true")
+            InlineKeyboardButton("「  Aᴅᴅ ᴛᴏ ɢʀᴏᴜᴘ  」", url="https://t.me/Private_Auto_Approval_Bot?startgroup=true")
         ],
         [
             InlineKeyboardButton("« Bᴀᴄᴋ", callback_data="addme_back"),
