@@ -116,8 +116,6 @@ async def popup_action(_, cb: CallbackQuery):
 #                      START
 # ====================================================
 
-from pyrogram.types import InputMediaPhoto
-
 @bot_app.on_message(filters.private & filters.command("start"))
 async def start_command(_, m: Message):
     welcome_text = "<i><blockquote>Wᴇʟᴄᴏᴍᴇ, ʙᴀʙʏ… ɪ’ᴠᴇ ʙᴇᴇɴ ᴄʀᴀᴠɪɴɢ ʏᴏᴜʀ ᴘʀᴇsᴇɴᴄᴇ ғᴇᴇʟs ᴘᴇʀғᴇᴄᴛ ɴᴏᴡ ᴛʜᴀᴛ ʏᴏᴜ’ʀᴇ ʜᴇʀᴇ.</blockquote></i>"
@@ -129,45 +127,38 @@ async def start_command(_, m: Message):
     start_pics = [
         "https://i.ibb.co/v6J0JM80/photo-2025-03-13-18-50-40-7481368571868610580.jpg"
     ]
-
-    fsub_pic = "https://i.ibb.co/v6J0JM80/photo-2025-03-13-18-50-40-7481368571868610580.jpg"
-
-    # Save user id
+    fsub_pic = start_pics[0]
     user_id = str(m.from_user.id)
+
     try:
-        with open("users.txt", "r") as file:
-            users = file.read().splitlines()
+        with open("users.txt", "r") as f:
+            users = f.read().splitlines()
     except FileNotFoundError:
         users = []
 
     if user_id not in users:
-        with open("users.txt", "a") as file:
-            file.write(user_id + "\n")
+        with open("users.txt", "a") as f:
+            f.write(user_id + "\n")
 
-    # Typing action
     await bot_app.send_chat_action(m.chat.id, ChatAction.TYPING)
-
     msg = await m.reply_text(welcome_text)
-    await asyncio.sleep(0.1)
+    await asyncio.sleep(0.5)
 
-    await bot_app.send_chat_action(m.chat.id, ChatAction.TYPING)
     await msg.edit_text("<b><i><pre>Sᴛᴀʀᴛɪɴɢ...</pre></i></b>")
-    await asyncio.sleep(0.1)
-
+    await asyncio.sleep(0.5)
     await msg.delete()
 
     await bot_app.send_chat_action(m.chat.id, ChatAction.CHOOSE_STICKER)
     await m.reply_sticker(random.choice(stickers))
 
-
-    # Force-sub check
+    # Force Sub Check
     not_joined = []
     for ch_id in cfg.FORCE_SUB_CHANNELS:
         try:
             member = await bot_app.get_chat_member(ch_id, m.from_user.id)
-            if member.status == "kicked":
+            if member.status in ["kicked", "left"]:
                 not_joined.append(ch_id)
-        except:
+        except Exception:
             not_joined.append(ch_id)
 
     if not_joined:
@@ -176,30 +167,25 @@ async def start_command(_, m: Message):
             try:
                 invite = await bot_app.create_chat_invite_link(ch_id)
                 buttons.append([InlineKeyboardButton("Jᴏɪɴ ʜᴇʀᴇ", url=invite.invite_link)])
-            except:
+            except Exception:
                 pass
 
-        buttons.append([
-            InlineKeyboardButton("Rᴇғʀᴇsʜ", url=f"https://t.me/{cfg.BOT_USERNAME}?start=start")
-        ])
+        buttons.append([InlineKeyboardButton("Rᴇғʀᴇsʜ", url=f"https://t.me/{cfg.BOT_USERNAME}?start=start")])
 
         await bot_app.send_chat_action(m.chat.id, ChatAction.UPLOAD_PHOTO)
         return await m.reply_photo(
             photo=fsub_pic,
             caption=(
                 f"<b><pre><a href='tg://user?id={m.from_user.id}'>{m.from_user.first_name}</a> Esᴛᴇᴇᴍᴇᴅ ɢᴜᴇsᴛ,</pre></b>\n"
-                "<blockquote expandable>ᴀᴄᴄᴇss ᴛᴏ ᴍʏ sᴇʀᴠɪᴄᴇs ɪs ʀᴇsᴇʀᴠᴇᴅ ғᴏʀ ᴍᴇᴍʙᴇʀs ᴏғ ᴏᴜʀ ᴏғғɪᴄɪᴀʟ ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ — ᴀɴ ᴇxᴄʟᴜsɪᴠᴇ ᴄɪʀᴄʟᴇ ᴡʜᴇʀᴇ ᴏɴʟʏ ᴛʜᴇ ᴅɪsᴛɪɴɢᴜɪsʜᴇᴅ sᴛᴀʏ ɪɴғᴏʀᴍᴇᴅ.\n"
-                "ᴊᴏɪɴ ɴᴏᴡ ᴀɴᴅ sᴇᴄᴜʀᴇ ʏᴏᴜʀ ʀɪɢʜᴛғᴜʟ ᴘʟᴀᴄᴇ ᴀᴍᴏɴɢ ᴛʜᴇ ᴇʟɪᴛᴇ.</blockquote>"
+                "<blockquote>ᴀᴄᴄᴇss ᴛᴏ ᴍʏ sᴇʀᴠɪᴄᴇs ɪs ʀᴇsᴇʀᴠᴇᴅ ғᴏʀ ᴍᴇᴍʙᴇʀs ᴏғ ᴏᴜʀ ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ.\n"
+                "ᴘʟᴇᴀsᴇ ᴊᴏɪɴ ᴀɴᴅ ʀᴇᴛᴜʀɴ ᴛᴏ ᴄᴏɴᴛɪɴᴜᴇ.</blockquote>"
             ),
             reply_markup=InlineKeyboardMarkup(buttons),
-            parse_mode=ParseMode.HTML,
-            message_effect_id=5104841245755180586
+            parse_mode=ParseMode.HTML
         )
 
-    # If all channels joined, you can continue your logic here...
+    # User is all set
     await m.reply_text("<pre>Yᴏᴜ’ʀᴇ ᴀʟʟ sᴇᴛ, ʙᴀʙᴇ… ɴᴏᴡ ɢᴏ ᴏɴ ᴀɴᴅ ᴇɴᴊᴏʏ ᴛʜᴇ ʙᴏᴛ.</pre>")
-
-    add_user(m.from_user.id)
 
     keyboard = InlineKeyboardMarkup([
         [
@@ -216,15 +202,14 @@ async def start_command(_, m: Message):
     ])
 
     await m.reply_photo(
-        random.choice(start_pics),
-        caption = (
+        photo=random.choice(start_pics),
+        caption=(
             f"<pre><b>Hᴇʏᴏ</b> <a href='tg://user?id={m.from_user.id}'>{m.from_user.first_name}</a></pre>\n"
-            f"<blockquote expandable><b>I'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ. ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴀɴᴅ ᴍᴀᴋᴇ ᴍᴇ ᴀɴ ᴀᴅᴍɪɴ ᴡɪᴛʜ ᴀᴅᴅ ᴍᴇᴍʙᴇʀs ᴘᴇʀᴍɪssɪᴏɴ ɪ'ʟʟ ʜᴀɴᴅʟᴇ ᴀᴘᴘʀᴏᴠᴀʟs ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ sᴏ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴛᴏ. ʟᴇᴛ ᴍᴇ ᴅᴏ ᴛʜᴇ ʙᴏʀɪɴɢ sᴛᴜғғ.</b></blockquote>\n"
-            f"<blockquote><a href='http://t.me/Private_Auto_Approval_Bot?startchannel=true'>➜ Aᴅᴅ ᴛᴏ ᴄʜᴀɴɴᴇʟ</a></blockquote>"
-        ), 
+            "<blockquote><b>I'ᴍ ᴀɴ ᴀᴜᴛᴏ ᴀᴘᴘʀᴏᴠᴇ ʙᴏᴛ. ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴀɴᴅ ᴍᴀᴋᴇ ᴍᴇ ᴀɴ ᴀᴅᴍɪɴ. ɪ'ʟʟ ʜᴀɴᴅʟᴇ ᴀᴜᴛᴏᴍᴀᴛɪᴄ ᴀᴘᴘʀᴏᴠᴀʟs ғᴏʀ ʏᴏᴜ.</b></blockquote>\n"
+            "<blockquote><a href='http://t.me/Private_Auto_Approval_Bot?startchannel=true'>➜ Aᴅᴅ ᴛᴏ ᴄʜᴀɴɴᴇʟ</a></blockquote>"
+        ),
         reply_markup=keyboard,
-        parse_mode=ParseMode.HTML,
-        message_effect_id=5104841245755180586
+        parse_mode=ParseMode.HTML
     )
 
 @bot_app.on_callback_query(filters.regex("about"))
