@@ -1060,23 +1060,27 @@ async def send_addme_menu(message_or_query):
             InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close")
         ]
     ])
+    
+    caption = (
+        "<b><blockquote>Wʜᴇʀᴇ ᴅᴏ ʏᴏᴜ ᴅʀᴇᴀᴍ ᴏғ ᴘʟᴀᴄɪɴɢ ᴍᴇ... ɪɴ ᴛʜᴇ ᴄᴏʀɴᴇʀs ᴏғ ʏᴏᴜʀ ʜᴇᴀʀᴛ ᴡʜᴇʀᴇ ɴᴏ ᴏɴᴇ ᴇʟsᴇ ᴄᴀɴ ᴛᴏᴜᴄʜ, ᴏʀ ɪɴ ʏᴏᴜʀ ᴀʀᴍꜱ ᴡʜᴇʀᴇ ᴇᴠᴇʀʏ ʙᴇᴀᴛ ᴏғ ʏᴏᴜʀ ʜᴇᴀʀᴛ ᴡʜɪsᴘᴇʀs ᴍʏ ɴᴀᴍᴇ ?</blockquote></b>\n"
+        "<pre><b>Cʜᴏᴏsᴇ ᴀɴ ᴏᴘᴛɪᴏɴ ʙᴇʟᴏᴡ :</b></pre>"
+    )
+
     if isinstance(message_or_query, CallbackQuery):
         await message_or_query.message.edit_media(
             media=InputMediaPhoto(
                 media=photo_url,
-                caption="<b><blockquote>Wʜᴇʀᴇ ᴅᴏ ʏᴏᴜ ᴅʀᴇᴀᴍ ᴏғ ᴘʟᴀᴄɪɴɢ ᴍᴇ... ɪɴ ᴛʜᴇ ᴄᴏʀɴᴇʀs ᴏғ ʏᴏᴜʀ ʜᴇᴀʀᴛ ᴡʜᴇʀᴇ ɴᴏ ᴏɴᴇ ᴇʟsᴇ ᴄᴀɴ ᴛᴏᴜᴄʜ, ᴏʀ ɪɴ ʏᴏᴜʀ ᴀʀᴍꜱ ᴡʜᴇʀᴇ ᴇᴠᴇʀʏ ʙᴇᴀᴛ ᴏғ ʏᴏᴜʀ ʜᴇᴀʀᴛ ᴡʜɪsᴘᴇʀs ᴍʏ ɴᴀᴍᴇ ?</blockquote></b>\n<pre><b>Cʜᴏᴏsᴇ ᴀɴ ᴏᴘᴛɪᴏɴ ʙᴇʟᴏᴡ :</b></pre>",
-                parse_mode=ParseMode.HTML, 
-                message_effect_id=5046509860389126442
+                caption=caption,
+                parse_mode=ParseMode.HTML
             ),
             reply_markup=buttons
         )
     else:
         await message_or_query.reply_photo(
             photo=photo_url,
-            caption="<b><blockquote>Wʜᴇʀᴇ ᴅᴏ ʏᴏᴜ ᴅʀᴇᴀᴍ ᴏғ ᴘʟᴀᴄɪɴɢ ᴍᴇ... ɪɴ ᴛʜᴇ ᴄᴏʀɴᴇʀs ᴏғ ʏᴏᴜʀ ʜᴇᴀʀᴛ ᴡʜᴇʀᴇ ɴᴏ ᴏɴᴇ ᴇʟsᴇ ᴄᴀɴ ᴛᴏᴜᴄʜ, ᴏʀ ɪɴ ʏᴏᴜʀ ᴀʀᴍꜱ ᴡʜᴇʀᴇ ᴇᴠᴇʀʏ ʙᴇᴀᴛ ᴏғ ʏᴏᴜʀ ʜᴇᴀʀᴛ ᴡʜɪsᴘᴇʀs ᴍʏ ɴᴀᴍᴇ ?</blockquote></b>\n<pre><b>Cʜᴏᴏsᴇ ᴀɴ ᴏᴘᴛɪᴏɴ ʙᴇʟᴏᴡ :</b></pre>",
+            caption=caption,
             reply_markup=buttons,
             parse_mode=ParseMode.HTML
-
         )
 
 @bot_app.on_callback_query(filters.regex("add_channel"))
