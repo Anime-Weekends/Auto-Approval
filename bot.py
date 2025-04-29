@@ -197,7 +197,7 @@ async def start_command(_, m: Message):
         )
 
     # If all channels joined, you can continue your logic here...
-    await m.reply_text("<pre>Yᴏᴜ’ʀᴇ ᴀʟʟ sᴇᴛ, ʙᴀʙᴇ… ɴᴏᴡ ɢᴏ ᴏɴ ᴀɴᴅ ᴇɴᴊᴏʏ ᴛʜᴇ ʙᴏᴛ ᴊᴜsᴛ ᴅᴏɴ’ᴛ ғᴏʀɢᴇᴛ ᴡʜᴏ ᴍᴀᴅᴇ ɪᴛ sᴘᴇᴄɪᴀʟ.</pre>")
+    await m.reply_text("<pre>Yᴏᴜ’ʀᴇ ᴀʟʟ sᴇᴛ, ʙᴀʙᴇ… ɴᴏᴡ ɢᴏ ᴏɴ ᴀɴᴅ ᴇɴᴊᴏʏ ᴛʜᴇ ʙᴏᴛ.</pre>")
 
     add_user(m.from_user.id)
 
@@ -1072,8 +1072,7 @@ async def send_addme_menu(message_or_query):
             media=InputMediaPhoto(
                 media=photo_url,
                 caption=caption,
-                parse_mode=ParseMode.HTML, 
-                message_effect_id=5046509860389126442
+                parse_mode=ParseMode.HTML
             ),
             reply_markup=buttons
         )
