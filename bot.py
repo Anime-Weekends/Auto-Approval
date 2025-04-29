@@ -763,7 +763,7 @@ async def accept_all(_, m: Message):
 
         # Send initial progress message
         progress_message = await m.reply(
-            f"⏳ Starting to approve...\n✅ Approved: {approved}\n⚠️ Skipped: {skipped}\n📋 Total: {total}",
+            f"<pre>➥ Sᴛᴀʀᴛɪɴɢ ᴛᴏ ᴀᴘᴘʀᴏᴠᴇ...</pre>\n<blockquote>❏ Aᴘᴘʀᴏᴠᴇᴅ : {approved}\n❏ Sᴋɪᴘᴘᴇᴅ : {skipped}\n❏ Tᴏᴛᴀʟ : {total}</blockquote>",
             parse_mode=ParseMode.HTML
         )
 
@@ -788,25 +788,25 @@ async def accept_all(_, m: Message):
 
             # Update progress
             await progress_message.edit_text(
-                f"⏳ Approving...\n\n✅ Approved: {approved}\n⚠️ Skipped: {skipped}\n📋 Total: {total}",
+                f"<pre>➥ Aᴘᴘʀᴏᴠɪɴɢ...</pre>\n<blockquote>❏ Aᴘᴘʀᴏᴠᴇᴅ : {approved}\n❏ Sᴋɪᴘᴘᴇᴅ : {skipped}\n❏ Tᴏᴛᴀʟ : {total}</blockquote>",
                 parse_mode=ParseMode.HTML
             )
 
         # Final update
         await progress_message.edit_text(
-            f"<b>✅ All Done!</b>\n\n<b>Approved:</b> {approved}\n<b>Skipped:</b> {skipped}\n<b>Total:</b> {total}",
+            f"<b><pre>➥ ᴀʟʟ ᴅᴏɴᴇ !</pre></b>\n<blockquote><b>❏ Aᴘᴘʀᴏᴠᴇᴅ :</b> {approved}\n<b>❏ Sᴋɪᴘᴘᴇᴅ :</b> {skipped}\n<b>❏ Tᴏᴛᴀʟ :</b> {total}</blockquote>",
             parse_mode=ParseMode.HTML,
             reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("❌ Close", callback_data="close_msg")]]
+                [[InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_msg")]]
             )
         )
 
     except PeerIdInvalid:
-        await m.reply("❌ <b>Invalid group/channel ID.</b>", parse_mode=ParseMode.HTML)
+        await m.reply("<blockquote>❌ <b>Iɴᴠᴀʟɪᴅ ɢʀᴏᴜᴘ / ᴄʜᴀɴɴᴇʟ ɪᴅ.</b></blockquote>", parse_mode=ParseMode.HTML)
     except RPCError as err:
-        await m.reply(f"⚠️ <b>Telegram Error:</b> <code>{err}</code>", parse_mode=ParseMode.HTML)
+        await m.reply(f"<blockquote>⚠️ <b>Tᴇʟᴇɢʀᴀᴍ ᴇʀʀᴏʀ :</b> <code>{err}</code></blockquote>", parse_mode=ParseMode.HTML)
     except Exception as err:
-        await m.reply(f"⚠️ <b>Unexpected Error:</b> <code>{err}</code>", parse_mode=ParseMode.HTML)
+        await m.reply(f"<blockquote>⚠️ <b>Uɴᴇxᴘᴇᴄᴛᴇᴅ ᴇʀʀᴏʀ :</b> <code>{err}</code></blockquote>", parse_mode=ParseMode.HTML)
 
 # ====================================================
 #                   USER ID
