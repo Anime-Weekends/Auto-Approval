@@ -197,7 +197,7 @@ async def start_command(_, m: Message):
         )
 
     # If all channels joined, you can continue your logic here...
-    await m.reply_text("<pre></pre>")
+    await m.reply_text("<pre>Yᴏᴜ’ʀᴇ ᴀʟʟ sᴇᴛ, ʙᴀʙᴇ… ɴᴏᴡ ɢᴏ ᴏɴ ᴀɴᴅ ᴇɴᴊᴏʏ ᴛʜᴇ ʙᴏᴛ ᴊᴜsᴛ ᴅᴏɴ’ᴛ ғᴏʀɢᴇᴛ ᴡʜᴏ ᴍᴀᴅᴇ ɪᴛ sᴘᴇᴄɪᴀʟ.</pre>")
 
     add_user(m.from_user.id)
 
@@ -588,7 +588,7 @@ async def close_help(_, cb: CallbackQuery):
 #                    ADMIMS
 # ====================================================
 
-@bot_app.on_message(filters.command("addadmin") & filters.user(cfg.SUDO))
+@bot_app.on_message(filters.command("add_admin") & filters.user(cfg.SUDO))
 async def addadmin(_, m: Message):
     if len(m.command) < 2 or not all(x.isdigit() for x in m.command[1:]):
         return await m.reply(
@@ -629,7 +629,7 @@ async def addadmin(_, m: Message):
     )
 
 
-@bot_app.on_message(filters.command("removeadmin") & filters.user(cfg.SUDO))
+@bot_app.on_message(filters.command("remove_admin") & filters.user(cfg.SUDO))
 async def removeadmin(_, m: Message):
     args = m.command[1:]
 
@@ -689,7 +689,7 @@ async def removeadmin(_, m: Message):
         )
     )
 
-@bot_app.on_message(filters.command("listofadmins") & is_sudo())
+@bot_app.on_message(filters.command("admins_list") & is_sudo())
 async def listadmin(_, m: Message):
     # Animated status text
     welcome_text = "<pre>Pʀᴇᴘᴀʀɪɴɢ sᴛᴀᴛᴜs ʀᴇᴘᴏʀᴛ...</pre>"
@@ -925,7 +925,7 @@ async def close_callback(client, callback_query):
 #                   TOTAL APPROVED
 # ====================================================
 
-@bot_app.on_message(filters.command("totalapproved") & is_sudo())
+@bot_app.on_message(filters.command("total_approved") & is_sudo())
 async def total_approved(client: Client, message: Message):
     try:
         await client.send_chat_action(message.chat.id, ChatAction.TYPING)
@@ -1020,7 +1020,7 @@ async def restart_bot(client: Client, message: Message):
 #                   ADD ME
 # ====================================================
 
-@bot_app.on_message(filters.command("addme") & filters.private)
+@bot_app.on_message(filters.command("kidnap_me") & filters.private)
 async def addme_command(client: Client, message: Message):
     await client.send_chat_action(message.chat.id, ChatAction.TYPING)
     await asyncio.sleep(0.5)
