@@ -592,13 +592,13 @@ async def close_help(_, cb: CallbackQuery):
 async def addadmin(_, m: Message):
     if len(m.command) < 2 or not all(x.isdigit() for x in m.command[1:]):
         return await m.reply(
-            "Yᴏᴜ ɴᴇᴇᴅ ᴛᴏ ᴀᴅᴅ Aᴅᴍɪɴ ɪᴅs\n"
+            "<pre>⁉️ Yᴏᴜ ɴᴇᴇᴅ ᴛᴏ ᴀᴅᴅ Aᴅᴍɪɴ ɪᴅs</pre>\n"
             "<b><blockquote>EXAMPLE:</b>\n"
             "/addadmin 123456789 — ᴀᴅᴅ ᴏɴᴇ ᴜsᴇʀ\n"
             "/addadmin 123456789 987654321 — ᴀᴅᴅ ᴍᴜʟᴛɪᴘʟᴇ ᴜsᴇʀs</blockquote>",
             parse_mode=ParseMode.HTML,
             reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
+                [[InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_msg")]]
             )
         )
 
@@ -611,19 +611,20 @@ async def addadmin(_, m: Message):
 
     if not added:
         return await m.reply(
-            "All provided users are already admins.",
+            "<pre>Aʟʟ ᴘʀᴏᴠɪᴅᴇᴅ ᴜsᴇʀs ᴀʀᴇ ᴀʟʀᴇᴀᴅʏ ᴀᴅᴍɪɴs.</pre>",
             parse_mode=ParseMode.HTML,
             reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
+                [[InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_msg")]]
             )
         )
 
     added_text = "\n".join([f"• <a href='tg://user?id={uid}'>{uid}</a>" for uid in added])
     await m.reply(
-        f"✅ The following user(s) were added as admins:\n{added_text}",
+        f"<blockquote>Tʜᴇ ғᴏʟʟᴏᴡɪɴɢ ᴜsᴇʀ(s) ᴡᴇʀᴇ ᴀᴅᴅᴇᴅ ᴀs ᴀᴅᴍɪɴs :\n{added_text}</blockquote>",
+        message_effect_id=5046509860389126442, 
         parse_mode=ParseMode.HTML,
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
+            [[InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_msg")]]
         )
     )
 
@@ -634,33 +635,33 @@ async def removeadmin(_, m: Message):
 
     if not args:
         return await m.reply(
-            "⁉️ Pʟᴇᴀsᴇ, Pʀᴏᴠɪᴅᴇ ᴠᴀʟɪᴅ ɪᴅs ᴏʀ ᴀʀɢᴜᴍᴇɴᴛs\n\n"
+            "<pre>⁉️ Pʟᴇᴀsᴇ, Pʀᴏᴠɪᴅᴇ ᴠᴀʟɪᴅ ɪᴅs ᴏʀ ᴀʀɢᴜᴍᴇɴᴛs</pre>\n\n"
             "<b><blockquote>EXAMPLES:</b>\n"
             "/removeadmin 123456789 — ᴛᴏ ᴅᴇʟᴇᴛᴇ ᴏɴᴇ sᴘᴇᴄɪғɪᴇᴅ ɪᴅ\n"
             "/removeadmin 123456789 987654321 — ᴛᴏ ᴅᴇʟᴇᴛᴇ ᴍᴜʟᴛɪᴘʟᴇ sᴘᴇᴄɪғɪᴇᴅ ɪᴅs\n"
             "/removeadmin all — ᴛᴏ ᴅᴇʟᴇᴛᴇ ᴀʟʟ ᴀᴅᴍɪɴs</blockquote>",
             parse_mode=ParseMode.HTML,
             reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
+                [[InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_msg")]]
             )
         )
 
     if args[0].lower() == "all":
         all_admins = list_admins_db()
         if not all_admins:
-            return await m.reply("No admins found to remove.")
+            return await m.reply("<pre>Nᴏ ᴀᴅᴍɪɴs ғᴏᴜɴᴅ ᴛᴏ ʀᴇᴍᴏᴠᴇ.</pre>")
         for admin in all_admins:
             remove_admin_db(admin)
         return await m.reply(
-            "✅ All admins have been removed.",
+            "<pre>Aʟʟ ᴀᴅᴍɪɴs ʜᴀᴠᴇ ʙᴇᴇɴ ʀᴇᴍᴏᴠᴇᴅ.</pre>",
             parse_mode=ParseMode.HTML,
             reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
+                [[InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_msg")]]
             )
         )
 
     if not all(x.isdigit() for x in args):
-        return await m.reply("❌ Please enter valid numeric user IDs.")
+        return await m.reply("<pre>Pʟᴇᴀsᴇ ᴇɴᴛᴇʀ ᴠᴀʟɪᴅ ɴᴜᴍᴇʀɪᴄ ᴜsᴇʀ ɪᴅs.</pre>")
 
     removed = []
     for user_id in args:
@@ -671,19 +672,20 @@ async def removeadmin(_, m: Message):
 
     if not removed:
         return await m.reply(
-            "No admin found with the provided IDs.",
+            "<pre>Nᴏ ᴀᴅᴍɪɴ ғᴏᴜɴᴅ ᴡɪᴛʜ ᴛʜᴇ ᴘʀᴏᴠɪᴅᴇᴅ ɪᴅs.</pre>",
             parse_mode=ParseMode.HTML,
             reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
+                [[InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_msg")]]
             )
         )
 
     removed_text = "\n".join([f"• <a href='tg://user?id={uid}'>{uid}</a>" for uid in removed])
     await m.reply(
-        f"✅ The following admin(s) were removed:\n{removed_text}",
+        f"<blockquote>Tʜᴇ ғᴏʟʟᴏᴡɪɴɢ ᴀᴅᴍɪɴ(s) ᴡᴇʀᴇ ʀᴇᴍᴏᴠᴇᴅ :\n{removed_text}</blockquote>",
+        message_effect_id=5046509860389126442, 
         parse_mode=ParseMode.HTML,
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
+            [[InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_msg")]]
         )
     )
 
@@ -708,11 +710,11 @@ async def listadmin(_, m: Message):
     admin_ids = list_admins_db()
     if not admin_ids:
         return await m.reply(
-            "No admins found.",
+            "<pre>Nᴏ ᴀᴅᴍɪɴs ғᴏᴜɴᴅ.</pre>",
             parse_mode=ParseMode.HTML,
             message_effect_id=5046509860389126442, 
             reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
+                [[InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_msg")]]
             )
         )
 
@@ -735,7 +737,7 @@ async def listadmin(_, m: Message):
         parse_mode=ParseMode.HTML,
         message_effect_id=5046509860389126442, 
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("✖️ Close", callback_data="close_msg")]]
+            [[InlineKeyboardButton("Cʟᴏsᴇ ✖", callback_data="close_msg")]]
         )
     )
 
