@@ -215,23 +215,27 @@ async def start_command(_, m: Message):
 @bot_app.on_callback_query(filters.regex("about"))
 async def about_callback(_, cq: CallbackQuery):
     await cq.answer()
+    
     about_markup = InlineKeyboardMarkup([
         [
             InlineKeyboardButton("« Bᴀᴄᴋ", callback_data="start_again"),
             InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_msg")
         ]
     ])
+
+    about_caption = (
+        f"<b><blockquote>Sᴀʏ ʏᴇs  <a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name}</a>  ɪ’ᴍ ᴀʟʟ ʏᴏᴜʀs.</blockquote></b>\n"
+        "<b><blockquote expandable>◈ Oᴡɴᴇʀ :</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
+        "◈ <b>Dᴇᴠᴇʟᴏᴘᴇʀ :</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
+        "◈ <b>Mᴀɪɴ Cʜᴀɴɴᴇʟ :</b> <a href='https://t.me/EmitingStars_Botz'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
+        "◈ <b>Sᴜᴘᴘᴏʀᴛ Cʜᴀɴɴᴇʟ :</b> <a href='https://t.me/+HZuPVe0l-F1mM2Jl'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
+        "◈ <b>Sᴏᴜʀᴄᴇ ᴄᴏᴅᴇ :</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a></blockquote>"
+    )
+    
     await cq.message.edit_media(
         media=InputMediaPhoto(
-            media="https://i.ibb.co/n8DKHRbn/photo-2025-04-28-16-38-45-7498404439389110276.jpg",
-            caption=(
-                f"<b><blockquote>Sᴀʏ ʏᴇs  <a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name}</a>  ɪ’ᴍ ᴀʟʟ ʏᴏᴜʀs.</blockquote></b>\n"
-                "<b><blockquote expandable>◈ Oᴡɴᴇʀ :</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
-                "◈ <b>Dᴇᴠᴇʟᴏᴘᴇʀ :</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
-                "◈ <b>Mᴀɪɴ Cʜᴀɴɴᴇʟ :</b> <a href='https://t.me/EmitingStars_Botz'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
-                "◈ <b>Sᴜᴘᴘᴏʀᴛ Cʜᴀɴɴᴇʟ :</b> <a href='https://t.me/+HZuPVe0l-F1mM2Jl'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>\n"
-                "◈ <b>Sᴏᴜʀᴄᴇ ᴄᴏᴅᴇ :</b> <a href='https://t.me/RexySama'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a></blockquote>"
-            ),
+            media="https://i.ibb.co/n8DKHRbn/photo-2025-04-28-16-38-45-7498404439389110276.jpg",  # About image link
+            caption=about_caption,
             parse_mode=ParseMode.HTML
         ),
         reply_markup=about_markup
