@@ -435,12 +435,15 @@ stickers = [
 #                 BROADCAST (COPY)
 # ====================================================
 
-canceled = False
+broadcast_states = {}
 
 @bot_app.on_message(filters.command("broadcast") & is_sudo())
 async def bcast(_, m: Message):
-    global canceled
-    canceled = False
+    if not m.reply_to_message:
+        return await m.reply("Please reply to a message to broadcast.")
+
+    broadcast_id = m.id
+    broadcast_states[broadcast_id] = False
 
     lel = await m.reply_photo(
         "https://i.ibb.co/9m1Rqmv8/photo-2025-04-28-17-06-26-7498411556149919760.jpg",
@@ -448,7 +451,7 @@ async def bcast(_, m: Message):
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("Cᴀɴᴄᴇʟ", callback_data="cancel_bcast"),
+                    InlineKeyboardButton("Cᴀɴᴄᴇʟ", callback_data=f"cancel_bcast:{broadcast_id}"),
                     InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_bcast")
                 ]
             ]
@@ -466,7 +469,7 @@ async def bcast(_, m: Message):
     start_time = time.perf_counter()
 
     for idx, u in enumerate(users.find(), 1):
-        if canceled:
+        if broadcast_states.get(broadcast_id):
             percent = idx / total_users
             final_bar = "●" * int(percent * bar_length) + "○" * (bar_length - int(percent * bar_length))
             await lel.edit(
@@ -483,7 +486,7 @@ async def bcast(_, m: Message):
             return
 
         try:
-            await m.reply_to_message.copy(int(u["user_id"]))
+            await _.copy_message(chat_id=int(u["user_id"]), from_chat_id=m.chat.id, message_id=m.reply_to_message.id)
             stats["success"] += 1
         except UserDeactivated:
             stats["deactivated"] += 1
@@ -494,7 +497,6 @@ async def bcast(_, m: Message):
             stats["failed"] += 1
             print(f"Error with user {u['user_id']}: {e}")
 
-        # Update progress
         percent = idx / total_users
         if percent - last_update_percentage >= update_interval or idx == 1:
             num_blocks = int(percent * bar_length)
@@ -512,7 +514,7 @@ async def bcast(_, m: Message):
                 f"❏ Dᴇᴀᴄᴛɪᴠᴀᴛᴇᴅ: `{stats['deactivated']}` | ❏ Bʟᴏᴄᴋᴇᴅ : `{stats['blocked']}`</blockquote>",
                 reply_markup=InlineKeyboardMarkup(
                     [[
-                        InlineKeyboardButton("Cᴀɴᴄᴇʟ", callback_data="cancel_bcast"),
+                        InlineKeyboardButton("Cᴀɴᴄᴇʟ", callback_data=f"cancel_bcast:{broadcast_id}"),
                         InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_bcast")
                     ]]
                 )
@@ -533,12 +535,13 @@ async def bcast(_, m: Message):
             [[InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_bcast")]]
         )
     )
+    broadcast_states.pop(broadcast_id, None)
 
 
-@bot_app.on_callback_query(filters.regex("cancel_bcast"))
+@bot_app.on_callback_query(filters.regex(r"cancel_bcast:(\d+)"))
 async def cancel_bcast(_, cb):
-    global canceled
-    canceled = True
+    broadcast_id = int(cb.matches[0].group(1))
+    broadcast_states[broadcast_id] = True
     await cb.answer("Bʀᴏᴀᴅᴄᴀsᴛ ʜᴀs ʙᴇᴇɴ ᴄᴀɴᴄᴇʟᴇᴅ.")
 
 
