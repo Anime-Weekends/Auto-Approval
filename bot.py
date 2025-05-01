@@ -437,6 +437,9 @@ stickers = [
 
 broadcast_states = {}
 
+UPDATE_DELAY = 5  # seconds between UI updates
+
+# Broadcast function to start the process
 @bot_app.on_message(filters.command("broadcast") & is_sudo())
 async def bcast(_, m: Message):
     if not m.reply_to_message:
@@ -448,14 +451,10 @@ async def bcast(_, m: Message):
     lel = await m.reply_photo(
         "https://i.ibb.co/9m1Rqmv8/photo-2025-04-28-17-06-26-7498411556149919760.jpg",
         caption="<pre>Pʀᴇᴘᴀʀɪɴɢ ʙʀᴏᴀᴅᴄᴀsᴛ...</pre>",
-        reply_markup=InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton("Cᴀɴᴄᴇʟ", callback_data=f"cancel_bcast:{broadcast_id}"),
-                    InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_bcast")
-                ]
-            ]
-        )
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("Cᴀɴᴄᴇʟ", callback_data=f"cancel_bcast:{broadcast_id}"),
+             InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_bcast")]
+        ])
     )
 
     total_users = users.count_documents({})
@@ -464,26 +463,12 @@ async def bcast(_, m: Message):
 
     stats = {"success": 0, "failed": 0, "deactivated": 0, "blocked": 0}
     bar_length = 20
-    last_update_percentage = 0
-    update_interval = 0.05  # 5%
     start_time = time.perf_counter()
+    last_ui_update = time.perf_counter()
 
     for idx, u in enumerate(users.find(), 1):
         if broadcast_states.get(broadcast_id):
-            percent = idx / total_users
-            final_bar = "●" * int(percent * bar_length) + "○" * (bar_length - int(percent * bar_length))
-            await lel.edit(
-                f"<blockquote>➥ Bʀᴏᴀᴅᴄᴀsᴛ ᴄᴀɴᴄᴇʟᴇᴅ!</blockquote>\n\n"
-                f"<pre><code>[{final_bar}] {int(percent * 100)}%</code></pre>\n\n"
-                f"<blockquote>❏ Sᴜᴄᴄᴇssғᴜʟ : `{stats['success']}`\n"
-                f"❏ Fᴀɪʟᴇᴅ : `{stats['failed']}`\n"
-                f"❏ Bʟᴏᴄᴋᴇᴅ : `{stats['blocked']}`\n"
-                f"❏ ᴅᴇᴀᴄᴛɪᴠᴀᴛᴇᴅ : `{stats['deactivated']}`</blockquote>",
-                reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_bcast")]]
-                )
-            )
-            return
+            break
 
         try:
             await _.copy_message(chat_id=int(u["user_id"]), from_chat_id=m.chat.id, message_id=m.reply_to_message.id)
@@ -497,54 +482,49 @@ async def bcast(_, m: Message):
             stats["failed"] += 1
             print(f"Error with user {u['user_id']}: {e}")
 
+        now = time.perf_counter()
         percent = idx / total_users
-        if percent - last_update_percentage >= update_interval or idx == 1:
-            num_blocks = int(percent * bar_length)
-            progress_bar = "●" * num_blocks + "○" * (bar_length - num_blocks)
+        eta_seconds = ((now - start_time) / percent) - (now - start_time)
 
-            elapsed = time.perf_counter() - start_time
-            eta_seconds = (elapsed / percent) - elapsed if percent else 0
+        if now - last_ui_update >= UPDATE_DELAY or idx == total_users:
+            bar = "●" * int(percent * bar_length) + "○" * (bar_length - int(percent * bar_length))
             eta = f"{int(eta_seconds)//60:02}:{int(eta_seconds)%60:02}"
-
             await lel.edit(
-                f"<blockquote>➥ Bʀᴏᴀᴅᴄᴀsᴛɪɴɢ...</blockquote>\n\n"
-                f"<pre><code>[{progress_bar}] {int(percent * 100)}%</code>\n"
-                f"❏ Eᴛᴀ : `{eta}` ᴍɪɴᴜᴛᴇs</pre>\n\n"
+                f"<blockquote>➥ {'Bʀᴏᴀᴅᴄᴀsᴛɪɴɢ' if not broadcast_states[broadcast_id] else 'Cᴀɴᴄᴇʟᴇᴅ!'}</blockquote>\n\n"
+                f"<pre><code>[{bar}] {int(percent * 100)}%</code>\n"
+                f"❏ Eᴛᴀ : `{eta}`</pre>\n\n"
                 f"<blockquote>❏ Sᴜᴄᴄᴇssғᴜʟ : `{stats['success']}` | ❏ Fᴀɪʟᴇᴅ : `{stats['failed']}`\n"
                 f"❏ Dᴇᴀᴄᴛɪᴠᴀᴛᴇᴅ: `{stats['deactivated']}` | ❏ Bʟᴏᴄᴋᴇᴅ : `{stats['blocked']}`</blockquote>",
-                reply_markup=InlineKeyboardMarkup(
-                    [[
-                        InlineKeyboardButton("Cᴀɴᴄᴇʟ", callback_data=f"cancel_bcast:{broadcast_id}"),
-                        InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_bcast")
-                    ]]
-                )
+                reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton("Cᴀɴᴄᴇʟ", callback_data=f"cancel_bcast:{broadcast_id}"),
+                     InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_bcast")]
+                ])
             )
-            last_update_percentage = percent
+            last_ui_update = now
 
-        await asyncio.sleep(0.1)
+        await asyncio.sleep(0.05)
 
+    # Final Message
     final_bar = "●" * bar_length
     await lel.edit(
-        f"<blockquote>➥ Bʀᴏᴀᴅᴄᴀsᴛ ᴄᴏᴍᴘʟᴇᴛᴇᴅ</blockquote>\n\n"
+        f"<blockquote>➥ {'Bʀᴏᴀᴅᴄᴀsᴛ ᴄᴏᴍᴘʟᴇᴛᴇᴅ' if not broadcast_states[broadcast_id] else 'Bʀᴏᴀᴅᴄᴀsᴛ ᴄᴀɴᴄᴇʟᴇᴅ!'}</blockquote>\n\n"
         f"<pre><code>[{final_bar}] 100%</code></pre>\n\n"
         f"<blockquote>❏ Sᴜᴄᴄᴇssғᴜʟ : `{stats['success']}`\n"
         f"❏ Fᴀɪʟᴇᴅ : `{stats['failed']}`\n"
         f"❏ Bʟᴏᴄᴋᴇᴅ : `{stats['blocked']}`\n"
         f"❏ Dᴇᴀᴄᴛɪᴠᴀᴛᴇᴅ : `{stats['deactivated']}`</blockquote>",
-        reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_bcast")]]
-        )
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Cʟᴏsᴇ", callback_data="close_bcast")]])
     )
     broadcast_states.pop(broadcast_id, None)
 
-
+# Callback handler for canceling the broadcast
 @bot_app.on_callback_query(filters.regex(r"cancel_bcast:(\d+)"))
 async def cancel_bcast(_, cb):
     broadcast_id = int(cb.matches[0].group(1))
     broadcast_states[broadcast_id] = True
-    await cb.answer("Bʀᴏᴀᴅᴄᴀsᴛ ʜᴀs ʙᴇᴇɴ ᴄᴀɴᴄᴇʟᴇᴅ.")
+    await cb.answer("Bʀᴏᴀᴅᴄᴀsᴛ ʜᴀs ʙᴇᴇɴ ᴄᴀɴᴄᴇʟᴇᴅ.", show_alert=True)
 
-
+# Callback handler for closing the broadcast message
 @bot_app.on_callback_query(filters.regex("close_bcast"))
 async def close_bcast(_, cb):
     await cb.message.delete()
