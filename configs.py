@@ -10,7 +10,7 @@ import os
 class Config:
     API_ID = int(os.getenv("API_ID", "28744454"))
     API_HASH = os.getenv("API_HASH", "debd37cef0ad1a1ce45d0be8e8c3c5e7")
-    BOT_TOKEN = os.getenv("BOT_TOKEN", "7953776996:AAEs6kE3z0ryANnheR00EfDb6p-5hdlzriw")
+    BOT_TOKEN = os.getenv("BOT_TOKEN", "8132519140:AAESU_pmbgv3TQGofb02wjqPW9o88z_yoYc")
     BOT_USERNAME = os.getenv("BOT_USERNAME", "Private_Auto_Approval_Bot")
 
     
