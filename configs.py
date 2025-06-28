@@ -14,7 +14,7 @@ class Config:
     BOT_USERNAME = os.getenv("BOT_USERNAME", "AutoAnimeNews_Bot")
     
     # Add your string session here
-    STRING_SESSION = os.getenv("STRING_SESSION", "BQGcIrIAOh8-Sqw77vfX0IcZSH_BFbZUDCkRFeQfQfLKSMm2IB52qDSJepEwCp25OVYPgOVcH0-dZS2ImqlWJA8QLPL6v5XdGX7-1bun5CtY11nmBGTi4VANhtBJ4be8PeZsMzUDnLUFtoqCuoZm_xTszs6iySjUaHIHrvgV9MssqbcCJ_bScnTc1lyEHsX3SFSugL3Tw6V6LXgUqYN3EeASpt-Fanb-MQ6ObVoG8KazZZUyunsRSgR5JAqqz-wyvBAnFx7lelilMzLsmZRcmK1r1l9ub6zjpVhvQ0X8D1bcQu37Gz7_laxsKHrtJfhUwkIntdufk2zIy3mkJuYa3J459cg9dAAAAAF_OuMdAA")
+    STRING_SESSION = os.getenv("STRING_SESSION", "BQCak1gAgSkGa4g3hcV4vX7brE0vriN700JWVWxe79ureKkOiyQ0kdWi_V04rDdG46MJDjJAUfs_9LW5oKD940XVvxC0uduY6XJCTFzT3JNg5M8pULbZSU2eZYUcjNPCzg4-wbbpNeZ_joODIxB9oj9BOuGMN1sry6kxp2bAEw5IsLsy79kcR4ayZFVm3gXzWpeRa4ZihTKXERVfvauBvORiIIa9ajVsBEB_1UO_xDELaxg-u30aCNr1uNIKg4SveGFucTt7JK4xKM5dXBVx3loderjRsw00Uha2VwV-LeYSORogQskr-qTXt00xZ-z6c9pW_Uxet_YGy3nJjo5NBXeI82FkAwAAAAGmk-HvAA")
 
     # Force Subscribe Channel ID (Ensure bot is admin)
     FORCE_SUB_CHANNELS = list(map(int, os.getenv("FORCE_SUB_CHANNELS", "-1002410513772 -1002296091847").split()))
