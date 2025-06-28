@@ -10,12 +10,12 @@ import os
 class Config:
     API_ID = int(os.getenv("API_ID", "28744454"))
     API_HASH = os.getenv("API_HASH", "debd37cef0ad1a1ce45d0be8e8c3c5e7")
-    BOT_TOKEN = os.getenv("BOT_TOKEN", "8132519140:AAESU_pmbgv3TQGofb02wjqPW9o88z_yoYc")
+    BOT_TOKEN = os.getenv("BOT_TOKEN", "8132519140:AAG500QF2IosowpmkqIg4qhnAJjXENTx8r8")
     BOT_USERNAME = os.getenv("BOT_USERNAME", "Private_Auto_Approval_Bot")
 
     
     # Add your string session here
-    STRING_SESSION = os.getenv("STRING_SESSION", "BQCak1gAobzrvty3VVHsZa_pjjIxYwdFhLL6XYjFUDQRcNtTyZOqAD2PZj5Qx_1RJ-PH_hlWEAWx3B1L-IQ7wv1T4N5SRawkys7alm34NJ9qCTNe1iIA44z3d64jnf0bIjel68OlwmmYlM56c-S7Inc0p4s5oV1eFZ1gXyzXVDfKT6NWWkOh6ibbpEy-vPJEiI5TNLLjOJQR09S51373rKA_Px2qL9CxY-Af9cwiUIPABorjOapBfwgnJFRZwBkfsnmUX2JeQdC2k96BAyvYJQRQWaJXOascqXWtLZnEB1gmEXX7GT1hVZU0Q9PiSh0_mpWhGWAesIyAqVzHTLX4ZUApZ9GczgAAAAGmk-HvAA")
+    STRING_SESSION = os.getenv("STRING_SESSION", "BQCak1gAgSkGa4g3hcV4vX7brE0vriN700JWVWxe79ureKkOiyQ0kdWi_V04rDdG46MJDjJAUfs_9LW5oKD940XVvxC0uduY6XJCTFzT3JNg5M8pULbZSU2eZYUcjNPCzg4-wbbpNeZ_joODIxB9oj9BOuGMN1sry6kxp2bAEw5IsLsy79kcR4ayZFVm3gXzWpeRa4ZihTKXERVfvauBvORiIIa9ajVsBEB_1UO_xDELaxg-u30aCNr1uNIKg4SveGFucTt7JK4xKM5dXBVx3loderjRsw00Uha2VwV-LeYSORogQskr-qTXt00xZ-z6c9pW_Uxet_YGy3nJjo5NBXeI82FkAwAAAAGmk-HvAA")
 
      # Force Subscribe Channel ID (Ensure bot is admin)
     FORCE_SUB_CHANNELS = list(map(int, os.getenv("FORCE_SUB_CHANNELS", "-1002410513772 -1002296091847").split()))
