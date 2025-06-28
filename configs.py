@@ -15,7 +15,7 @@ class Config:
 
     
     # Add your string session here
-    STRING_SESSION = os.getenv("STRING_SESSION", "BQCak1gAgSkGa4g3hcV4vX7brE0vriN700JWVWxe79ureKkOiyQ0kdWi_V04rDdG46MJDjJAUfs_9LW5oKD940XVvxC0uduY6XJCTFzT3JNg5M8pULbZSU2eZYUcjNPCzg4-wbbpNeZ_joODIxB9oj9BOuGMN1sry6kxp2bAEw5IsLsy79kcR4ayZFVm3gXzWpeRa4ZihTKXERVfvauBvORiIIa9ajVsBEB_1UO_xDELaxg-u30aCNr1uNIKg4SveGFucTt7JK4xKM5dXBVx3loderjRsw00Uha2VwV-LeYSORogQskr-qTXt00xZ-z6c9pW_Uxet_YGy3nJjo5NBXeI82FkAwAAAAGmk-HvAA")
+    STRING_SESSION = os.getenv("STRING_SESSION", "BQCak1gAa4ArrhofSrskJiuShYW5QbYd1h-NIS_9w5IoMM7kL5rtVf8KOnT2IVFfdvSsz1sHnXh8ZRPYo3m2SMCQiu3uMThakFf9hCEygPIqTp9s-n5hfFrhryZ1ExC7SH2lPdA3NK5tA0pyh4gLTWiXd4M-PQACCaotkTW3ibe0VSHCZ0699bhiXdAFY3Oa0A40-mA83QpZqNqCZLJuN8SQbwioWh36x9-AEXBZ_rElBquXBSlJHeZv-DcYZChmfRI-FufzWtx-jCZcMKg_HwMMdNuwNH4eMC0Hz5oaBPP9ucwAFe4B1U9hjfXRYsF1etNemQrFzcVCdusfeyfpxuI6XizzoQAAAAGmk-HvAA")
 
      # Force Subscribe Channel ID (Ensure bot is admin)
     FORCE_SUB_CHANNELS = list(map(int, os.getenv("FORCE_SUB_CHANNELS", "-1002410513772 -1002296091847").split()))
